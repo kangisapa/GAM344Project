@@ -154,6 +154,8 @@ MonoBehaviour:
   creepsPerWave: 5
   spawnInterval: 1
   timeBetweenWaves: 5
+  towerKeys:
+  - BasicTower
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0

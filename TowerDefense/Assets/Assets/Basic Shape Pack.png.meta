@@ -116,11 +116,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Square
+      name: Sqaure
       rect:
         serializedVersion: 2
         x: 0
-        y: 100
+        y: 102
         width: 100
         height: 100
       alignment: 0
@@ -129,10 +129,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 4616cef4a7b5e3190800000000000000
-      internalID: -7980840908768911004
+      spriteID: a9aa5517a21889c499b215425c2d0ffa
+      internalID: 445820232
       vertices: []
       indices: 
       edges: []
@@ -141,8 +141,8 @@ TextureImporter:
       name: RoundedSquare
       rect:
         serializedVersion: 2
-        x: 100
-        y: 100
+        x: 102
+        y: 102
         width: 100
         height: 100
       alignment: 0
@@ -151,10 +151,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a87f7c0fb2173e530800000000000000
-      internalID: 3883071737260668810
+      spriteID: b184f4e1a2c360145857f9330131986c
+      internalID: -185015308
       vertices: []
       indices: 
       edges: []
@@ -163,8 +163,8 @@ TextureImporter:
       name: Circle
       rect:
         serializedVersion: 2
-        x: 200
-        y: 100
+        x: 204
+        y: 102
         width: 100
         height: 100
       alignment: 0
@@ -175,8 +175,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4db89e9fd6eb5924ea0e5ef9f498e0f8
-      internalID: -51631696
+      spriteID: dbdce452f064ddc499cbce37c1812292
+      internalID: -1653287097
       vertices: []
       indices: 
       edges: []
@@ -185,8 +185,8 @@ TextureImporter:
       name: Triangle
       rect:
         serializedVersion: 2
-        x: 300
-        y: 100
+        x: 306
+        y: 102
         width: 100
         height: 100
       alignment: 0
@@ -197,8 +197,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54792be637548f547854c7e3644a906d
-      internalID: 159847727
+      spriteID: 2f3d370067acc3641a4f811c9ee4917e
+      internalID: 1175978912
       vertices: []
       indices: 
       edges: []
@@ -219,8 +219,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62f398fe72c16ae46a05e3b6f70fb619
-      internalID: -2007138040
+      spriteID: 3d2cee2601eadb244919aae6803a4149
+      internalID: 1142991787
       vertices: []
       indices: 
       edges: []
@@ -229,7 +229,7 @@ TextureImporter:
       name: Trapezoid
       rect:
         serializedVersion: 2
-        x: 100
+        x: 102
         y: 0
         width: 100
         height: 100
@@ -241,8 +241,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f78fda2e8e1db784f9cb2d5403ae34e1
-      internalID: -1683483792
+      spriteID: b8d692093320708498eba97aa20b6440
+      internalID: 196804331
       vertices: []
       indices: 
       edges: []
@@ -251,7 +251,7 @@ TextureImporter:
       name: Hexagon
       rect:
         serializedVersion: 2
-        x: 200
+        x: 204
         y: 0
         width: 100
         height: 100
@@ -263,8 +263,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 857eb639ca67c2041ada7233f8bc7e21
-      internalID: -132109522
+      spriteID: 14fdf479759297f45b135faa20df7fc3
+      internalID: -526492231
       vertices: []
       indices: 
       edges: []
@@ -273,7 +273,7 @@ TextureImporter:
       name: Star
       rect:
         serializedVersion: 2
-        x: 300
+        x: 306
         y: 0
         width: 100
         height: 100
@@ -285,8 +285,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 44da347823c8ad348b2157f87a2dc37f
-      internalID: -1065746151
+      spriteID: 60cc8caab72444644af2a8126bdaeb5f
+      internalID: 1375980711
       vertices: []
       indices: 
       edges: []
@@ -305,16 +305,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":100.0,"y":100.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":100.0,"y":100.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":2.0,"y":2.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Circle: -51631696
-      Hexagon: -132109522
-      Rhombus: -2007138040
-      RoundedSquare: 3883071737260668810
-      Square: -7980840908768911004
-      Star: -1065746151
-      Trapezoid: -1683483792
-      Triangle: 159847727
+      Circle: -1653287097
+      Hexagon: -526492231
+      Rhombus: 1142991787
+      RoundedSquare: -185015308
+      Sqaure: 445820232
+      Star: 1375980711
+      Trapezoid: 196804331
+      Triangle: 1175978912
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

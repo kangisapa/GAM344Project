@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6745eb02c5789024a8f06b089ab7bb52, type: 3}
   m_Name: BasicTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerSprite: {fileID: -132109522, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
-  projectileSprite: {fileID: 159847727, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  towerSprite: {fileID: -526492231, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  projectileSprite: {fileID: 1175978912, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
   targetRadius: 6
   damagePerShot: 1
   shotsPerSecond: 1

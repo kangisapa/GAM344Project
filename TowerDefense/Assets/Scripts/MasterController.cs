@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class MasterController : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class MasterController : MonoBehaviour
     [Header("Game Information")]
     private GameState currentState = GameState.Start;
 
+    // ---------- Tower Data Caching ----------
+
+    [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
+    private List<TowerData> _towerCache = new List<TowerData>();
+
     // ---------- UI Events ----------
     public event Action<int> OnCurrencyChanged;
     public event Action<int> OnHealthChanged;
@@ -56,6 +62,7 @@ public class MasterController : MonoBehaviour
 
         playerCurrency = startingCurrency;
         playerHealth   = startingHealth;
+        CacheTowerInformation();
     }
 
     private void Start()
@@ -115,11 +122,22 @@ public class MasterController : MonoBehaviour
         // Incriment creep count as each are spawned
     }
 
-    public void SpawnTower()
+    async void CacheTowerInformation()
     {
-       // Call Tower Spawning Element
+        foreach(string key in towerKeys)
+        {
+            TowerData data = await Addressables.LoadAssetAsync<TowerData>(key).Task;
+            _towerCache.Add(data);
+        }
+    }
 
-       // Decrease Money
+    public void SpawnTower(int index)
+    {
+        // Call Tower Spawning Element
+        GameObject newTower = Tower.CreateNewTower(_towerCache[index]);
+
+        // Decrease Money
+        playerCurrency -= _towerCache[index].cost;
     }
 
     // ---------- Currency / damage hooks ----------
@@ -164,6 +182,14 @@ public class MasterController : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
+    }
+
+    private void OnDestroy()
+    {
+        foreach(TowerData data in _towerCache)
+        {
+            Addressables.Release(data);
+        }
     }
 }
 

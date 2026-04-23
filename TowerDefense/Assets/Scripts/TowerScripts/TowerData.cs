@@ -12,6 +12,8 @@ public class TowerData : ScriptableObject
 
     [Min(0)] public float damagePerShot;
     [Min(0)] public float shotsPerSecond;
-    
+    [Tooltip("How long will it take the projectile to reach the target in seconds"), Min(0)] 
+    public float projectileTargetTime;
+
     public int cost;
 }
