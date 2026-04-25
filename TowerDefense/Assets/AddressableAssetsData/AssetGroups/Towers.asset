@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 8506f7cd21b0fd540a9ab0b3fff70ed8
   m_SerializeEntries:
   - m_GUID: c1b5cfa6004f9ff49a9edfa2b82e20a8
-    m_Address: BasicTower
+    m_Address: BasicCreep
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

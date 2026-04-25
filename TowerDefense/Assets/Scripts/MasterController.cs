@@ -38,7 +38,12 @@ public class MasterController : MonoBehaviour
 
     [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
     private List<TowerData> _towerCache = new List<TowerData>();
-
+   
+    // ---------- Creep Data ----------
+   
+    [SerializeField] private CreepData defaultCreepData;
+    [SerializeField] private GameObject creepPrefab;
+   
     // ---------- UI Events ----------
     public event Action<int> OnCurrencyChanged;
     public event Action<int> OnHealthChanged;
@@ -117,9 +122,10 @@ public class MasterController : MonoBehaviour
 
     public void SpawnCreep()
     {
-        // Call Creep Spawning Element
-        
-        // Incriment creep count as each are spawned
+        GameObject creepObject = Instantiate(creepPrefab, PathController.Instance.StartPosition, Quaternion.identity);
+        Creep creep = creepObject.GetComponent<Creep>();
+        creep.Initialize(defaultCreepData);
+        enemiesAlive++;
     }
 
     async void CacheTowerInformation()
