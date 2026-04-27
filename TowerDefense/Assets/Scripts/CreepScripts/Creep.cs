@@ -4,24 +4,52 @@ using System;
 public class Creep : MonoBehaviour
 {
     // --- Configuration ---
-    [SerializeField] private CreepData data;
+    [Header("Stats")]
+    private float maxHealth = 100f;
+    private float moveSpeed = 3f;
+
+    [Header("Rewards")]
+    private int currencyOnDeath = 10;
+    private int damageToBase = 1;
 
     // --- Runtime State ---
     private float currentHealth;
     private float pathProgress;
     private bool isDead = false;
 
-   
+
     // Called by MasterController.SpawnCreep()
-    
-    public void Initialize(CreepData creepData)
+
+    public static GameObject CreateNewCreep(CreepData creationData)
     {
-        data = creepData;
-        currentHealth = data.maxHealth;
+        //Create our new tower and its associated range object
+        GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D) });
+
+        //Tower Setup (script values => tower visuals => range setup 
+        Creep creepScriptReference = newCreepObject.GetComponent<Creep>();
+        creepScriptReference.SetValves(creationData);
+
+        SpriteRenderer renderer = newCreepObject.GetComponent<SpriteRenderer>();
+        CircleCollider2D collider = newCreepObject.GetComponent<CircleCollider2D>();
+
+        renderer.sprite = creationData.sprite;
+        collider.radius = renderer.bounds.extents.x / newCreepObject.transform.lossyScale.x;
+        collider.offset = Vector2.zero;
+
+        return newCreepObject;
+    }
+
+
+    public void SetValves(CreepData creepData)
+    {
+        maxHealth = creepData.maxHealth;
+        moveSpeed = creepData.moveSpeed;
+        currencyOnDeath = creepData.currencyOnDeath;
+        damageToBase = creepData.damageToBase;
+
         pathProgress = 0f;
 
         transform.position = PathController.Instance.StartPosition;
-        GetComponent<SpriteRenderer>().sprite = data.sprite;
     }
 
     private void Update()
@@ -35,7 +63,7 @@ public class Creep : MonoBehaviour
     
     private void FollowPath()
     {
-        pathProgress += (data.moveSpeed / PathController.Instance.PathLength) * Time.deltaTime;
+        pathProgress += (moveSpeed / PathController.Instance.PathLength) * Time.deltaTime;
 
         if (pathProgress >= 1f)
         {
@@ -69,14 +97,14 @@ public class Creep : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        MasterController.Instance.OnCreepKilled(data.currencyOnDeath);
+        MasterController.Instance.OnCreepKilled(currencyOnDeath);
         Destroy(gameObject);
     }
 
     private void ReachedEnd()
     {
         isDead = true;
-        MasterController.Instance.OnCreepReachedEnd(data.damageToBase);
+        MasterController.Instance.OnCreepReachedEnd(damageToBase);
         Destroy(gameObject);
     }
 }

@@ -93,7 +93,7 @@ public class Tower : MonoBehaviour
             foreach(Collider2D creep in overlaps)
             {
                 //UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-                float progress = 0;// creep.GetComponent<Creep>().GetProgress();
+                float progress = creep.GetComponent<Creep>().GetProgress();
                 if(progress > furthestProgress)
                 {
                     furthestProgress = progress;
@@ -104,20 +104,19 @@ public class Tower : MonoBehaviour
             if(furthestCreep != null)
             {
                 //UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-                //Creep targetCreep = furthestCreep.GetComponent<Creep>();
-                //ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
+                Creep targetCreep = furthestCreep.GetComponent<Creep>();
+                ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
             }
             yield return updateWait;
         }
     }
-    /*
-     * UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-     * private void DamageCreep(Creep targetCreep)
-     * {
-     *    if (targetCreep != null)
-     *    { 
-     *        targetCreep.DamageCreep(damagePerShot); 
-     *    }
-     * }
-    */
+
+      private void DamageCreep(Creep targetCreep)
+      {
+         if (targetCreep != null)
+         { 
+             targetCreep.DamageCreep(damagePerShot); 
+         }
+      }
+
 }

@@ -154,10 +154,12 @@ MonoBehaviour:
   creepsPerWave: 5
   spawnInterval: 1
   timeBetweenWaves: 5
+  creepParent: {fileID: 1313844446}
+  towerParent: {fileID: 778779257}
   towerKeys:
   - BasicTower
-  defaultCreepData: {fileID: 11400000, guid: 39ce106295c99f445b6a48a065ae65d7, type: 2}
-  creepPrefab: {fileID: 0}
+  creepKeys:
+  - BasicCreep
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
@@ -202,6 +204,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 778779257}
+  - {fileID: 1313844446}
   - {fileID: 1910805042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -593,6 +597,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545991437}
   m_CullTransparentMesh: 1
+--- !u!1 &778779256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778779257}
+  m_Layer: 0
+  m_Name: Towers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &778779257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778779256}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.56214, y: -1.8684, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 135671655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952963352
 GameObject:
   m_ObjectHideFlags: 0
@@ -828,6 +863,37 @@ Transform:
   m_Children:
   - {fileID: 1569616865}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1313844445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313844446}
+  m_Layer: 0
+  m_Name: Creeps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1313844446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313844445}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 135671655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1452370630
 GameObject:
@@ -1539,9 +1605,9 @@ MonoBehaviour:
     Prefab: {fileID: 2124066511122965227, guid: fcd1f092a378cac46b037b15a475454f, type: 3}
     probability: 0
     Probability: 0
-  m_Method: 1
+  m_Method: 0
   m_Space: 0
-  m_Spacing: {x: 1, y: 1}
+  m_Spacing: {x: 200, y: 200}
   m_Up: 1
   m_Forward: 2
   m_PositionOffset:
