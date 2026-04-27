@@ -73,6 +73,7 @@ public class MasterController : MonoBehaviour
     private void Start()
     {
         UpdateUI();
+        StartGame();
     }
 
     // ---------- Core flow ----------
