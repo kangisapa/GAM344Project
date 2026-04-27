@@ -156,6 +156,8 @@ MonoBehaviour:
   timeBetweenWaves: 5
   towerKeys:
   - BasicTower
+  defaultCreepData: {fileID: 11400000, guid: 39ce106295c99f445b6a48a065ae65d7, type: 2}
+  creepPrefab: {fileID: 0}
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
