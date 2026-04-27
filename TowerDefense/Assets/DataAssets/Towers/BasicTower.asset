@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6745eb02c5789024a8f06b089ab7bb52, type: 3}
+  m_Name: BasicTower
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  towerSprite: {fileID: -526492231, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  projectileSprite: {fileID: 1175978912, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  targetRadius: 6
+  damagePerShot: 1
+  shotsPerSecond: 1
+  cost: 10
