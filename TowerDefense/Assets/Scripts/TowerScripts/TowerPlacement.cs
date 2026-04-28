@@ -4,10 +4,21 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class TowerPlacementSpot : MonoBehaviour
 {
+    private MasterController masterController;
     [SerializeField] private int spotIndex = 0;
 
     private bool menuOpen = false;
     private GameObject menuObject;
+
+
+    private void Awake()
+    {
+        masterController = FindAnyObjectByType<MasterController>();
+        if (masterController == null)
+        {
+            Debug.LogWarning("Could not find a MasterController in the scene.");
+        }
+    }
 
     private void OnMouseDown()
     {
@@ -41,9 +52,11 @@ public class TowerPlacementSpot : MonoBehaviour
 
         // Click handler
         square.AddComponent<IndexSquare>().Setup(spotIndex);
+        square.GetComponent<IndexSquare>().SetTowerPlacement(this);
+        square.GetComponent<IndexSquare>().SetMasterController(masterController);
     }
 
-    private void CloseMenu()
+    public void CloseMenu()
     {
         menuOpen = false;
         Destroy(menuObject);
