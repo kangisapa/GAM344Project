@@ -92,6 +92,11 @@ public class Tower : MonoBehaviour
 
             foreach(Collider2D creep in overlaps)
             {
+                Creep creepComponent = creep.GetComponent<Creep>();
+                if(creepComponent == null)
+                {
+                    continue;
+                }
                 //UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
                 float progress = creep.GetComponent<Creep>().GetProgress();
                 if(progress > furthestProgress)

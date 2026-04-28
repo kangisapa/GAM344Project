@@ -16,6 +16,16 @@ public class ProjectileManager : MonoBehaviour
     // ---------- Singleton ----------
     public static ProjectileManager Instance { get; private set; }
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
 
     // ---------- Object pooling ----------
 
@@ -47,7 +57,7 @@ public class ProjectileManager : MonoBehaviour
     private void Update()
     {
         float deltaTime = Time.deltaTime;
-        for (int i = 0; i < pool.Count - 1; i++)
+        for (int i = activeProjectiles.Count - 1; i >= 0; i--)
         {
             ProjectileData projectile = activeProjectiles[i];
             projectile.uptime += deltaTime;

@@ -152,11 +152,12 @@ public class MasterController : MonoBehaviour
 
     }
 
-    public void SpawnTower(int index)
+    public void SpawnTower(int index, Vector3 position)
     {
         // Call Tower Spawning Element
         GameObject newTower = Tower.CreateNewTower(_towerCache[index]);
         newTower.transform.parent = towerParent;
+        newTower.GetComponent<Tower>().PlaceTower(position);
 
         // Decrease Money
         playerCurrency -= _towerCache[index].cost;
