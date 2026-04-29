@@ -1938,7 +1938,7 @@ MonoBehaviour:
   currentHealth: {fileID: 1097169950}
   currentCurrency: {fileID: 1889446871}
   currentWave: {fileID: 545991439}
-  endGameText: {fileID: 0}
+  endGameText: {fileID: 97394233}
 --- !u!1 &2027374972
 GameObject:
   m_ObjectHideFlags: 0
