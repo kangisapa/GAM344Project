@@ -9,7 +9,13 @@ public class TowerPlacementSpot : MonoBehaviour
     [SerializeField] private int spotIndex = 0;
 
     private bool menuOpen = false;
+    private bool hasTower = false;
     private GameObject menuObject;
+    private GameObject placedTower;
+
+    public bool HasTower => hasTower;
+    public int SpotIndex => spotIndex;
+    public Vector3 PlacementPosition => transform.position;
 
     private void Awake()
     {
@@ -22,6 +28,8 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (hasTower) return;          // Already occupied — ignore clicks
+
         if (menuOpen) CloseMenu();
         else OpenMenu();
     }
@@ -58,6 +66,20 @@ public class TowerPlacementSpot : MonoBehaviour
     public void CloseMenu()
     {
         menuOpen = false;
-        Destroy(menuObject);
+        if (menuObject != null) Destroy(menuObject);
+    }
+
+    public void MarkAsOccupied(GameObject tower = null)
+    {
+        hasTower = true;
+        placedTower = tower;
+        if (menuOpen) CloseMenu();
+    }
+
+    // Optional: call this if the tower is sold/destroyed so the spot becomes reusable
+    public void ClearTower()
+    {
+        hasTower = false;
+        placedTower = null;
     }
 }
