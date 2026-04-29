@@ -20,10 +20,8 @@ public class IndexSquare : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log($"Tower index {index} selected");
-
         if (towerPlacementSpot == null || masterController == null) return;
-        if (towerPlacementSpot.HasTower) return; // safety: don't double-place
+        if (towerPlacementSpot.HasTower) return; 
 
         towerPlacementSpot.CloseMenu();
 
