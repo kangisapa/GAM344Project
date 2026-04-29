@@ -10,14 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Creeps
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Default Local Group
-  m_GUID: 6c79af887fca34d42aa5b7846ca9ef27
-  m_SerializeEntries: []
+  m_GroupName: Creeps
+  m_GUID: 1ac09755783faa543ade6d60d054e6f5
+  m_SerializeEntries:
+  - m_GUID: 39ce106295c99f445b6a48a065ae65d7
+    m_Address: BasicCreep
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 116dd8bbf383cae4fb0f9e9c3dd07568, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 745c05af6d3c33542a64e6579354e1c4, type: 2}
-    - {fileID: 11400000, guid: 93fdd6f85e23a444881ad0c89153ec13, type: 2}
+    - {fileID: 11400000, guid: 0e1ed97da9d872343a1f4ec338349a6b, type: 2}
+    - {fileID: 11400000, guid: bcfea6eee13172242a4a0f4ba073a6f7, type: 2}

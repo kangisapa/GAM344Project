@@ -24,7 +24,7 @@ public class IndexSquare : MonoBehaviour
 
         towerPlacementSpot.CloseMenu();
 
-        masterController.SpawnTower(0,gameObject.transform.position);
+        masterController.SpawnTower(0, towerPlacementSpot.transform.position);
 
     }
 }

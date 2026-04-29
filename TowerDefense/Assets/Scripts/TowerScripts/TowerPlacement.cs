@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -9,7 +10,6 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private bool menuOpen = false;
     private GameObject menuObject;
-
 
     private void Awake()
     {
@@ -40,14 +40,13 @@ public class TowerPlacementSpot : MonoBehaviour
         square.GetComponent<BoxCollider2D>().size = Vector2.one;
 
         // Label
-        GameObject label = new GameObject("Label", typeof(TextMesh));
+        GameObject label = new GameObject("Label", typeof(TextMeshPro));
         label.transform.SetParent(square.transform, worldPositionStays: false);
         label.transform.localPosition = new Vector3(0f, 0f, -0.1f);
-        TextMesh tm = label.GetComponent<TextMesh>();
+        TextMeshPro tm = label.GetComponent<TextMeshPro>();
         tm.text = $"#{spotIndex}";
         tm.fontSize = 12;
-        tm.alignment = TextAlignment.Center;
-        tm.anchor = TextAnchor.MiddleCenter;
+        tm.alignment = TextAlignmentOptions.Center;
         tm.color = Color.white;
 
         // Click handler
