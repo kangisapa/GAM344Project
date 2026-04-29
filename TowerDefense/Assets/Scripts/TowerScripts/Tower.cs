@@ -9,6 +9,7 @@ public class Tower : MonoBehaviour
 
     // ---------- Tower Visuals ----------
     private Sprite projectileSprite;
+    private SpriteAnimationSystem animationSystem;
 
     // ---------- Tower Damaging ----------
     private CircleCollider2D rangeCollider;
@@ -16,6 +17,7 @@ public class Tower : MonoBehaviour
     private float damagePerShot;
     private float shotsPerSecond;
     private float projectileTargetTime;
+    private float firingDelay;
 
     private int cost;
     // ---------- Tower Enabling ----------
@@ -28,17 +30,19 @@ public class Tower : MonoBehaviour
     public static GameObject CreateNewTower(TowerData creationData)
     {
         //Create our new tower and its associated range object
-        GameObject newTowerObject = new GameObject(creationData.name, new System.Type[] {typeof(Tower), typeof(SpriteRenderer), typeof(CircleCollider2D) });
+        GameObject newTowerObject = new GameObject(creationData.name, new System.Type[] {typeof(Tower), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem) });
         GameObject newTowerRangeObject = new GameObject("TowerRange", new System.Type[] {typeof(CircleCollider2D)} );
-
-        //Tower Setup (script values => tower visuals => range setup 
-        Tower towerScriptReference = newTowerObject.GetComponent<Tower>();
-        towerScriptReference.SetValues(creationData, newTowerRangeObject.GetComponent<CircleCollider2D>());
 
         SpriteRenderer renderer = newTowerObject.GetComponent<SpriteRenderer>();
         CircleCollider2D collider = newTowerObject.GetComponent<CircleCollider2D>();
 
-        renderer.sprite = creationData.towerSprite;
+        //Tower Setup (script values => tower visuals => range setup 
+        Tower towerScriptReference = newTowerObject.GetComponent<Tower>();
+        towerScriptReference.SetValues(creationData, newTowerRangeObject.GetComponent<CircleCollider2D>());
+        towerScriptReference.animationSystem = newTowerObject.GetComponent<SpriteAnimationSystem>();
+        towerScriptReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
+
+        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
         collider.radius = renderer.bounds.extents.x / newTowerObject.transform.lossyScale.x;
         collider.offset = Vector2.zero;
 
@@ -58,6 +62,7 @@ public class Tower : MonoBehaviour
         damagePerShot = creationData.damagePerShot;
         shotsPerSecond = creationData.shotsPerSecond;
         projectileTargetTime = creationData.projectileTargetTime;
+        firingDelay = creationData.firingDelay;
         cost = creationData.cost;
         this.rangeCollider = rangeCollider;
     }
@@ -78,8 +83,11 @@ public class Tower : MonoBehaviour
      */
     private IEnumerator UpdateLoop()
     {
-        WaitForSeconds updateWait = new WaitForSeconds(1 / shotsPerSecond);
+        //update is (delay between shots - firing delay) since the 2 add up so if we want 1/second and we delay firing by 0.4 seconds
+        //added together we would get a 1.4 second delay instead of 1, so this gives us 1 - 0.4 so it would be the 0.4 for animation + 0.6 between shots adding up to 1
+        WaitForSeconds updateWait = new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
         WaitForSeconds shotTargetDelay = new WaitForSeconds(projectileTargetTime);
+        WaitForSeconds firingDelayWait = new WaitForSeconds(firingDelay);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.layerMask = LayerMask.GetMask("Creeps");
         List<Collider2D> overlaps = new();
@@ -92,8 +100,12 @@ public class Tower : MonoBehaviour
 
             foreach(Collider2D creep in overlaps)
             {
-                //UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-                float progress = 0;// creep.GetComponent<Creep>().GetProgress();
+                Creep creepComponent = creep.GetComponent<Creep>();
+                if(creepComponent == null)
+                {
+                    continue;
+                }
+                float progress = creep.GetComponent<Creep>().GetProgress();
                 if(progress > furthestProgress)
                 {
                     furthestProgress = progress;
@@ -103,21 +115,21 @@ public class Tower : MonoBehaviour
 
             if(furthestCreep != null)
             {
-                //UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-                //Creep targetCreep = furthestCreep.GetComponent<Creep>();
-                //ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
+                Creep targetCreep = furthestCreep.GetComponent<Creep>();
+                animationSystem.PlayAnimation(1);
+                yield return firingDelayWait;
+                ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
             }
             yield return updateWait;
         }
     }
-    /*
-     * UNCOMMENT ONCE CREEPS ARE IMPLEMENTED
-     * private void DamageCreep(Creep targetCreep)
-     * {
-     *    if (targetCreep != null)
-     *    { 
-     *        targetCreep.DamageCreep(damagePerShot); 
-     *    }
-     * }
-    */
+
+      private void DamageCreep(Creep targetCreep)
+      {
+         if (targetCreep != null)
+         { 
+             targetCreep.DamageCreep(damagePerShot); 
+         }
+      }
+
 }

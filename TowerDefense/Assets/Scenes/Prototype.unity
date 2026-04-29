@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 37661630}
   - component: {fileID: 37661629}
+  - component: {fileID: 37661631}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -154,10 +155,12 @@ MonoBehaviour:
   creepsPerWave: 5
   spawnInterval: 1
   timeBetweenWaves: 5
+  creepParent: {fileID: 0}
+  towerParent: {fileID: 778779257}
   towerKeys:
   - BasicTower
-  defaultCreepData: {fileID: 11400000, guid: 39ce106295c99f445b6a48a065ae65d7, type: 2}
-  creepPrefab: {fileID: 0}
+  creepKeys:
+  - BasicCreep
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
@@ -173,6 +176,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &37661631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37661628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d384ef00c39368541a06955b8c1f577d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileManager
 --- !u!1 &135671654
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +217,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 778779257}
+  - {fileID: 1313844446}
   - {fileID: 1910805042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -419,6 +436,11 @@ Transform:
   - {fileID: 1452370632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &481636366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+  m_PrefabInstance: {fileID: 1067101269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &502279789
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +615,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545991437}
   m_CullTransparentMesh: 1
+--- !u!1 &778779256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778779257}
+  m_Layer: 0
+  m_Name: Towers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &778779257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778779256}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.56214, y: -1.8684, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1726162927}
+  m_Father: {fileID: 135671655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952963352
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +715,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2027374973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1067101269
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1726162927}
+    m_Modifications:
+    - target: {fileID: 6837972832439961833, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_Name
+      value: ExampleSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.5473413
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.1320279
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
 --- !u!1 &1097169948
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,6 +940,41 @@ Transform:
   - {fileID: 1569616865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1313844445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313844446}
+  m_Layer: 0
+  m_Name: Creeps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1313844446
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313844445}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 135671655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1452370630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1188,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1726162926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1726162927}
+  m_Layer: 0
+  m_Name: TowerSpots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1726162927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726162926}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.56214, y: 1.8684, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 481636366}
+  m_Father: {fileID: 778779257}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1840025865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,6 +1504,7 @@ GameObject:
   - component: {fileID: 1910805042}
   - component: {fileID: 1910805044}
   - component: {fileID: 1910805043}
+  - component: {fileID: 1910805045}
   m_Layer: 0
   m_Name: Path
   m_TagString: Untagged
@@ -1395,29 +1574,29 @@ MonoBehaviour:
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
-          x: 0
+          x: 0.70710677
           y: 0
           z: 0
-          w: 1
+          w: 0.70710677
     - Position:
         x: -5
         y: -2.5
-        z: 3
+        z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
           x: 0
@@ -1427,15 +1606,15 @@ MonoBehaviour:
     - Position:
         x: -2.5
         y: -2.5
-        z: 6
+        z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
           x: 0
@@ -1445,33 +1624,33 @@ MonoBehaviour:
     - Position:
         x: 2.5
         y: 3
-        z: 9
+        z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
           x: 0
-          y: 0
+          y: 0.7071068
           z: 0
-          w: 1
+          w: 0.7071068
     - Position:
         x: 5
         y: 3
-        z: 12
+        z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
           x: 0
@@ -1481,15 +1660,15 @@ MonoBehaviour:
     - Position:
         x: 5
         y: -5
-        z: 15
+        z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -1
+        z: 0
       TangentOut:
         x: 0
         y: 0
-        z: 1
+        z: 0
       Rotation:
         value:
           x: 0
@@ -1497,17 +1676,17 @@ MonoBehaviour:
           z: 0
           w: 1
     m_MetaData:
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
-    - Mode: 2
+    - Mode: 1
       Tension: 0.5
     m_Closed: 0
     m_IntData:
@@ -1520,6 +1699,56 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!114 &1910805045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910805041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b74686beb0670a4ea61325c0acf4411, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineInstantiate
+  m_Container: {fileID: 1910805044}
+  m_ItemsToInstantiate:
+  - prefab: {fileID: 0}
+    Prefab: {fileID: 2124066511122965227, guid: fcd1f092a378cac46b037b15a475454f, type: 3}
+    probability: 0
+    Probability: 0
+  m_Method: 0
+  m_Space: 1
+  m_Spacing: {x: 200, y: 200}
+  m_Up: 1
+  m_Forward: 2
+  m_PositionOffset:
+    setup: 0
+    min: {x: 0, y: 0, z: 0}
+    max: {x: 0, y: 0, z: 0}
+    randomX: 0
+    randomY: 0
+    randomZ: 0
+    space: 0
+  m_RotationOffset:
+    setup: 0
+    min: {x: 0, y: 0, z: 0}
+    max: {x: 0, y: 0, z: 0}
+    randomX: 0
+    randomY: 0
+    randomZ: 0
+    space: 0
+  m_ScaleOffset:
+    setup: 0
+    min: {x: 0, y: 0, z: 0}
+    max: {x: 0, y: 0, z: 0}
+    randomX: 0
+    randomY: 0
+    randomZ: 0
+    space: 0
+  m_DeprecatedInstances: []
+  m_AutoRefresh: 1
+  m_Seed: -1958202524
 --- !u!1 &1931033026
 GameObject:
   m_ObjectHideFlags: 0

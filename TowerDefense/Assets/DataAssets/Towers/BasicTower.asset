@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6745eb02c5789024a8f06b089ab7bb52, type: 3}
   m_Name: BasicTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerSprite: {fileID: -526492231, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
   projectileSprite: {fileID: 1175978912, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
-  targetRadius: 6
+  animationData: {fileID: 11400000, guid: b785dc0fc5b6e534e84e6436a9fbbc4b, type: 2}
+  targetRadius: 3
   damagePerShot: 1
   shotsPerSecond: 1
+  projectileTargetTime: 0.5
+  firingDelay: 0.4
   cost: 10

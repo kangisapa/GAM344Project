@@ -34,16 +34,22 @@ public class MasterController : MonoBehaviour
     [Header("Game Information")]
     private GameState currentState = GameState.Start;
 
+    [SerializeField] private Transform creepParent, towerParent;
+
+
     // ---------- Tower Data Caching ----------
 
     [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
     private List<TowerData> _towerCache = new List<TowerData>();
-   
+
     // ---------- Creep Data ----------
-   
-    [SerializeField] private CreepData defaultCreepData;
-    [SerializeField] private GameObject creepPrefab;
-   
+
+    // ---------- Tower Data Caching ----------
+
+    [SerializeField] private List<string> creepKeys = new List<string> { "BasicCreep" };
+    private List<CreepData> _creepCache = new List<CreepData>();
+
+
     // ---------- UI Events ----------
     public event Action<int> OnCurrencyChanged;
     public event Action<int> OnHealthChanged;
@@ -67,7 +73,7 @@ public class MasterController : MonoBehaviour
 
         playerCurrency = startingCurrency;
         playerHealth   = startingHealth;
-        CacheTowerInformation();
+        CacheInformation();
     }
 
     private void Start()
@@ -103,7 +109,7 @@ public class MasterController : MonoBehaviour
             //waveInProgress = true;
             for (int i = 0; i < creepsPerWave; i++)
             {
-                SpawnCreep();
+                SpawnCreep(0);
                 yield return new WaitForSeconds(spawnInterval);
             }
 
@@ -121,27 +127,37 @@ public class MasterController : MonoBehaviour
 
     // TODO: Chagne these to line up with other code
 
-    public void SpawnCreep()
+    public void SpawnCreep(int index)
     {
-        GameObject creepObject = Instantiate(creepPrefab, PathController.Instance.StartPosition, Quaternion.identity);
-        Creep creep = creepObject.GetComponent<Creep>();
-        creep.Initialize(defaultCreepData);
+        //Call Creep spawning element
+        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index]);
+        newCreep.transform.parent = creepParent;
+        //Increase enemies alives
         enemiesAlive++;
     }
 
-    async void CacheTowerInformation()
+    async void CacheInformation()
     {
         foreach(string key in towerKeys)
         {
             TowerData data = await Addressables.LoadAssetAsync<TowerData>(key).Task;
             _towerCache.Add(data);
         }
+
+        foreach(string key in creepKeys)
+        {
+            CreepData data = await Addressables.LoadAssetAsync<CreepData>(key).Task;
+            _creepCache.Add(data);
+        }
+
     }
 
-    public void SpawnTower(int index)
+    public void SpawnTower(int index, Vector3 position)
     {
         // Call Tower Spawning Element
         GameObject newTower = Tower.CreateNewTower(_towerCache[index]);
+        newTower.transform.parent = towerParent;
+        newTower.GetComponent<Tower>().PlaceTower(position);
 
         // Decrease Money
         playerCurrency -= _towerCache[index].cost;
