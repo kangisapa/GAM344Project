@@ -101,7 +101,7 @@ public class Tower : MonoBehaviour
             foreach(Collider2D creep in overlaps)
             {
                 Creep creepComponent = creep.GetComponent<Creep>();
-                if(creepComponent == null)
+                if(creepComponent == null || creepComponent.targetHealth <= 0)
                 {
                     continue;
                 }
@@ -117,6 +117,7 @@ public class Tower : MonoBehaviour
             {
                 Creep targetCreep = furthestCreep.GetComponent<Creep>();
                 animationSystem.PlayAnimation(1);
+                targetCreep.DecreaseTargetHealth(damagePerShot);
                 yield return firingDelayWait;
                 ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
             }

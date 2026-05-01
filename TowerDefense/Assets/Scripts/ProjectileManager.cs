@@ -42,6 +42,7 @@ public class ProjectileManager : MonoBehaviour
         obj.GetComponent<SpriteRenderer>().sprite = projectileSprite;
         obj.SetActive(true);
 
+        //add to the list of active projectiles the new one
         activeProjectiles.Add(new ProjectileData
         {
             transform = obj.transform,
@@ -57,8 +58,10 @@ public class ProjectileManager : MonoBehaviour
     private void Update()
     {
         float deltaTime = Time.deltaTime;
+        //go though each active projectile
         for (int i = activeProjectiles.Count - 1; i >= 0; i--)
         {
+            //increase its uptime and progress
             ProjectileData projectile = activeProjectiles[i];
             projectile.uptime += deltaTime;
             float alpha = projectile.uptime / projectile.timeToTarget;
@@ -79,17 +82,29 @@ public class ProjectileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instanciate a brand new projectile
+    /// </summary>
+    /// <returns>A reference to the newly created projectile</returns>
     public static GameObject CreateProjectile()
     {
         return new GameObject("Projectile", new System.Type[] {typeof(SpriteRenderer)} );
     }
 
+    /// <summary>
+    /// return a projectile back to the pool of available ones
+    /// </summary>
+    /// <param name="projectile">the data of the active projectile to return</param>
     private void ReturnToPool(ProjectileData projectile)
     {
         projectile.transform.gameObject.SetActive(false);
         pool.Enqueue(projectile.transform.gameObject);
     }
 
+    /// <summary>
+    /// Get a projectile to use
+    /// </summary>
+    /// <returns>Projectile GameObject</returns>
     private GameObject GetFromPool()
     {
         return pool.Count > 0 ? pool.Dequeue() : CreateProjectile();
