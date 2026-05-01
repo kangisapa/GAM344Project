@@ -56,6 +56,9 @@ public class TowerPlacementSpot : MonoBehaviour
         tm.fontSize = 12;
         tm.alignment = TextAlignmentOptions.Center;
         tm.color = Color.white;
+        tm.ForceMeshUpdate();
+        Vector2 neededSize = tm.GetRenderedValues(false);
+        tm.rectTransform.sizeDelta = neededSize;
 
         // Click handler
         square.AddComponent<IndexSquare>().Setup(spotIndex);

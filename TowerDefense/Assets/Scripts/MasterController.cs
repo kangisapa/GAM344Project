@@ -3,6 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Splines;
+
+
+[Serializable]
+public struct Wave
+{
+    [Tooltip("Which spline it is in the path starting from 0")] public List<int> wavePath;
+    public List<int> creepIndex;
+    public List<int> numberToSpawn;
+    public float delayPerCreep;
+    public float delayBeforeWave;
+}
+
 
 public class MasterController : MonoBehaviour
 {
@@ -20,10 +33,11 @@ public class MasterController : MonoBehaviour
 
     // ---------- Round Information ----------
     [Header("Round Information")]
-    [SerializeField] private int totalWaves = 5;
-    [SerializeField] private int creepsPerWave = 5;
-    [SerializeField] private float spawnInterval = 1f;
-    [SerializeField] private float timeBetweenWaves = 5f;
+    [SerializeField] private List<Wave> waves;
+    //[SerializeField] private int totalWaves = 5;
+    //[SerializeField] private int creepsPerWave = 5;
+    //[SerializeField] private float spawnInterval = 1f;
+    //[SerializeField] private float timeBetweenWaves = 5f;
     
 
     private int currentWaveIndex = 0;
@@ -61,7 +75,7 @@ public class MasterController : MonoBehaviour
     public int PlayerCurrency => playerCurrency;
     public int PlayerHealth   => playerHealth;
     public int CurrentWave    => currentWaveIndex;
-    public int TotalWaves     => totalWaves;
+    public int TotalWaves     => waves.Count;
     public GameState State    => currentState;
 
     // ================================================================
@@ -102,20 +116,31 @@ public class MasterController : MonoBehaviour
 
     private IEnumerator GameLoop()
     {
-          while (currentWaveIndex < totalWaves && currentState == GameState.Playing)
+        while (currentWaveIndex < waves.Count && currentState == GameState.Playing)
         {
-            yield return new WaitForSeconds(timeBetweenWaves);
+            //Grab the current wave
+            Wave w = waves[currentWaveIndex];
+            yield return new WaitForSeconds(w.delayBeforeWave);
 
-            //waveInProgress = true;
-            for (int i = 0; i < creepsPerWave; i++)
+            //Create the delay between spawning creeps
+            WaitForSeconds spawnDelay = new WaitForSeconds(w.delayPerCreep);
+
+            //Go through each creep want to spawn
+            for (int c = 0; c < w.creepIndex.Count; c++)
             {
-                SpawnCreep(0);
-                yield return new WaitForSeconds(spawnInterval);
+                //count up the for the number to spawn
+                for (int n = 0; n < w.numberToSpawn[c]; n++)
+                {
+                    //spawn said creep
+                    SpawnCreep(w.creepIndex[c], w.wavePath);
+                    yield return spawnDelay;
+                }
             }
 
+            //once all the creeps are dead, continue
             while (enemiesAlive > 0) yield return null;
 
-            //waveInProgress = false;
+            //go to the next wave
             currentWaveIndex++;
             OnWaveChanged?.Invoke(currentWaveIndex);
         }
@@ -125,17 +150,23 @@ public class MasterController : MonoBehaviour
     
     // ---------- Spawning ----------
 
-    // TODO: Chagne these to line up with other code
-
-    public void SpawnCreep(int index)
+    /// <summary>
+    /// Spawn a new creep in
+    /// </summary>
+    /// <param name="index">index from the list of available creeps</param>
+    /// <param name="pathIndexes">A List of integers containing all the spline indexes we want the creep to follow in order from the spline container on the path controller</param>
+    public void SpawnCreep(int index, List<int> pathIndexes)
     {
         //Call Creep spawning element
-        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index]);
+        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index], pathIndexes);
         newCreep.transform.parent = creepParent;
         //Increase enemies alives
         enemiesAlive++;
     }
 
+    /// <summary>
+    /// Cache all the data assets into memory for use
+    /// </summary>
     async void CacheInformation()
     {
         foreach(string key in towerKeys)
@@ -152,6 +183,11 @@ public class MasterController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Spawn a tower
+    /// </summary>
+    /// <param name="index">towwer index from the list of available towers</param>
+    /// <param name="position">World position to spawn at</param>
     public void SpawnTower(int index, Vector3 position)
     {
         // Call Tower Spawning Element
