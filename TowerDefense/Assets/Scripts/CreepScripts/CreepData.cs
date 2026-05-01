@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewCreepData", menuName = "TowerDefense/CreepData")]
 public class CreepData : ScriptableObject
 {
+    // --- Visuals ---
+    public SpriteAnimationData animationData;
+
     [Header("Stats")]
     public float maxHealth = 100f;
     public float moveSpeed = 3f;

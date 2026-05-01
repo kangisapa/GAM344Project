@@ -136,6 +136,18 @@ public class MasterController : MonoBehaviour
         enemiesAlive++;
     }
 
+    public void SpawnBossCreep(int index)
+    {
+        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index]);
+        newBoss.transform.parent = creepParent;
+
+        Creep.BossCreep bossComponent = newBoss.GetComponent<Creep.BossCreep>();
+        bossComponent.SetHealth(500f);
+        bossComponent.SetSpeed(1.5f);
+
+        enemiesAlive++;
+    }
+
     async void CacheInformation()
     {
         foreach(string key in towerKeys)

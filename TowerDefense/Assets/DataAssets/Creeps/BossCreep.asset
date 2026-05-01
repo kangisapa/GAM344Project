@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16c32ecb65ea537409ab469a7a276709, type: 3}
-  m_Name: BasicCreep
+  m_Name: BossCreep
   m_EditorClassIdentifier: Assembly-CSharp::CreepData
   animationData: {fileID: 0}
-  maxHealth: 1
-  moveSpeed: 1
-  currencyOnDeath: 1
-  damageToBase: 1
-  sprite: {fileID: -1653287097, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  maxHealth: 10
+  moveSpeed: 0.5
+  currencyOnDeath: 10
+  damageToBase: 5
+  sprite: {fileID: -526492231, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
