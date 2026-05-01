@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6745eb02c5789024a8f06b089ab7bb52, type: 3}
   m_Name: BasicTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  projectileSprite: {fileID: -5083476907971843369, guid: 6b14fa792f77fc34e9ca4feaefea88e6, type: 3}
+  projectileSprite: {fileID: 21300000, guid: 6b14fa792f77fc34e9ca4feaefea88e6, type: 3}
   animationData: {fileID: 11400000, guid: b785dc0fc5b6e534e84e6436a9fbbc4b, type: 2}
   targetRadius: 3
   damagePerShot: 1
