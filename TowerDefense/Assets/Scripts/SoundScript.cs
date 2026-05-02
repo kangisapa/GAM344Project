@@ -12,7 +12,10 @@ public class SoundScript : MonoBehaviour
     public AudioClip start_wave;
     public AudioClip player_damage_cryst;
 
+    public void PlaySFX(AudioClip clip)
+    {
+   
 
-
-
+        sfxSource.PlayOneShot(clip);
+    }
 }
