@@ -13,15 +13,14 @@ public class Creep : MonoBehaviour
     protected int damageToBase = 1;
 
     // --- Path Stats ---
-    private List<int> pathToFollow; //the overall path
-    private int pathProgress; //which index of the list we are on
-    private int pathIndex; //index of the spline to follow
-    private float splineCompletion; //progress 0->100% of the spline we are on
+    protected List<int> pathToFollow; //the overall path
+    protected int pathIndex; //index of the spline to follow
+    protected float splineCompletion; //progress 0->100% of the spline we are on
 
 
     // --- Runtime State ---
     protected float currentHealth;
-    protected float pathProgress;
+    protected int pathProgress;
     protected bool isDead = false;
 
     // --- Animation ---
@@ -29,10 +28,8 @@ public class Creep : MonoBehaviour
 
     private const int ANIM_WALK = 0;
     private const int ANIM_DAMAGE = 1;
- 
-    protected float currentHealth;
+
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
-    protected bool isDead = false;
 
     // Called by MasterController.SpawnCreep(). It creates the objects needed for a creep object at runtime
     public static GameObject CreateNewCreep(CreepData creationData, List<int> pathIndexes)
@@ -61,33 +58,36 @@ public class Creep : MonoBehaviour
     }
 
 
-    public static GameObject CreateNewBossCreep(CreepData creationData)
+    public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes)
     {
-        GameObject newBossObject = new GameObject(creationData.name, new System.Type[]
         {
+            GameObject newBossObject = new GameObject(creationData.name, new System.Type[]
+            {
             typeof(BossCreep),
             typeof(SpriteRenderer),
             typeof(CircleCollider2D),
             typeof(SpriteAnimationSystem)
-        });
+            });
 
-        newBossObject.layer = LayerMask.NameToLayer("Creeps");
+            newBossObject.layer = LayerMask.NameToLayer("Creeps");
 
-        BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
-        bossReference.SetValves(creationData);
+            BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
+            bossReference.SetValves(creationData, pathIndexes);
 
-        SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
-        CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
+            SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
+            CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
 
-        bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
-        bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
+            bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
+            bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
 
-        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
-        collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
-        collider.offset = Vector2.zero;
+            renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
+            collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
+            collider.offset = Vector2.zero;
 
-        return newBossObject;
+            return newBossObject;
+        }
     }
+
     //Assigns all the values we need for the creep to fully function
     public void SetValves(CreepData creepData, List<int> pathIndexes)
     {

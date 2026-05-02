@@ -164,9 +164,9 @@ public class MasterController : MonoBehaviour
         enemiesAlive++;
     }
 
-    public void SpawnBossCreep(int index)
+    public void SpawnBossCreep(int index, List<int> pathIndexes)
     {
-        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index]);
+        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index], pathIndexes);
         newBoss.transform.parent = creepParent;
 
         Creep.BossCreep bossComponent = newBoss.GetComponent<Creep.BossCreep>();
