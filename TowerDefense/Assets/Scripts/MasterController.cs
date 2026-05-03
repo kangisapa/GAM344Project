@@ -211,6 +211,11 @@ public class MasterController : MonoBehaviour
         playerCurrency -= _towerCache[index].cost;
     }
 
+    public bool CheckCurrency(int index)
+    {
+        return (playerCurrency - _towerCache[index].cost >= 0); 
+    }
+
     // ---------- Currency / damage hooks ----------
 
     public void GiveCurrency(int amount)

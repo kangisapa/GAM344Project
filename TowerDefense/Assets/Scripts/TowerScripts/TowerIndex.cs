@@ -20,6 +20,10 @@ public class IndexSquare : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (masterController.CheckCurrency(index) == false)
+            return;
+
+
         if (towerPlacementSpot == null || masterController == null) return;
         if (towerPlacementSpot.HasTower) return; 
 
