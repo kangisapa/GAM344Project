@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Creeps
   m_GUID: 1ac09755783faa543ade6d60d054e6f5
   m_SerializeEntries:
+  - m_GUID: 30d68af3173bf6e4cb7a467f9f3ce033
+    m_Address: BossCreep
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39ce106295c99f445b6a48a065ae65d7
     m_Address: BasicCreep
     m_ReadOnly: 0

@@ -5,43 +5,87 @@ public class Creep : MonoBehaviour
 {
     // --- Configuration ---
     [Header("Stats")]
-    private float maxHealth = 100f;
-    private float moveSpeed = 3f;
+    protected float maxHealth = 100f;
+    protected float moveSpeed = 3f;
 
     [Header("Rewards")]
-    private int currencyOnDeath = 10;
-    private int damageToBase = 1;
+    protected int currencyOnDeath = 10;
+    protected int damageToBase = 1;
 
     // --- Path Stats ---
-    private List<int> pathToFollow; //the overall path
-    private int pathProgress; //which index of the list we are on
-    private int pathIndex; //index of the spline to follow
-    private float splineCompletion; //progress 0->100% of the spline we are on
+    protected List<int> pathToFollow; //the overall path
+    protected int pathIndex; //index of the spline to follow
+    protected float splineCompletion; //progress 0->100% of the spline we are on
 
 
     // --- Runtime State ---
-    private float currentHealth;
+    protected float currentHealth;
+    protected int pathProgress;
+    protected bool isDead = false;
+
+    // --- Animation ---
+    protected SpriteAnimationSystem animationSystem;
+
+    private const int ANIM_WALK = 0;
+    private const int ANIM_DAMAGE = 1;
+
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
-    private bool isDead = false;
 
     // Called by MasterController.SpawnCreep(). It creates the objects needed for a creep object at runtime
     public static GameObject CreateNewCreep(CreepData creationData, List<int> pathIndexes)
     {
-        //Create our new tower and its associated range object
-        GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D) });
+        //Create our new creep
+        GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem)});
 
-        //Tower Setup (script values => tower visuals => range setup 
+        newCreepObject.layer = LayerMask.NameToLayer("Creeps");
+
+        //Creep Setup
         Creep creepScriptReference = newCreepObject.GetComponent<Creep>();
         creepScriptReference.SetValves(creationData, pathIndexes);
 
         SpriteRenderer renderer = newCreepObject.GetComponent<SpriteRenderer>();
         CircleCollider2D collider = newCreepObject.GetComponent<CircleCollider2D>();
 
-        renderer.sprite = creationData.sprite;
+        // Initialize animation system exactly like Tower does
+        creepScriptReference.animationSystem = newCreepObject.GetComponent<SpriteAnimationSystem>();
+        creepScriptReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
+
+        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
         collider.radius = renderer.bounds.extents.x / newCreepObject.transform.lossyScale.x;
         collider.offset = Vector2.zero;
 
         return newCreepObject;
+    }
+
+
+    public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes)
+    {
+        {
+            GameObject newBossObject = new GameObject(creationData.name, new System.Type[]
+            {
+            typeof(BossCreep),
+            typeof(SpriteRenderer),
+            typeof(CircleCollider2D),
+            typeof(SpriteAnimationSystem)
+            });
+
+            newBossObject.layer = LayerMask.NameToLayer("Creeps");
+
+            BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
+            bossReference.SetValves(creationData, pathIndexes);
+
+            SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
+            CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
+
+            bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
+            bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
+
+            renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
+            collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
+            collider.offset = Vector2.zero;
+
+            return newBossObject;
+        }
     }
 
     //Assigns all the values we need for the creep to fully function
@@ -110,13 +154,14 @@ public class Creep : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= amount;
+        animationSystem.PlayAnimation(ANIM_DAMAGE);
 
         if (currentHealth <= 0f)
             Die();
     }
 
     
-    // Outcome handlers — report directly to MasterController
+    // Outcome handlers â€” report directly to MasterController
     
     private void Die()
     {
@@ -130,5 +175,14 @@ public class Creep : MonoBehaviour
         isDead = true;
         MasterController.Instance.OnCreepReachedEnd(damageToBase);
         Destroy(gameObject);
+    }
+
+
+    public class BossCreep : Creep
+    {
+        public void SetHealth(float health) { maxHealth = health; currentHealth = health; }
+        public void SetSpeed(float speed) => moveSpeed = speed;
+        public void SetCurrencyReward(int amount) => currencyOnDeath = amount;
+        public void SetDamageToBase(int damage) => damageToBase = damage;
     }
 }

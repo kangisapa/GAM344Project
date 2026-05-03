@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1daed8d762ad34384136f7c181992d, type: 3}
+  m_Name: Creep Animation
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimationData
+  idleAnimation: 0
+  animations:
+  - animationSprites:
+    - {fileID: 8583637466961295399, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 8512423297309636031, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: -8879095623746823390, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: -1294580152726451893, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 5565215382197558063, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 770155728, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: -538025738, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 747472888, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 621819225, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    - {fileID: 213662404, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
+    framesPerSecond: 8
+    looping: 1
