@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16c32ecb65ea537409ab469a7a276709, type: 3}
   m_Name: BasicCreep
   m_EditorClassIdentifier: Assembly-CSharp::CreepData
-  animationData: {fileID: 0}
+  animationData: {fileID: 11400000, guid: 4131b7a111d37aa45a974a9c8965a110, type: 2}
   maxHealth: 1
   moveSpeed: 1
   currencyOnDeath: 1
