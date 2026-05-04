@@ -12,6 +12,9 @@ public class Creep : MonoBehaviour
     protected int currencyOnDeath = 10;
     protected int damageToBase = 1;
 
+    private AudioManager audioManager;
+
+
     // --- Path Stats ---
     protected List<int> pathToFollow; //the overall path
     protected int pathIndex; //index of the spline to follow
@@ -102,6 +105,8 @@ public class Creep : MonoBehaviour
         pathProgress = 0;
         pathIndex = pathToFollow[pathProgress];
 
+        audioManager = AudioManager.Instance;
+
         transform.position = PathController.Instance.StartPosition;
     }
 
@@ -155,9 +160,15 @@ public class Creep : MonoBehaviour
 
         currentHealth -= amount;
         animationSystem.PlayAnimation(ANIM_DAMAGE);
+        animationSystem.PlayAnimation(ANIM_WALK);
 
-        if (currentHealth <= 0f)
+        if (currentHealth <= 0f){
             Die();
+        }
+        else
+        {
+            audioManager.PlaySFX(audioManager.basicCreepHitSFX); // Will need to change dynamically in the future, likely just based on index
+        }
     }
 
     
@@ -167,6 +178,7 @@ public class Creep : MonoBehaviour
     {
         isDead = true;
         MasterController.Instance.OnCreepKilled(currencyOnDeath);
+        audioManager.PlaySFX(audioManager.basicCreepDeathSFX); // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
     }
 

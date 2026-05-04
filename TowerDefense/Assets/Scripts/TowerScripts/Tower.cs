@@ -25,6 +25,9 @@ public class Tower : MonoBehaviour
 
     public void SetTowerEnabled(bool enabled) => towerEnabled = enabled;
 
+    // Audio
+    private AudioManager audioManager;
+
     // ================================================================
 
     public static GameObject CreateNewTower(TowerData creationData)
@@ -65,6 +68,9 @@ public class Tower : MonoBehaviour
         firingDelay = creationData.firingDelay;
         cost = creationData.cost;
         this.rangeCollider = rangeCollider;
+
+        audioManager = AudioManager.Instance;
+
     }
 
     public void PlaceTower(Vector3 position)
@@ -120,6 +126,7 @@ public class Tower : MonoBehaviour
                 targetCreep.DecreaseTargetHealth(damagePerShot);
                 yield return firingDelayWait;
                 ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
+                audioManager.PlaySFX(audioManager.basicAttackSFX); // Will need to change dynamically in the future, likely just based on index
             }
             yield return updateWait;
         }

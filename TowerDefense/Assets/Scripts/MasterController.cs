@@ -79,6 +79,9 @@ public class MasterController : MonoBehaviour
     public int TotalWaves     => waves.Count;
     public GameState State    => currentState;
 
+    // Audio //
+    private AudioManager audioManager;
+
     // ================================================================
 
     private void Awake()
@@ -101,6 +104,8 @@ public class MasterController : MonoBehaviour
 
     private void Start()
     {
+        audioManager = AudioManager.Instance;
+       
         UpdateUI();
         StartGame();
     }
@@ -127,12 +132,14 @@ public class MasterController : MonoBehaviour
     {
         while (currentWaveIndex < waves.Count && currentState == GameState.Playing)
         {
+            audioManager.PlaySFX(audioManager.startWaveSFX);
             //Grab the current wave
             Wave w = waves[currentWaveIndex];
             yield return new WaitForSeconds(w.delayBeforeWave);
 
             //Create the delay between spawning creeps
             WaitForSeconds spawnDelay = new WaitForSeconds(w.delayPerCreep);
+
 
             //Go through each creep want to spawn
             for (int c = 0; c < w.creepIndex.Count; c++)
@@ -151,6 +158,8 @@ public class MasterController : MonoBehaviour
 
             //go to the next wave
             currentWaveIndex++;
+            audioManager.PlaySFX(audioManager.endWaveSFX); // Currently getting muffled due to no delay in the time from ending the code, maybe add time delay
+
             OnWaveChanged?.Invoke(currentWaveIndex);
         }
 
@@ -237,6 +246,7 @@ public class MasterController : MonoBehaviour
     {
         playerHealth = Mathf.Max(0, playerHealth - damage);
         OnHealthChanged?.Invoke(playerHealth);
+        audioManager.PlaySFX(audioManager.playerDamgeSFX);
         if (playerHealth == 0) EndGame(false);
     }
 

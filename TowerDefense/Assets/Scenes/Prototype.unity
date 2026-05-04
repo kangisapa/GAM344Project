@@ -1388,10 +1388,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 005d7fa768906094c8168ba51a52a41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  musicSounds: []
-  sfxSounds: []
   musicSource: {fileID: 1029713029}
   sfxSource: {fileID: 845238132}
+  startWaveSFX: {fileID: 8300000, guid: 5aa47b92b776ae746ba9a1f03333b3fa, type: 3}
+  endWaveSFX: {fileID: 8300000, guid: 6b39b2a2d92c0d34eb768d994b52b00e, type: 3}
+  playerDamgeSFX: {fileID: 8300000, guid: aba4d21e68e36934289a87c92c2468f6, type: 3}
+  basicAttackSFX: {fileID: 8300000, guid: 5ee2fcbf9b2a35f46b6a8af8ffcfc34e, type: 3}
+  basicCreepDeathSFX: {fileID: 8300000, guid: b6fe5118d47aa1142873100c1d9acd6e, type: 3}
+  basicCreepHitSFX: {fileID: 8300000, guid: 67b784d0dac9f0c41b9ef632401d7856, type: 3}
 --- !u!1 &1313844445
 GameObject:
   m_ObjectHideFlags: 0
