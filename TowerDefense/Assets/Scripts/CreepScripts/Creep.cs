@@ -160,6 +160,7 @@ public class Creep : MonoBehaviour
 
         currentHealth -= amount;
         animationSystem.PlayAnimation(ANIM_DAMAGE);
+        animationSystem.PlayAnimation(ANIM_WALK);
 
         if (currentHealth <= 0f){
             Die();
