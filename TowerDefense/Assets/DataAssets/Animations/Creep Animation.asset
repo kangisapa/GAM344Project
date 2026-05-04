@@ -27,3 +27,7 @@ MonoBehaviour:
     - {fileID: 213662404, guid: f6e97bdcc058d564e9a2877d4692b8e1, type: 3}
     framesPerSecond: 8
     looping: 1
+  - animationSprites:
+    - {fileID: 21300000, guid: 5fe8ff90f3a5bde44910ce2a3e0dbb78, type: 3}
+    framesPerSecond: 1
+    looping: 0
