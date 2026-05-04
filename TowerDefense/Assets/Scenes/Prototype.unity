@@ -152,27 +152,32 @@ MonoBehaviour:
   startingCurrency: 10
   startingHealth: 5
   waves:
-  - wavePath: 00000000
+  - name: Wave 1
+    wavePath: 00000000
     creepIndex: 00000000
     numberToSpawn: 05000000
     delayPerCreep: 1
     delayBeforeWave: 5
-  - wavePath: 00000000
+  - name: Wave 2
+    wavePath: 00000000
     creepIndex: 00000000
     numberToSpawn: 05000000
     delayPerCreep: 1
     delayBeforeWave: 5
-  - wavePath: 00000000
+  - name: Wave 3
+    wavePath: 00000000
     creepIndex: 00000000
     numberToSpawn: 05000000
     delayPerCreep: 1
     delayBeforeWave: 5
-  - wavePath: 00000000
+  - name: Wave 4
+    wavePath: 00000000
     creepIndex: 00000000
     numberToSpawn: 05000000
     delayPerCreep: 1
     delayBeforeWave: 5
-  - wavePath: 00000000
+  - name: Wave 5
+    wavePath: 00000000
     creepIndex: 00000000
     numberToSpawn: 05000000
     delayPerCreep: 1
@@ -797,7 +802,7 @@ AudioSource:
   m_GameObject: {fileID: 845238130}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -6642834948375339597, guid: 1ae130c8bfe9204468f141731d63ae8f, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -994,7 +999,7 @@ AudioSource:
   m_GameObject: {fileID: 1029713027}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 8439752403833793541, guid: 1ae130c8bfe9204468f141731d63ae8f, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
