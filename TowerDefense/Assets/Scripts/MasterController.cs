@@ -7,8 +7,9 @@ using UnityEngine.Splines;
 
 
 [Serializable]
-public struct Wave
+public class Wave
 {
+    [HideInInspector] public string name = "wave";
     [Tooltip("Which spline it is in the path starting from 0")] public List<int> wavePath;
     public List<int> creepIndex;
     public List<int> numberToSpawn;
@@ -33,7 +34,7 @@ public class MasterController : MonoBehaviour
 
     // ---------- Round Information ----------
     [Header("Round Information")]
-    [SerializeField] private List<Wave> waves;
+    [SerializeField] private List<Wave> waves = new();
     //[SerializeField] private int totalWaves = 5;
     //[SerializeField] private int creepsPerWave = 5;
     //[SerializeField] private float spawnInterval = 1f;
@@ -88,6 +89,14 @@ public class MasterController : MonoBehaviour
         playerCurrency = startingCurrency;
         playerHealth   = startingHealth;
         CacheInformation();
+    }
+
+    private void OnValidate()
+    {
+        for(int i = 0; i < waves.Count; i++)
+        {
+            waves[i].name = $"Wave {i + 1}";
+        }
     }
 
     private void Start()
