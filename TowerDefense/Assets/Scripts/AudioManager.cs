@@ -1,43 +1,35 @@
-using System;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    [Header("Sub-Audio Players")]
+    [SerializeField] private AudioSource musicSource; 
+    [SerializeField] private AudioSource sfxSource;  
 
-    public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
 
+    [Header("SFX Library")]
+    [SerializeField] public AudioClip startWaveSFX;
+    [SerializeField] public AudioClip endWaveSFX;
+    [SerializeField] public AudioClip playerDamgeSFX;
+
+    [SerializeField] public AudioClip basicAttackSFX;
+
+    [SerializeField] public AudioClip basicCreepDeathSFX;
+    [SerializeField] public AudioClip basicCreepHitSFX;
+
+    public static AudioManager Instance { get; private set; }
 
     private void Awake()
     {
-       if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-       else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
     }
 
-    //put in here play music on start later when we have music
-    public void PlaySFX(string name)
+
+    public void PlaySFX(AudioClip clip)
     {
-        Sound s = Array.Find(sfxSounds, x => x.name == name);
+        if (clip == null) return;
 
-        if (s == null) 
-        {
-
-            Debug.Log("SFX Not Found");
-        
-        }
-
-        else
-        {
-            sfxSource.PlayOneShot(s.clip);
-        }
-
+        sfxSource.PlayOneShot(clip);
     }
-    }
+}
