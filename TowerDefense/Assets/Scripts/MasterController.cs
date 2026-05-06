@@ -7,13 +7,25 @@ using UnityEngine.Splines;
 
 
 [Serializable]
+public struct WavePath
+{
+    [Tooltip("Which spline it is in the path starting from 0")] public List<int> wavePath;
+}
+
+[Serializable]
+public struct CreepSpawnSet
+{
+    public int creepIndexToSpawn;
+    public int numberToSpawn;
+    public int pathIndex;
+    public float deleyPerCreep;
+}
+
+[Serializable]
 public class Wave
 {
     [HideInInspector] public string name = "wave";
-    [Tooltip("Which spline it is in the path starting from 0")] public List<int> wavePath;
-    public List<int> creepIndex;
-    public List<int> numberToSpawn;
-    public float delayPerCreep;
+    public List<CreepSpawnSet> creepSpawnOrder = new List<CreepSpawnSet>();
     public float delayBeforeWave;
 }
 
@@ -35,11 +47,12 @@ public class MasterController : MonoBehaviour
     // ---------- Round Information ----------
     [Header("Round Information")]
     [SerializeField] private List<Wave> waves = new();
+    public List<WavePath> wavePaths = new List<WavePath>();
     //[SerializeField] private int totalWaves = 5;
     //[SerializeField] private int creepsPerWave = 5;
     //[SerializeField] private float spawnInterval = 1f;
     //[SerializeField] private float timeBetweenWaves = 5f;
-    
+
 
     private int currentWaveIndex = 0;
     private int enemiesAlive = 0;
@@ -138,18 +151,16 @@ public class MasterController : MonoBehaviour
             yield return new WaitForSeconds(w.delayBeforeWave);
 
             //Create the delay between spawning creeps
-            WaitForSeconds spawnDelay = new WaitForSeconds(w.delayPerCreep);
 
-
-            //Go through each creep want to spawn
-            for (int c = 0; c < w.creepIndex.Count; c++)
+            //Go through each creep sets we want to spawn
+            for (int c = 0; c < w.creepSpawnOrder.Count; c++)
             {
-                //count up the for the number to spawn
-                for (int n = 0; n < w.numberToSpawn[c]; n++)
+                //count up the for the number to spawn in the set of creeps to spawn
+                for (int n = 0; n < w.creepSpawnOrder[c].numberToSpawn; n++)
                 {
                     //spawn said creep
-                    SpawnCreep(w.creepIndex[c], w.wavePath);
-                    yield return spawnDelay;
+                    SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].creepIndexToSpawn].wavePath);
+                    yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
                 }
             }
 
