@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Splines;
 
+
+[Serializable]
+public struct CreepSpawnSet
+{
+    public int creepIndexToSpawn;
+    public int numberToSpawn;
+    public int pathIndex;
+    public float deleyPerCreep;
+}
 
 [Serializable]
 public class Wave
 {
     [HideInInspector] public string name = "wave";
-    [Tooltip("Which spline it is in the path starting from 0")] public List<int> wavePath;
-    public List<int> creepIndex;
-    public List<int> numberToSpawn;
-    public float delayPerCreep;
+    public List<CreepSpawnSet> creepSpawnOrder = new List<CreepSpawnSet>();
     public float delayBeforeWave;
 }
 
@@ -35,11 +40,12 @@ public class MasterController : MonoBehaviour
     // ---------- Round Information ----------
     [Header("Round Information")]
     [SerializeField] private List<Wave> waves = new();
-    //[SerializeField] private int totalWaves = 5;
-    //[SerializeField] private int creepsPerWave = 5;
-    //[SerializeField] private float spawnInterval = 1f;
-    //[SerializeField] private float timeBetweenWaves = 5f;
-    
+
+    [InspectorName("Path"), Tooltip("Path defined by just listing out the splines wanted for it. (EX: 0,1,2,3,...) so 0,1,2,5 is how one could look ")]
+    public List<string> paths;
+    //contains the "decompiled" strings that the game actually uses. this is an array with the elements being List<int>.
+    //So wavePaths[0] would return the first list defining the path.
+    private List<int>[] wavePaths;
 
     private int currentWaveIndex = 0;
     private int enemiesAlive = 0;
@@ -91,6 +97,7 @@ public class MasterController : MonoBehaviour
 
         playerCurrency = startingCurrency;
         playerHealth   = startingHealth;
+        GeneratePathLists();
         CacheInformation();
     }
 
@@ -98,17 +105,61 @@ public class MasterController : MonoBehaviour
     {
         for(int i = 0; i < waves.Count; i++)
         {
+            //name it so it looks nice in editor
             waves[i].name = $"Wave {i + 1}";
+        }
+
+        //validation checking during editor for realtime feedback if something is inputted incorrectly
+        for (int i = 0; i < paths.Count; i++)
+        {
+            string trimmed = paths[i].Trim();
+            string[] parts = paths[i].Split(',');
+            foreach (string part in parts)
+            {
+                //discarding int since I dont creally care here what the parse is, just if its valid or not
+                if (!int.TryParse(part, out _) && !string.IsNullOrEmpty(part))
+                {
+                    Debug.LogWarning($"Warning: \"{part}\" is not a valid input for a spline index on \"path {i}\". " +
+                        $"Make sure your format looks something like: 0,1,3,...");
+                }
+            }
         }
     }
 
     private void Start()
     {
         audioManager = AudioManager.Instance;
-       
+
         UpdateUI();
         StartGame();
     }
+
+    private void GeneratePathLists()
+    {
+        wavePaths = new List<int>[paths.Count];
+
+        for (int i = 0; i < paths.Count; i++)
+        {
+            wavePaths[i] = new List<int>();
+
+            string trimmed = paths[i].Trim();
+            string[] parts = paths[i].Split(',');
+            foreach (string part in parts)
+            {
+                int output;
+                if (int.TryParse(part, out output))
+                {
+                    wavePaths[i].Add(output);
+                }
+                else
+                {
+                    Debug.LogWarning($"Warning: {part} is not a valid input for a spline index on \"path {i}\". " +
+                        $"Make sure your format looks something like: 0,1,3,...");
+                }
+            }
+        }
+    }
+
 
     // ---------- Core flow ----------
 
@@ -138,18 +189,16 @@ public class MasterController : MonoBehaviour
             yield return new WaitForSeconds(w.delayBeforeWave);
 
             //Create the delay between spawning creeps
-            WaitForSeconds spawnDelay = new WaitForSeconds(w.delayPerCreep);
 
-
-            //Go through each creep want to spawn
-            for (int c = 0; c < w.creepIndex.Count; c++)
+            //Go through each creep sets we want to spawn
+            for (int c = 0; c < w.creepSpawnOrder.Count; c++)
             {
-                //count up the for the number to spawn
-                for (int n = 0; n < w.numberToSpawn[c]; n++)
+                //count up the for the number to spawn in the set of creeps to spawn
+                for (int n = 0; n < w.creepSpawnOrder[c].numberToSpawn; n++)
                 {
                     //spawn said creep
-                    SpawnCreep(w.creepIndex[c], w.wavePath);
-                    yield return spawnDelay;
+                    SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                    yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
                 }
             }
 
