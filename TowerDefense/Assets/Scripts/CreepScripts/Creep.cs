@@ -12,6 +12,11 @@ public class Creep : MonoBehaviour
     protected int currencyOnDeath = 10;
     protected int damageToBase = 1;
 
+    [Header("Slow")]
+    public bool isSlow = false;
+    public float slowRadius = 3f;
+    [Range(0f, 1f)] public float slowMultiplier = 0.5f;
+
     private AudioManager audioManager;
 
 
@@ -20,6 +25,8 @@ public class Creep : MonoBehaviour
     protected int pathIndex; //index of the spline to follow
     protected float splineCompletion; //progress 0->100% of the spline we are on
 
+    // --- Slow ---
+    private List<Tower> slowedTowers = new List<Tower>();
 
     // --- Runtime State ---
     protected float currentHealth;
@@ -91,6 +98,47 @@ public class Creep : MonoBehaviour
         }
     }
 
+    private void CheckSlowRadius()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, slowRadius);
+        List<Tower> towersInRange = new List<Tower>();
+
+        foreach (Collider2D hit in hits)
+        {
+            Tower tower = hit.GetComponent<Tower>();
+            if (tower != null)
+                towersInRange.Add(tower);
+        }
+
+        foreach (Tower tower in towersInRange)
+        {
+            if (!slowedTowers.Contains(tower))
+            {
+                tower.ApplySlow(slowMultiplier);
+                slowedTowers.Add(tower);
+            }
+        }
+
+        for (int i = slowedTowers.Count - 1; i >= 0; i--)
+        {
+            if (!towersInRange.Contains(slowedTowers[i]))
+            {
+                slowedTowers[i].RemoveSlow(slowMultiplier);
+                slowedTowers.RemoveAt(i);
+            }
+        }
+    }
+
+    private void UnslowAll()
+    {
+        foreach (Tower tower in slowedTowers)
+        {
+            if (tower != null)
+                tower.RemoveSlow(slowMultiplier);
+        }
+        slowedTowers.Clear();
+    }
+
     //Assigns all the values we need for the creep to fully function
     public void SetValves(CreepData creepData, List<int> pathIndexes)
     {
@@ -104,7 +152,9 @@ public class Creep : MonoBehaviour
         splineCompletion = 0f;
         pathProgress = 0;
         pathIndex = pathToFollow[pathProgress];
-
+        isSlow = creepData.isSlow;
+        slowRadius = creepData.slowRadius;
+        slowMultiplier = creepData.slowMultiplier;
         audioManager = AudioManager.Instance;
 
         transform.position = PathController.Instance.StartPosition;
@@ -114,9 +164,10 @@ public class Creep : MonoBehaviour
     {
         if (isDead) return;
         FollowPath();
+        if (isSlow) CheckSlowRadius();
     }
 
-    
+
     // Path Following
     private void FollowPath()
     {
@@ -177,6 +228,7 @@ public class Creep : MonoBehaviour
     private void Die()
     {
         isDead = true;
+        if (isSlow) UnslowAll();
         MasterController.Instance.OnCreepKilled(currencyOnDeath);
         audioManager.PlaySFX(audioManager.basicCreepDeathSFX); // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
@@ -185,6 +237,7 @@ public class Creep : MonoBehaviour
     private void ReachedEnd()
     {
         isDead = true;
+        if (isSlow) UnslowAll();
         MasterController.Instance.OnCreepReachedEnd(damageToBase);
         Destroy(gameObject);
     }

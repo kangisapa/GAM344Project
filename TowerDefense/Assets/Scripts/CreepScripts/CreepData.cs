@@ -14,6 +14,11 @@ public class CreepData : ScriptableObject
     public int currencyOnDeath = 10;
     public int damageToBase = 1;
 
+    [Header("Slow")]
+    public bool isSlow = false;
+    public float slowRadius = 3f;
+    [Range(0f, 1f)] public float slowMultiplier = 0.5f;
+
     [Header("Visuals")]
     public Sprite sprite;
 }
