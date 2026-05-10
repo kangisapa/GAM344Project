@@ -154,7 +154,7 @@ MonoBehaviour:
   waves:
   - name: Wave 1
     creepSpawnOrder:
-    - creepIndexToSpawn: 0
+    - creepIndexToSpawn: 2
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
@@ -195,6 +195,8 @@ MonoBehaviour:
   - BasicTower
   creepKeys:
   - BasicCreep
+  - BossCreep
+  - SlowCreep
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
