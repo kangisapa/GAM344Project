@@ -1,0 +1,4 @@
+Creep Death_Ameboa = Will be changed to be a more main stream creep death. Just a light pop sound suffice. Will be played on path when creep dies on map.
+(no panning)
+
+Creep_Hit_Aoeba =  Will be changed to be a more main stream creep death. Just a light pop sound suffice. Since one hit is currently equivilent with death.
