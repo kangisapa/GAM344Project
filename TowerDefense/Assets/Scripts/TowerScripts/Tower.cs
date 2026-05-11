@@ -11,6 +11,31 @@ public class Tower : MonoBehaviour
     private Sprite projectileSprite;
     private SpriteAnimationSystem animationSystem;
 
+    // ---------- Tower Slow ----------
+
+    private float baseShotsPerSecond;
+    private int slowCount = 0;
+    private float strongestSlow = 1f;
+    public void ApplySlow(float multiplier)
+    {
+        slowCount++;
+        if (multiplier < strongestSlow)
+        {
+            strongestSlow = multiplier;
+            shotsPerSecond = baseShotsPerSecond * strongestSlow;
+        }
+    }
+
+    public void RemoveSlow(float multiplier)
+    {
+        slowCount = Mathf.Max(0, slowCount - 1);
+        if (slowCount == 0)
+        {
+            strongestSlow = 1f;
+            shotsPerSecond = baseShotsPerSecond;
+        }
+    }
+
     // ---------- Tower Damaging ----------
     private CircleCollider2D rangeCollider;
     private float targetRadius;
@@ -48,6 +73,7 @@ public class Tower : MonoBehaviour
         renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
         collider.radius = renderer.bounds.extents.x / newTowerObject.transform.lossyScale.x;
         collider.offset = Vector2.zero;
+        collider.isTrigger = true;
 
         //Tower Range Setup
         newTowerRangeObject.transform.parent = newTowerObject.transform;
@@ -68,6 +94,7 @@ public class Tower : MonoBehaviour
         firingDelay = creationData.firingDelay;
         cost = creationData.cost;
         this.rangeCollider = rangeCollider;
+        baseShotsPerSecond = shotsPerSecond;
 
         audioManager = AudioManager.Instance;
 
@@ -91,7 +118,6 @@ public class Tower : MonoBehaviour
     {
         //update is (delay between shots - firing delay) since the 2 add up so if we want 1/second and we delay firing by 0.4 seconds
         //added together we would get a 1.4 second delay instead of 1, so this gives us 1 - 0.4 so it would be the 0.4 for animation + 0.6 between shots adding up to 1
-        WaitForSeconds updateWait = new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
         WaitForSeconds shotTargetDelay = new WaitForSeconds(projectileTargetTime);
         WaitForSeconds firingDelayWait = new WaitForSeconds(firingDelay);
         ContactFilter2D contactFilter = new ContactFilter2D();
@@ -100,6 +126,7 @@ public class Tower : MonoBehaviour
 
         while(towerEnabled)
         {
+            overlaps.Clear();
             rangeCollider.Overlap(contactFilter, overlaps);
             Collider2D furthestCreep = null;
             float furthestProgress = -1;
@@ -107,7 +134,8 @@ public class Tower : MonoBehaviour
             foreach(Collider2D creep in overlaps)
             {
                 Creep creepComponent = creep.GetComponent<Creep>();
-                if(creepComponent == null || creepComponent.targetHealth <= 0)
+                float distance = Vector2.Distance(transform.position, creep.transform.position);
+                if (creepComponent == null || creepComponent.targetHealth <= 0 || distance > rangeCollider.radius)
                 {
                     continue;
                 }
@@ -119,6 +147,8 @@ public class Tower : MonoBehaviour
                 }
             }
 
+
+            //minor changes below, if the tower shoots, we want to wait the delay before it can shoot again, but once it can check again, check as fast as possible to reduce weird delays
             if(furthestCreep != null)
             {
                 Creep targetCreep = furthestCreep.GetComponent<Creep>();
@@ -127,8 +157,12 @@ public class Tower : MonoBehaviour
                 yield return firingDelayWait;
                 ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
                 audioManager.PlaySFX(audioManager.basicAttackSFX); // Will need to change dynamically in the future, likely just based on index
+                yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
             }
-            yield return updateWait;
+            else
+            {
+                yield return null;
+            }
         }
     }
 
