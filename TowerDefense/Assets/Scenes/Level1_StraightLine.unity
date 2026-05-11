@@ -153,35 +153,21 @@ MonoBehaviour:
   startingHealth: 5
   waves:
   - name: Wave 1
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder: []
     delayBeforeWave: 5
   - name: Wave 2
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder: []
     delayBeforeWave: 5
   - name: Wave 3
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder: []
     delayBeforeWave: 5
   - name: Wave 4
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder: []
     delayBeforeWave: 5
   - name: Wave 5
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder: []
     delayBeforeWave: 5
+  paths: []
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
   towerKeys:
