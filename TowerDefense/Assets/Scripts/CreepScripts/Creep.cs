@@ -46,7 +46,6 @@ public class Creep : MonoBehaviour
     {
         //Create our new creep
         GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem)});
-
         newCreepObject.layer = LayerMask.NameToLayer("Creeps");
 
         //Creep Setup
@@ -229,6 +228,7 @@ public class Creep : MonoBehaviour
     {
         isDead = true;
         if (isSlow) UnslowAll();
+        if(MasterController.Instance)
         MasterController.Instance.OnCreepKilled(currencyOnDeath);
         audioManager.PlaySFX(audioManager.basicCreepDeathSFX); // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
