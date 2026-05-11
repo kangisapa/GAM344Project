@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
-
+ 
+ 
 [Serializable]
 public class Cutscene
 {
@@ -26,8 +26,6 @@ public class CutsceneController : MonoBehaviour
     private Image personA;
     [SerializeField] 
     private Image personB;
-
-
     private int currentLine;
     private bool isTyping;
 
@@ -39,14 +37,12 @@ public class CutsceneController : MonoBehaviour
         personA.GetComponent<Image>().sprite = null;
         personB.GetComponent<Image>().sprite = null;
         */
-
-
     }
 
     //used to continue the conversation
     private void Update()
     {
-        if (Input.anyKeyDown && !isTyping)
+        if (Input.anyKeyDown && !isTyping && cutsceneLine != null && currentLine < cutsceneLine.Count)
         {
 
             StartCoroutine(typeText(currentLine));
@@ -56,23 +52,47 @@ public class CutsceneController : MonoBehaviour
     }
     private IEnumerator typeText(int lineIndex)
     {
-        
+        if (lineIndex < 0 || lineIndex >= cutsceneLine.Count) yield break;
+        Cutscene line = cutsceneLine[lineIndex];
+        if (line == null || line.dialogue == null) yield break;
+ 
         textBox.text = string.Empty;
         isTyping = true;
-        foreach(char c in cutsceneLine[lineIndex].dialogue)
+        foreach (char c in line.dialogue)
         {
             textBox.text += c;
             yield return new WaitForSeconds(dialogueSpeed);
         }
 
-        isTyping=false;
+        isTyping = false;
 
     }
 
     private void swapSprites(int spriteIndex)
     {
-       personA.GetComponent<Image>().sprite = cutsceneLine[spriteIndex].p1;
-       personB.GetComponent<Image>().sprite = cutsceneLine[spriteIndex].p2;
+        if (spriteIndex < 0 || spriteIndex >= cutsceneLine.Count) return;
+ 
+        Cutscene line = cutsceneLine[spriteIndex];
+        if (line == null) return;
+ 
+        if (personA != null && line.p1 != null)
+        {
+            personA.sprite = line.p1;
+            personA.enabled = true;
+        }
+        else if (personA != null && line.p1 == null)
+        {
+            //personA.enabled = false;
+        }
+ 
+        if (personB != null && line.p2 != null)
+        {
+            personB.sprite = line.p2;
+            personB.enabled = true;
+        }
+        else if (personB != null && line.p2 == null)
+        {
+            //personB.enabled = false;
+        }
     }
-
 }
