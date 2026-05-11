@@ -55,10 +55,6 @@ public class TowerPlacementSpot : MonoBehaviour
             square.GetComponent<IndexSquare>().SetTowerPlacement(this);
         }
 
-
-        //top would be (0, 1.5, 0)
-
-
     }
 
     public void CloseMenu()
