@@ -62,6 +62,15 @@ public class MasterController : MonoBehaviour
 
     [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
     private List<TowerData> _towerCache = new List<TowerData>();
+    public float NumberOfAvailableTowers => _towerCache.Count;
+
+    public string GetTowerName(int index) => towerKeys[index];
+    public Sprite GetTowerSprite(int index) => _towerCache[index].animationData.animations[_towerCache[index].animationData.idleAnimation].animationSprites[0];
+
+    public bool AllTowersCached()
+    {
+        return _towerCache.Count == towerKeys.Count;
+    }
 
     // ---------- Creep Data ----------
 

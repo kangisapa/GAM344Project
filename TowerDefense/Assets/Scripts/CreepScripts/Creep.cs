@@ -105,8 +105,14 @@ public class Creep : MonoBehaviour
         foreach (Collider2D hit in hits)
         {
             Tower tower = hit.GetComponent<Tower>();
-            if (tower != null)
-                towersInRange.Add(tower);
+            if (tower != null && tower.slowable)
+            {
+                float distance = Vector2.Distance(tower.transform.position, transform.position);
+                if (distance <= tower.towerRange)
+                {
+                    towersInRange.Add(tower);
+                }
+            }
         }
 
         foreach (Tower tower in towersInRange)

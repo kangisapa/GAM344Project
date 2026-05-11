@@ -14,7 +14,7 @@ public class Tower : MonoBehaviour
     // ---------- Tower Slow ----------
 
     private float baseShotsPerSecond;
-    private int slowCount = 0;
+    private int slowCount = 0; 
     private float strongestSlow = 1f;
     public void ApplySlow(float multiplier)
     {
@@ -38,11 +38,13 @@ public class Tower : MonoBehaviour
 
     // ---------- Tower Damaging ----------
     private CircleCollider2D rangeCollider;
+    public float towerRange => rangeCollider.radius;
     private float targetRadius;
     private float damagePerShot;
     private float shotsPerSecond;
     private float projectileTargetTime;
     private float firingDelay;
+    public bool slowable { get; private set; }
 
     private int cost;
     // ---------- Tower Enabling ----------
@@ -92,6 +94,7 @@ public class Tower : MonoBehaviour
         shotsPerSecond = creationData.shotsPerSecond;
         projectileTargetTime = creationData.projectileTargetTime;
         firingDelay = creationData.firingDelay;
+        slowable = creationData.slowable;
         cost = creationData.cost;
         this.rangeCollider = rangeCollider;
         baseShotsPerSecond = shotsPerSecond;

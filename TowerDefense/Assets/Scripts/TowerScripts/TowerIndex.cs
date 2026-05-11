@@ -3,7 +3,6 @@ using UnityEngine;
 public class IndexSquare : MonoBehaviour
 {
     private TowerPlacementSpot towerPlacementSpot;
-    private MasterController masterController;
     private int index;
 
     public void Setup(int spotIndex) => index = spotIndex;
@@ -13,23 +12,18 @@ public class IndexSquare : MonoBehaviour
         towerPlacementSpot = parentTowerPlacementSpot;
     }
 
-    public void SetMasterController(MasterController gameMasterController)
-    {
-        masterController = gameMasterController;
-    }
-
     private void OnMouseDown()
     {
-        if (masterController.CheckCurrency(index) == false)
+        if (MasterController.Instance.CheckCurrency(index) == false)
             return;
 
 
-        if (towerPlacementSpot == null || masterController == null) return;
+        if (towerPlacementSpot == null || MasterController.Instance == null) return;
         if (towerPlacementSpot.HasTower) return; 
 
         towerPlacementSpot.CloseMenu();
 
-        masterController.SpawnTower(index, towerPlacementSpot.transform.position);
+        MasterController.Instance.SpawnTower(index, towerPlacementSpot.transform.position);
 
         towerPlacementSpot.MarkAsOccupied();
     }

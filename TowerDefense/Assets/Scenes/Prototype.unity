@@ -192,7 +192,8 @@ MonoBehaviour:
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
   towerKeys:
-  - BasicTower
+  - Pill_Fish
+  - IV_Stingray
   creepKeys:
   - BasicCreep
   - BossCreep
@@ -1104,6 +1105,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1726162927}
     m_Modifications:
+    - target: {fileID: 96050406144490571, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: spotIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6837972832439961833, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
       propertyPath: m_Name
       value: ExampleSpot
@@ -1147,6 +1152,34 @@ PrefabInstance:
     - target: {fileID: 8841404153563855577, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.drawMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948682125685679958, guid: 549daac245f86e14abb792cf0daa4ebc, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1.3125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

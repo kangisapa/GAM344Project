@@ -17,6 +17,7 @@ public class TowerData : ScriptableObject
     public float projectileTargetTime;
     [Tooltip("just used to sync up the animation to firing"), Min(0)]
     public float firingDelay;
+    public bool slowable = true;
 
     public int cost;
 }
