@@ -153,41 +153,50 @@ MonoBehaviour:
   startingHealth: 5
   waves:
   - name: Wave 1
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder:
+    - creepIndexToSpawn: 2
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 2
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder:
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 3
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder:
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 4
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder:
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 5
-    wavePath: 00000000
-    creepIndex: 00000000
-    numberToSpawn: 05000000
-    delayPerCreep: 1
+    creepSpawnOrder:
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
     delayBeforeWave: 5
+  paths:
+  - 0
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
   towerKeys:
   - BasicTower
   creepKeys:
   - BasicCreep
+  - BossCreep
+  - SlowCreep
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
