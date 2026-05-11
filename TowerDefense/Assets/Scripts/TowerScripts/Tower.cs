@@ -73,6 +73,7 @@ public class Tower : MonoBehaviour
         renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
         collider.radius = renderer.bounds.extents.x / newTowerObject.transform.lossyScale.x;
         collider.offset = Vector2.zero;
+        collider.isTrigger = true;
 
         //Tower Range Setup
         newTowerRangeObject.transform.parent = newTowerObject.transform;
@@ -125,6 +126,7 @@ public class Tower : MonoBehaviour
 
         while(towerEnabled)
         {
+            overlaps.Clear();
             rangeCollider.Overlap(contactFilter, overlaps);
             Collider2D furthestCreep = null;
             float furthestProgress = -1;
@@ -132,7 +134,8 @@ public class Tower : MonoBehaviour
             foreach(Collider2D creep in overlaps)
             {
                 Creep creepComponent = creep.GetComponent<Creep>();
-                if(creepComponent == null || creepComponent.targetHealth <= 0)
+                float distance = Vector2.Distance(transform.position, creep.transform.position);
+                if (creepComponent == null || creepComponent.targetHealth <= 0 || distance > rangeCollider.radius)
                 {
                     continue;
                 }
@@ -144,6 +147,8 @@ public class Tower : MonoBehaviour
                 }
             }
 
+
+            //minor changes below, if the tower shoots, we want to wait the delay before it can shoot again, but once it can check again, check as fast as possible to reduce weird delays
             if(furthestCreep != null)
             {
                 Creep targetCreep = furthestCreep.GetComponent<Creep>();
@@ -152,8 +157,12 @@ public class Tower : MonoBehaviour
                 yield return firingDelayWait;
                 ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
                 audioManager.PlaySFX(audioManager.basicAttackSFX); // Will need to change dynamically in the future, likely just based on index
+                yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
             }
-            yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
+            else
+            {
+                yield return null;
+            }
         }
     }
 
