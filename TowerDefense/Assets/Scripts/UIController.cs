@@ -1,14 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    public MasterController MasterController;
-
     // ---------- Player/Round Information ----------
     public TextMeshProUGUI currentHealth;
     public TextMeshProUGUI currentCurrency;
     public TextMeshProUGUI currentWave;
+    [SerializeField] private Button[] playRateButtons;
 
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
@@ -17,25 +17,30 @@ public class UIController : MonoBehaviour
     {
         if (endGameText != null) endGameText.text = "";
 
-        if (MasterController != null)
-        {
-            MasterController.OnGameStateChanged += HandleGameStateChanged;
-            HandleGameStateChanged(MasterController.State);
-        }
+        MasterController.Instance.OnGameStateChanged += HandleGameStateChanged;
 
+        for(int i = 1; i <= playRateButtons.Length; i++)
+        {
+            float playRate = i;
+            playRateButtons[i - 1].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
+        }
     }
 
     void OnDestroy()
     {
-        if (MasterController != null)
-            MasterController.OnGameStateChanged -= HandleGameStateChanged;
+        MasterController.Instance.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     void Update()
     {
-        currentHealth.text = "Health: " + MasterController.PlayerHealth;
-        currentCurrency.text = "Currency: " + MasterController.PlayerCurrency;
-        currentWave.text = "Wave: " + MasterController.CurrentWave + "/" + MasterController.TotalWaves;
+        currentHealth.text = $"Health: {MasterController.Instance.PlayerHealth}";
+        currentCurrency.text = $"Currency: {MasterController.Instance.PlayerCurrency}";
+        currentWave.text = $"Waves Completed: {MasterController.Instance.CurrentWave}/{MasterController.Instance.TotalWaves}";
+        //make buttons look pretty and mimicks a selected button if that option is "selected"
+        for(int i = 1;  i <= playRateButtons.Length; i++)
+        {
+            playRateButtons[i - 1].interactable = !Mathf.Approximately(i, Time.timeScale);
+        }
     }
 
     private void HandleGameStateChanged(MasterController.GameState newState)
