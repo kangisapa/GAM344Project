@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Device;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Tower : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Tower : MonoBehaviour
     // ---------- Tower Slow ----------
 
     private float baseShotsPerSecond;
-    private int slowCount = 0; 
+    private int slowCount = 0;
     private float strongestSlow = 1f;
     #region Slow Functions
     public void ApplySlow(float multiplier)
@@ -45,6 +46,7 @@ public class Tower : MonoBehaviour
     private float shotsPerSecond;
     private float projectileTargetTime;
     private float firingDelay;
+    private int creepsToTarget;
     public bool slowable { get; private set; }
 
     private int cost;
@@ -61,8 +63,8 @@ public class Tower : MonoBehaviour
     public static GameObject CreateNewTower(TowerData creationData)
     {
         //Create our new tower and its associated range object
-        GameObject newTowerObject = new GameObject(creationData.name, new System.Type[] {typeof(Tower), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem) });
-        GameObject newTowerRangeObject = new GameObject("TowerRange", new System.Type[] {typeof(CircleCollider2D)} );
+        GameObject newTowerObject = new GameObject(creationData.name, typeof(Tower), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem));
+        GameObject newTowerRangeObject = new GameObject("TowerRange",  typeof(CircleCollider2D));
 
         SpriteRenderer renderer = newTowerObject.GetComponent<SpriteRenderer>();
         CircleCollider2D collider = newTowerObject.GetComponent<CircleCollider2D>();
@@ -95,6 +97,7 @@ public class Tower : MonoBehaviour
         shotsPerSecond = creationData.shotsPerSecond;
         projectileTargetTime = creationData.projectileTargetTime;
         firingDelay = creationData.firingDelay;
+        creepsToTarget = creationData.creepsToTarget;
         slowable = creationData.slowable;
         cost = creationData.cost;
         this.rangeCollider = rangeCollider;
@@ -128,54 +131,132 @@ public class Tower : MonoBehaviour
         contactFilter.layerMask = LayerMask.GetMask("Creeps");
         List<Collider2D> overlaps = new();
 
-        while(towerEnabled)
+        while (towerEnabled)
         {
             overlaps.Clear();
             rangeCollider.Overlap(contactFilter, overlaps);
-            Collider2D furthestCreep = null;
-            float furthestProgress = -1;
 
-            foreach(Collider2D creep in overlaps)
+            //if nothing overlapping, dont continue, wait a frame then start again
+            if( overlaps.Count  == 0)
             {
-                Creep creepComponent = creep.GetComponent<Creep>();
-                float distance = Vector2.Distance(transform.position, creep.transform.position);
-                if (creepComponent == null || creepComponent.targetHealth <= 0 || distance > rangeCollider.radius)
-                {
-                    continue;
-                }
-                float progress = creep.GetComponent<Creep>().GetProgress();
-                if(progress > furthestProgress)
-                {
-                    furthestProgress = progress;
-                    furthestCreep = creep;
-                }
+                yield return null;
+                continue;
             }
 
+            List<Creep> targetableCreeps = ValidateTargetableCreeps(overlaps);
 
-            //minor changes below, if the tower shoots, we want to wait the delay before it can shoot again, but once it can check again, check as fast as possible to reduce weird delays
-            if(furthestCreep != null)
+            //If nothing is actually targetable, don't ocntinue, wait a frame, then start again
+            if(targetableCreeps.Count == 0)
             {
-                Creep targetCreep = furthestCreep.GetComponent<Creep>();
+                yield return null;
+                continue;
+            }
+
+            /*
+             In both instances below, we AssignDamage before we actually wait and fire so other towers know that this creep is bout to die anyways and not bother targeting and creating issues
+             */
+
+
+            if (targetableCreeps.Count <= creepsToTarget)
+            {
+                //If the number of creeps we can target is <= to the max the tower can target, don't bother checking the furthest along and just smite them all
                 animationSystem.PlayAnimation(1);
-                targetCreep.DecreaseTargetHealth(damagePerShot);
+                AssignDamage(targetableCreeps);
                 yield return firingDelayWait;
-                ProjectileManager.Instance.FireProjectile(transform.position, targetCreep.transform, projectileTargetTime, projectileSprite, () => DamageCreep(targetCreep));
-                audioManager.PlaySFX(audioManager.basicAttackSFX); // Will need to change dynamically in the future, likely just based on index
+                DealDamage(targetableCreeps);
+                audioManager.PlaySFX(audioManager.basicAttackSFX);
                 yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
             }
             else
             {
-                yield return null;
+                List<Creep> furthestCreeps = new();
+                
+                /*
+                 If we have more creeps in range than the tower can target at once, then we want to search through all the targetable ones and pick out the furthest
+                Once we do that, we can target the rest.
+                 */
+
+                for (int i = 0; i < creepsToTarget; i++)
+                {
+                    float furthestProgress = -1;
+                    int furthestIndex = 0;
+                    for(int j = 0;  j < targetableCreeps.Count; j++)
+                    {
+                        float progress = targetableCreeps[j].GetComponent<Creep>().GetProgress();
+                        if(progress > furthestProgress)
+                        {
+                            furthestIndex = j;
+                            furthestProgress = progress;
+                        }
+                    }
+                    furthestCreeps.Add(targetableCreeps[furthestIndex]);
+                    targetableCreeps.RemoveAt(furthestIndex);
+                }
+                if(furthestCreeps.Count > 0)
+                {
+                    animationSystem.PlayAnimation(1);
+                    AssignDamage(furthestCreeps);
+                    yield return firingDelayWait;
+                    DealDamage(furthestCreeps);
+                    audioManager.PlaySFX(audioManager.basicAttackSFX);
+                    yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
+                }
+                else
+                {
+                    yield return null;
+                }
             }
         }
     }
 
-      private void DamageCreep(Creep targetCreep)
-      {
-         if (targetCreep != null)
-         { 
-             targetCreep.DamageCreep(damagePerShot); 
-         }
-      }
+    private List<Creep> ValidateTargetableCreeps(List<Collider2D> overlaps)
+    {
+        List<Creep> targetable = new();
+        foreach (Collider2D creep in overlaps)
+        {
+            Creep creepComponent = creep.GetComponent<Creep>();
+            float distance = Vector2.Distance(transform.position, creep.transform.position);
+            if (creepComponent != null && creepComponent.targetHealth > 0 && distance <= rangeCollider.radius)
+            {
+                targetable.Add(creepComponent);
+            }
+        }
+        return targetable;
+    }
+
+    /// <summary>
+    /// specifically runs through the creeps to damage and sets their furture health to what it would be
+    /// after the shot so other towers know whether its worht to fire or not
+    /// </summary>
+    /// <param name="toDamage">target creeps list</param>
+    private void AssignDamage(List<Creep> toDamage)
+    {
+        foreach (Creep creep in toDamage)
+        {
+            creep.DecreaseTargetHealth(damagePerShot);
+        }
+    }
+
+    /// <summary>
+    /// Specifically runs through the creeps to damage and actually runs the logic to create the "projectiles" that will damage/smite the creeps
+    /// once they reach the target
+    /// </summary>
+    /// <param name="toDamage">target creeps list</param>
+    private void DealDamage(List<Creep> toDamage)
+    {
+        foreach(Creep creep in toDamage)
+        {
+            Creep c = creep;
+            ProjectileManager.Instance.FireProjectile(transform.position, c.transform, projectileTargetTime, projectileSprite, () => DamageCreep(c));
+        }
+    }
+
+    private void DamageCreep(Creep targetCreep)
+    {
+        if (targetCreep != null)
+        {
+            targetCreep.DamageCreep(damagePerShot);
+        }
+    }
 
 }

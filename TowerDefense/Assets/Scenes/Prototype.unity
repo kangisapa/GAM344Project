@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  startingCurrency: 10
+  startingCurrency: 99999999
   startingHealth: 5
   waves:
   - name: Wave 1
@@ -194,6 +194,7 @@ MonoBehaviour:
   towerKeys:
   - Pill_Fish
   - IV_Stingray
+  - CreepSmiter9000
   creepKeys:
   - BasicCreep
   - BossCreep
@@ -1577,6 +1578,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2027374973}
     m_Modifications:
+    - target: {fileID: 207488607324086179, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 207488607324086179, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 207488607324086179, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 207488607324086179, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1205211209080751598, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1672,6 +1705,22 @@ PrefabInstance:
     - target: {fileID: 8309712301052199188, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_Name
       value: HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 8887954077348950101, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8887954077348950101, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8887954077348950101, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8887954077348950101, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

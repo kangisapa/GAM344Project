@@ -19,7 +19,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator CreepLoop()
     {
-        WaitForSeconds delay = new(1.2f);
+        WaitForSeconds delay = new(2.01f);
         while (true)
         {
             GameObject newCreep = Creep.CreateNewCreep(basicCreep, new List<int>() { 0 });

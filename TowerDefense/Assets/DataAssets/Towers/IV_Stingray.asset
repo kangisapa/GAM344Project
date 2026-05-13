@@ -19,5 +19,7 @@ MonoBehaviour:
   shotsPerSecond: 3
   projectileTargetTime: 0
   firingDelay: 0
+  creepsToTarget: 1
   slowable: 1
   cost: 14
+  notes: Close Range Tower with high attack rate, immune to slowing effects
