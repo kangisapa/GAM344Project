@@ -337,6 +337,17 @@ public class MasterController : MonoBehaviour
         OnGameStateChanged?.Invoke(newState);
     }
 
+    /// <summary>
+    /// Change how fast the game is bring run (2 => 2x speed, 0.25 => runs 4 times slower)
+    /// </summary>
+    /// <param name="timeScale">new time scale, minimum of 0.25</param>
+    public void SetTimeScale(float timeScale)
+    {
+        timeScale = Mathf.Max(timeScale, 0.25f);
+        Time.timeScale = timeScale;
+        audioManager.SetAudioSourcePitches(timeScale);
+    }
+
     private void OnDestroy()
     {
         foreach(TowerData data in _towerCache)

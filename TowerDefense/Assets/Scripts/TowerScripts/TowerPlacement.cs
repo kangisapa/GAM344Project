@@ -37,22 +37,22 @@ public class TowerPlacementSpot : MonoBehaviour
         for(int i = 0; i < MasterController.Instance.NumberOfAvailableTowers; i++)
         {
             float alpha = (float)i / Mathf.Max(MasterController.Instance.NumberOfAvailableTowers, 1);
-            Debug.Log(alpha);
             float angle = 2 * Mathf.PI * alpha;
             float x = radius * Mathf.Sin(angle);
             float y = radius * Mathf.Cos(angle);
 
-            // Square
-            GameObject square = new GameObject($"Square {i}", typeof(SpriteRenderer), typeof(BoxCollider2D));
-            square.transform.SetParent(menuObject.transform, worldPositionStays: false);
-            square.transform.localPosition = new(x, y, 0);
-            SpriteRenderer sr = square.GetComponent<SpriteRenderer>();
+            //Create the image with the tower to visually represent it
+            GameObject towerButton = new GameObject($"{MasterController.Instance.GetTowerName(i)} button", typeof(SpriteRenderer), typeof(BoxCollider2D), typeof(IndexSquare));
+            towerButton.transform.SetParent(menuObject.transform, false);
+            towerButton.transform.localPosition = new(x, y, 0);
+            SpriteRenderer sr = towerButton.GetComponent<SpriteRenderer>();
             sr.sprite = MasterController.Instance.GetTowerSprite(i);
-            square.GetComponent<BoxCollider2D>().size = Vector2.one;
+            towerButton.GetComponent<BoxCollider2D>().size = Vector2.one;
 
-            // Click handler
-            square.AddComponent<IndexSquare>().Setup(i);
-            square.GetComponent<IndexSquare>().SetTowerPlacement(this);
+            //Setup click handler
+            IndexSquare iSqr = towerButton.GetComponent<IndexSquare>();
+            iSqr.Setup(i);
+            iSqr.SetTowerPlacement(this);
         }
 
     }

@@ -16,6 +16,7 @@ public class Tower : MonoBehaviour
     private float baseShotsPerSecond;
     private int slowCount = 0; 
     private float strongestSlow = 1f;
+    #region Slow Functions
     public void ApplySlow(float multiplier)
     {
         slowCount++;
@@ -35,7 +36,7 @@ public class Tower : MonoBehaviour
             shotsPerSecond = baseShotsPerSecond;
         }
     }
-
+    #endregion
     // ---------- Tower Damaging ----------
     private CircleCollider2D rangeCollider;
     public float towerRange => rangeCollider.radius;

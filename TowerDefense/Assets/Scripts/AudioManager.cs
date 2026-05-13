@@ -32,4 +32,10 @@ public class AudioManager : MonoBehaviour
 
         sfxSource.PlayOneShot(clip);
     }
+
+    public void SetAudioSourcePitches(float pitch)
+    {
+        musicSource.pitch = pitch;
+        sfxSource.pitch = pitch;
+    }
 }
