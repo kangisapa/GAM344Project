@@ -245,42 +245,42 @@ MonoBehaviour:
   - name: Wave 1
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 30
+      numberToSpawn: 10
       pathIndex: 0
       deleyPerCreep: 2
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 60
+      numberToSpawn: 15
       pathIndex: 0
       deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 3
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 90
+      numberToSpawn: 40
       pathIndex: 0
       deleyPerCreep: 0.5
     delayBeforeWave: 5
   - name: Wave 4
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 120
+      numberToSpawn: 60
       pathIndex: 0
       deleyPerCreep: 0.5
     delayBeforeWave: 5
   - name: Wave 5
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 150
+      numberToSpawn: 80
       pathIndex: 0
       deleyPerCreep: 0.5
     delayBeforeWave: 5
   - name: Wave 6
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 180
+      numberToSpawn: 100
       pathIndex: 0
       deleyPerCreep: 0.5
     delayBeforeWave: 5
