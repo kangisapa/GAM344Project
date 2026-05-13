@@ -7,6 +7,8 @@ public class IndexSquare : MonoBehaviour
     private int index;
     private SpriteRenderer sr;
 
+    private float targetScale = 1;
+
     public void Setup(int spotIndex)
     {
         index = spotIndex;
@@ -22,9 +24,16 @@ public class IndexSquare : MonoBehaviour
     {
         if(sr != null)
         {
-            sr.color = MasterController.Instance.CheckCurrency(index) ? Color.white : Color.grey;
+            bool canPurchase = MasterController.Instance.CheckCurrency(index);
+            //visual touches, if we can't purchase grey out with no response. If we can purchase, make it normally colored and scale as if its a button
+            sr.color = canPurchase ? Color.white : Color.grey;
+            transform.localScale = canPurchase ? Vector3.Lerp(transform.localScale, Vector3.one * targetScale, Time.deltaTime * 6.5f) : Vector3.one;
         }
     }
+
+    private void OnMouseEnter() => targetScale = 1.25f;
+
+    private void OnMouseExit() => targetScale = 1f;
 
     private void OnMouseDown()
     {
