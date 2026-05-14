@@ -17,7 +17,12 @@ public class TowerData : ScriptableObject
     public float projectileTargetTime;
     [Tooltip("just used to sync up the animation to firing"), Min(0)]
     public float firingDelay;
+    [Min(1), Tooltip("Put an obscenly high value if you want the tower to target everything in range")]
+    public int creepsToTarget = 1;
     public bool slowable = true;
 
     public int cost;
+
+    [Tooltip("Not referenced anywhere in code atm, just use to make not or other things")]
+    public string notes;
 }

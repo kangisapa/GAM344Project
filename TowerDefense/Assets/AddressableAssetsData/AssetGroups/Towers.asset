@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfdbad2dc02ee5647ab14fcd3ad549a6
+    m_Address: CreepSmiter9000
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c1b5cfa6004f9ff49a9edfa2b82e20a8
     m_Address: Pill_Fish
     m_ReadOnly: 0

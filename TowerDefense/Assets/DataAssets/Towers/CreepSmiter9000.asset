@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6745eb02c5789024a8f06b089ab7bb52, type: 3}
-  m_Name: Pill_Fish
+  m_Name: CreepSmiter9000
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  projectileSprite: {fileID: 21300000, guid: 6b14fa792f77fc34e9ca4feaefea88e6, type: 3}
-  animationData: {fileID: 11400000, guid: b785dc0fc5b6e534e84e6436a9fbbc4b, type: 2}
-  targetRadius: 3
-  damagePerShot: 1
-  shotsPerSecond: 1
-  projectileTargetTime: 0.5
+  projectileSprite: {fileID: 0}
+  animationData: {fileID: 11400000, guid: ab1f43a9f895ac2438f9442c6622af52, type: 2}
+  targetRadius: 999
+  damagePerShot: 100000000
+  shotsPerSecond: 0.1
+  projectileTargetTime: 0
   firingDelay: 0.4
-  creepsToTarget: 1
-  slowable: 1
-  cost: 10
-  notes: Basic tower that does basic things - Change in future
+  creepsToTarget: 3
+  slowable: 0
+  cost: 999
+  notes: FOR THE LOVE OF GOD, DONT PUT THIS IN AN ACTUAL LEVEL. Just used to test
+    tower targetting stuff
