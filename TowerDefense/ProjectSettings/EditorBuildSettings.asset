@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 9a437f0555613a14bbb2e119ad5e4c75
   - enabled: 1
-    path: Assets/Scenes/Prototype.unity
-    guid: 3b6bf5ecafdd38f41b8ba931f0a121de
+    path: Assets/Scenes/Level1.unity
+    guid: 790a0309a0f380e478f5f1bcb14c71ff
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: cc2b18a7ed9783f41aea71f5528a8273, type: 2}
   m_UseUCBPForAssetBundles: 0

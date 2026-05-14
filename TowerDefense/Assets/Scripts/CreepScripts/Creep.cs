@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Creep : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class Creep : MonoBehaviour
     protected List<int> pathToFollow; //the overall path
     protected int pathIndex; //index of the spline to follow
     protected float splineCompletion; //progress 0->100% of the spline we are on
+    protected Coroutine rewindCoroutine;
 
     // --- Slow ---
     private List<Tower> slowedTowers = new List<Tower>();
@@ -161,6 +164,8 @@ public class Creep : MonoBehaviour
         slowRadius = creepData.slowRadius;
         slowMultiplier = creepData.slowMultiplier;
         audioManager = AudioManager.Instance;
+        if(MasterController.Instance)
+        MasterController.Instance.OnRewindInitiated += OnPanicButtonPressed;
 
         transform.position = PathController.Instance.StartPosition;
     }
@@ -168,7 +173,11 @@ public class Creep : MonoBehaviour
     private void Update()
     {
         if (isDead) return;
-        FollowPath();
+        if(rewindCoroutine == null)
+        {
+            FollowPath();
+        }
+        MoveCreep();
         if (isSlow) CheckSlowRadius();
     }
 
@@ -192,13 +201,76 @@ public class Creep : MonoBehaviour
             pathIndex = pathToFollow[pathProgress];
             splineCompletion = 0;
         }
-
-        //move our creep to the world position of the spline we are on based on its completion
-        transform.position = PathController.Instance.GetPosition(pathIndex, splineCompletion);
-        transform.right = PathController.Instance.GetTangent(pathIndex, splineCompletion);
     }
 
-    
+    private void MoveCreep()
+    {
+        //move our creep to the world position of the spline we are on based on its completion
+        transform.position = Vector3.Lerp(transform.position, PathController.Instance.GetPosition(pathIndex, splineCompletion), Time.deltaTime * 5);
+        transform.right = Vector3.Lerp(transform.right, PathController.Instance.GetTangent(pathIndex, splineCompletion), Time.deltaTime * 5);
+    }
+
+    // Panic Button behavior
+    private void OnPanicButtonPressed()
+    {
+        if(this)
+        rewindCoroutine = StartCoroutine(PanicButtonActions(MasterController.Instance.rewindTime));
+    }
+
+    private IEnumerator PanicButtonActions(float rewindTime)
+    {
+        float unitsToRewind = rewindTime * moveSpeed;
+        float rewindSpeed = unitsToRewind / MasterController.Instance.rewindActionTime; //rewind will take x seconds
+
+        while (unitsToRewind > 0)
+        {
+            unitsToRewind -= rewindSpeed * Time.deltaTime;
+            splineCompletion -= rewindSpeed / PathController.Instance.PathLengths[pathIndex] * Time.deltaTime;
+            if(splineCompletion <= 0)
+            {
+                float overshootDistanceOnNextSpline = Mathf.Abs(splineCompletion) * PathController.Instance.PathLengths[pathIndex];
+                if(pathProgress - 1 >= 0)
+                {
+                    pathProgress = Mathf.Max(0, pathProgress - 1);
+                    pathIndex = pathToFollow[pathProgress];
+
+                    splineCompletion = PathController.Instance.DistanceToT(pathIndex, PathController.Instance.PathLengths[pathIndex] - overshootDistanceOnNextSpline);
+                }
+                else
+                {
+                    pathProgress = 0;
+                    splineCompletion = 0;
+                }
+
+            }
+            splineCompletion = Mathf.Clamp01(splineCompletion);
+            yield return null;
+
+        }
+        yield return new WaitForSeconds(0.15f);
+        StartCoroutine(PanicButtonEffects());
+        rewindCoroutine = null;
+    }
+
+    private IEnumerator PanicButtonEffects()
+    {
+        switch (GameManager.Instance.panicButtonType)
+        {
+            case PanicButtonBehavior.Slowing:
+                moveSpeed *= MasterController.Instance.slowPercent;
+                yield return new WaitForSeconds(MasterController.Instance.slowTime);
+                moveSpeed /= MasterController.Instance.slowPercent;
+                break;
+            case PanicButtonBehavior.Damaging:
+                DecreaseTargetHealth(MasterController.Instance.damageDealt);
+                DamageCreep(MasterController.Instance.damageDealt);
+                break;
+            default:
+                yield return null;
+                break;
+        }
+    }
+
     // Called by Towers 
     //Check how far along the creep is, the pathprogress is added so creeps further along are targeted first
     public float GetProgress() => ((pathProgress/ pathToFollow.Count - 1) + splineCompletion);
@@ -234,8 +306,11 @@ public class Creep : MonoBehaviour
     {
         isDead = true;
         if (isSlow) UnslowAll();
-        if(MasterController.Instance)
-        MasterController.Instance.OnCreepKilled(currencyOnDeath);
+        if (MasterController.Instance)
+        {
+            MasterController.Instance.OnCreepKilled(currencyOnDeath);
+            MasterController.Instance.OnRewindInitiated -= OnPanicButtonPressed;
+        }
         audioManager.PlaySFX(audioManager.basicCreepDeathSFX); // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
     }

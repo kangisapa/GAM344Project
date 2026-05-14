@@ -8,8 +8,10 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI currentHealth;
     public TextMeshProUGUI currentCurrency;
     public TextMeshProUGUI currentWave;
+    public int[] playRates = { 1, 4, 6 };
     [SerializeField] private Button[] playRateButtons;
-
+    [SerializeField] private Image panicButtonFill;
+    private Button panicButton;
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
 
@@ -19,10 +21,14 @@ public class UIController : MonoBehaviour
 
         MasterController.Instance.OnGameStateChanged += HandleGameStateChanged;
 
-        for(int i = 1; i <= playRateButtons.Length; i++)
+        panicButton = panicButtonFill.GetComponent<Button>();
+
+        panicButton.onClick.AddListener(() => MasterController.Instance.OnRewindInitiated?.Invoke());
+
+        for(int i = 0; i < playRateButtons.Length; i++)
         {
-            float playRate = i;
-            playRateButtons[i - 1].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
+            float playRate = playRates[i];
+            playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
         }
     }
 
@@ -37,10 +43,12 @@ public class UIController : MonoBehaviour
         currentCurrency.text = $"Currency: {MasterController.Instance.PlayerCurrency}";
         currentWave.text = $"Waves Completed: {MasterController.Instance.CurrentWave}/{MasterController.Instance.TotalWaves}";
         //make buttons look pretty and mimicks a selected button if that option is "selected"
-        for(int i = 1;  i <= playRateButtons.Length; i++)
+        for(int i = 0;  i < playRateButtons.Length; i++)
         {
-            playRateButtons[i - 1].interactable = !Mathf.Approximately(i, Time.timeScale);
+            playRateButtons[i].interactable = !Mathf.Approximately(playRates[i], Time.timeScale);
         }
+        panicButtonFill.fillAmount = Mathf.Lerp(panicButtonFill.fillAmount, MasterController.Instance.UsesRemainingPercent, Time.deltaTime * 5);
+        panicButton.interactable = MasterController.Instance.buttonAvailable;
     }
 
     private void HandleGameStateChanged(MasterController.GameState newState)

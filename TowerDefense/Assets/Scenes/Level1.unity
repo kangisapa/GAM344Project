@@ -286,6 +286,12 @@ MonoBehaviour:
     delayBeforeWave: 5
   paths:
   - 0
+  maxButtonUses: 3
+  rewindTime: 5
+  rewindActionTime: 3
+  slowPercent: 0.75
+  slowTime: 5
+  damageDealt: 1
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
   towerKeys:
@@ -293,6 +299,7 @@ MonoBehaviour:
   - IV_Stingray
   creepKeys:
   - BasicCreep
+  pauseSpawning: 0
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0
@@ -5337,6 +5344,68 @@ MonoBehaviour:
   m_DeprecatedInstances: []
   m_AutoRefresh: 1
   m_Seed: -1958202524
+--- !u!1 &1922659555
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1922659557}
+  - component: {fileID: 1922659556}
+  - component: {fileID: 1922659558}
+  m_Layer: 0
+  m_Name: Local-GameManager-L1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1922659556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922659555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 171cd6e4a81cf3843b0679a84e86c247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  panicButtonType: 0
+--- !u!4 &1922659557
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922659555}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.16686, y: 0.46274, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1922659558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922659555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9cd797d5b16c14d81dc7355651fb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectNote
+  note: This is a local game manager for the scene, allowing you to test the scene
+    without needing to open the main menu first. If another game manager is brought
+    into this scene, there will be no game manager on this object as it would have
+    deleted itself already
 --- !u!1 &1923922056
 GameObject:
   m_ObjectHideFlags: 0
@@ -5886,6 +5955,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1922659557}
   - {fileID: 37661630}
   - {fileID: 135671655}
   - {fileID: 1177223812}

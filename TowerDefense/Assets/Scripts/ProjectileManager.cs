@@ -52,7 +52,6 @@ public class ProjectileManager : MonoBehaviour
             timeToTarget = travelTime,
             onHit = onHitEvent
         });
-
     }
 
     private void Update()

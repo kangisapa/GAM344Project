@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 
 
 [Serializable]
@@ -22,6 +23,12 @@ public class Wave
     public float delayBeforeWave;
 }
 
+public enum PanicButtonBehavior
+{
+    Standard,
+    Slowing,
+    Damaging,
+}
 
 public class MasterController : MonoBehaviour
 {
@@ -51,14 +58,44 @@ public class MasterController : MonoBehaviour
     private int enemiesAlive = 0;
     //private bool waveInProgress = false;  Not Needed Yet
 
+    // ---------- Panic Button Information ----------
+    [Header("Panic Button Basic Setup")]
+    public int maxButtonUses = 1;
+    private int usesRemaining;
+    public int UsesRemaining => usesRemaining;
+    public float UsesRemainingPercent => (float)usesRemaining / maxButtonUses;
+    [Tooltip("How many seconds of creep progress the panic button reverts"), Min(0)]
+    public float rewindTime = 5;
+    [Tooltip("How long the rewind will actually last (moving back \"rewindTime\" amount of progress in x seconds")]
+    public float rewindActionTime = 3;
+
+    [Header("Panic Button Slow Setup")]
+    [Tooltip("Percent of Max Speed the creep will go after button press if that dialog path was chosen"), Range(0, 1)]
+    public float slowPercent = 0.75f;
+    [Min(0)]
+    public float slowTime = 5;
+
+    [Header("Panic Button Damage Setup")]
+    [Tooltip("The ammount of damage the panic button would deal if pressed and the dialog path was chosen")]
+    public float damageDealt = 1;
+
+    public bool buttonAvailable { get; private set; } = true;
+
+    [HideInInspector]
+    public UnityAction OnRewindInitiated;
+
+
     // ---------- Game Information ----------
     [Header("Game Information")]
     private GameState currentState = GameState.Start;
 
-    [SerializeField] private Transform creepParent, towerParent;
+    [Header("Spawn Organizers")]
+    [SerializeField] private Transform creepParent;
+    [SerializeField] private Transform towerParent;
 
 
     // ---------- Tower Data Caching ----------
+    [Header("Caching Setup")]
 
     [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
     private List<TowerData> _towerCache = new List<TowerData>();
@@ -72,13 +109,10 @@ public class MasterController : MonoBehaviour
         return _towerCache.Count == towerKeys.Count;
     }
 
-    // ---------- Creep Data ----------
-
-    // ---------- Tower Data Caching ----------
+    // ---------- Creep Data Caching ----------
 
     [SerializeField] private List<string> creepKeys = new List<string> { "BasicCreep" };
     private List<CreepData> _creepCache = new List<CreepData>();
-
 
     // ---------- UI Events ----------
     public event Action<int> OnCurrencyChanged;
@@ -178,6 +212,8 @@ public class MasterController : MonoBehaviour
 
         currentWaveIndex = 0;
         enemiesAlive = 0;
+        usesRemaining = maxButtonUses;
+        OnRewindInitiated += () => StartCoroutine(PanicButtonCooldown());
         SetGameState(GameState.Playing);
         StartCoroutine(GameLoop());
     }
@@ -187,6 +223,8 @@ public class MasterController : MonoBehaviour
         StopAllCoroutines();
         SetGameState(victory ? GameState.Victory : GameState.GameOver);
     }
+
+    public bool pauseSpawning = false;
 
     private IEnumerator GameLoop()
     {
@@ -205,9 +243,17 @@ public class MasterController : MonoBehaviour
                 //count up the for the number to spawn in the set of creeps to spawn
                 for (int n = 0; n < w.creepSpawnOrder[c].numberToSpawn; n++)
                 {
-                    //spawn said creep
-                    SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
-                    yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
+                    if(pauseSpawning)
+                    {
+                        n--;
+                        yield return null;
+                    }
+                    else
+                    {
+                        //spawn said creep
+                        SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                        yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
+                    }
                 }
             }
 
@@ -335,6 +381,18 @@ public class MasterController : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
+    }
+
+    private IEnumerator PanicButtonCooldown()
+    {
+        buttonAvailable = false;
+        usesRemaining--;
+        pauseSpawning = true;
+        yield return new WaitForSeconds(rewindTime);
+        pauseSpawning = false;
+        //cooldown delay, currently an extra 50% of rewind, (3 second rewind -> 4.5 second cooldown consiting of 3 second delay of spawning for pushing back + additonal 1.5 seconds
+        yield return new WaitForSeconds(rewindTime * .5f);
+        buttonAvailable = usesRemaining > 0;
     }
 
     /// <summary>
