@@ -5124,7 +5124,7 @@ MonoBehaviour:
     m_Knots:
     - Position:
         x: -7
-        y: 5
+        y: 6
         z: 0
       TangentIn:
         x: 0
