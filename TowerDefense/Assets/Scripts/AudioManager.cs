@@ -17,6 +17,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] public AudioClip basicCreepDeathSFX;
     [SerializeField] public AudioClip basicCreepHitSFX;
 
+    [SerializeField] public AudioClip panicButton;
+    [SerializeField] public AudioClip shockEffect;
+
     public static AudioManager Instance { get; private set; }
 
     private void Awake()

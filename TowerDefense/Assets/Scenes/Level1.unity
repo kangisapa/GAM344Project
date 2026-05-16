@@ -3440,6 +3440,8 @@ MonoBehaviour:
   basicAttackSFX: {fileID: 8300000, guid: 5ee2fcbf9b2a35f46b6a8af8ffcfc34e, type: 3}
   basicCreepDeathSFX: {fileID: 8300000, guid: b6fe5118d47aa1142873100c1d9acd6e, type: 3}
   basicCreepHitSFX: {fileID: 8300000, guid: 67b784d0dac9f0c41b9ef632401d7856, type: 3}
+  panicButton: {fileID: 8300000, guid: 90bac2df5b5f806489cb13d7a6ae98a0, type: 3}
+  shockEffect: {fileID: 8300000, guid: 328ed92d9aebe174099678c93a1c9798, type: 3}
 --- !u!1 &1197629560
 GameObject:
   m_ObjectHideFlags: 0
