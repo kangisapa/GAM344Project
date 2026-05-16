@@ -239,50 +239,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  startingCurrency: 10
+  startingCurrency: 30
   startingHealth: 5
   waves:
   - name: Wave 1
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 30
+      numberToSpawn: 15
       pathIndex: 0
       deleyPerCreep: 2
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 60
+      numberToSpawn: 15
       pathIndex: 0
       deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 3
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 90
+      numberToSpawn: 25
       pathIndex: 0
-      deleyPerCreep: 0.5
+      deleyPerCreep: 0.75
     delayBeforeWave: 5
   - name: Wave 4
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 120
+      numberToSpawn: 35
       pathIndex: 0
-      deleyPerCreep: 0.5
+      deleyPerCreep: 0.33
     delayBeforeWave: 5
   - name: Wave 5
     creepSpawnOrder:
     - creepIndexToSpawn: 0
-      numberToSpawn: 150
+      numberToSpawn: 75
       pathIndex: 0
-      deleyPerCreep: 0.5
-    delayBeforeWave: 5
-  - name: Wave 6
-    creepSpawnOrder:
-    - creepIndexToSpawn: 0
-      numberToSpawn: 180
-      pathIndex: 0
-      deleyPerCreep: 0.5
+      deleyPerCreep: 0.29
     delayBeforeWave: 5
   paths:
   - 0
@@ -296,7 +289,6 @@ MonoBehaviour:
   towerParent: {fileID: 778779257}
   towerKeys:
   - Pill_Fish
-  - IV_Stingray
   creepKeys:
   - BasicCreep
   pauseSpawning: 0
@@ -2671,6 +2663,10 @@ PrefabInstance:
     - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1148203398299138413, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: 'playRates.Array.data[2]'
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1205211209080751598, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_Pivot.x
