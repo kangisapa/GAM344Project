@@ -149,18 +149,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  startingCurrency: 99999999
+  startingCurrency: 50
   startingHealth: 5
   waves:
   - name: Wave 1
     creepSpawnOrder:
-    - creepIndexToSpawn: 2
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 1
+    - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 0.75
+    - creepIndexToSpawn: 0
+      numberToSpawn: 5
+      pathIndex: 0
+      deleyPerCreep: 0.75
     - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
@@ -189,6 +205,12 @@ MonoBehaviour:
     delayBeforeWave: 5
   paths:
   - 0
+  maxButtonUses: 1
+  rewindTime: 5
+  rewindActionTime: 3
+  slowPercent: 0.75
+  slowTime: 5
+  damageDealt: 1
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
   towerKeys:
@@ -199,6 +221,7 @@ MonoBehaviour:
   - BasicCreep
   - BossCreep
   - SlowCreep
+  pauseSpawning: 0
 --- !u!4 &37661630
 Transform:
   m_ObjectHideFlags: 0

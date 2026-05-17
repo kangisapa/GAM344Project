@@ -15,11 +15,11 @@ MonoBehaviour:
   projectileSprite: {fileID: 0}
   animationData: {fileID: 11400000, guid: 5b0213fd42729554ba5f8037a41af7cd, type: 2}
   targetRadius: 2
-  damagePerShot: 2
-  shotsPerSecond: 3
+  damagePerShot: 1
+  shotsPerSecond: 2
   projectileTargetTime: 0
   firingDelay: 0
   creepsToTarget: 1
-  slowable: 1
-  cost: 14
+  slowable: 0
+  cost: 45
   notes: Close Range Tower with high attack rate, immune to slowing effects

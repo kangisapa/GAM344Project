@@ -21,5 +21,5 @@ MonoBehaviour:
   firingDelay: 0.4
   creepsToTarget: 1
   slowable: 1
-  cost: 10
+  cost: 30
   notes: Basic tower that does basic things - Change in future
