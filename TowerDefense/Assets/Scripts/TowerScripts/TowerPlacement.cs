@@ -54,7 +54,7 @@ public class TowerPlacementSpot : MonoBehaviour
             SpriteRenderer sr = towerButton.GetComponent<SpriteRenderer>();
             sr.sprite = MasterController.Instance.GetTowerSprite(i);
             sr.color = Color.clear;
-            sr.sortingOrder = -2;
+            sr.sortingOrder = 100;
             towerButton.GetComponent<BoxCollider2D>().size = Vector2.one;
 
             //Setup click handler
