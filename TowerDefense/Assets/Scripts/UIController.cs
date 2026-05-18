@@ -14,16 +14,25 @@ public class UIController : MonoBehaviour
     private Button panicButton;
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
-
+    // ---------- Audio ----------
+    private AudioManager audioManager;
     void Start()
     {
         if (endGameText != null) endGameText.text = "";
 
         MasterController.Instance.OnGameStateChanged += HandleGameStateChanged;
 
+        audioManager = AudioManager.Instance;
+
         panicButton = panicButtonFill.GetComponent<Button>();
 
-        panicButton.onClick.AddListener(() => MasterController.Instance.OnRewindInitiated?.Invoke());
+
+
+        panicButton.onClick.AddListener(() =>
+        { audioManager.PlaySFX(audioManager.panicButton);
+        MasterController.Instance.OnRewindInitiated?.Invoke(); 
+        });
+
 
         for(int i = 0; i < playRateButtons.Length; i++)
         {
