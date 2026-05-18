@@ -403,7 +403,7 @@ public class MasterController : MonoBehaviour
     /// <param name="timeScale">new time scale, minimum of 0.25</param>
     public void SetTimeScale(float timeScale)
     {
-        timeScale = Mathf.Max(timeScale, 0.25f);
+        timeScale = Mathf.Max(timeScale, 0);
         Time.timeScale = timeScale;
         audioManager.SetAudioSourcePitches(timeScale);
     }
