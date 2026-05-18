@@ -154,18 +154,11 @@ MonoBehaviour:
   waves:
   - name: Wave 1
     creepSpawnOrder:
-    - creepIndexToSpawn: 0
-      numberToSpawn: 5
+    - creepIndexToSpawn: 1
+      numberToSpawn: 1
       pathIndex: 0
       deleyPerCreep: 1
-    - creepIndexToSpawn: 0
-      numberToSpawn: 5
-      pathIndex: 0
-      deleyPerCreep: 1
-    - creepIndexToSpawn: 0
-      numberToSpawn: 5
-      pathIndex: 0
-      deleyPerCreep: 1
+      isBoss: 1
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
@@ -173,14 +166,17 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 0.75
+      isBoss: 0
     - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 0.75
+      isBoss: 0
     - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
+      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 3
     creepSpawnOrder:
@@ -188,6 +184,7 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
+      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 4
     creepSpawnOrder:
@@ -195,6 +192,7 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
+      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 5
     creepSpawnOrder:
@@ -202,6 +200,7 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
+      isBoss: 0
     delayBeforeWave: 5
   paths:
   - 0
@@ -220,7 +219,6 @@ MonoBehaviour:
   creepKeys:
   - BasicCreep
   - BossCreep
-  - SlowCreep
   pauseSpawning: 0
 --- !u!4 &37661630
 Transform:
@@ -951,6 +949,8 @@ MonoBehaviour:
   basicAttackSFX: {fileID: 8300000, guid: 5ee2fcbf9b2a35f46b6a8af8ffcfc34e, type: 3}
   basicCreepDeathSFX: {fileID: 8300000, guid: b6fe5118d47aa1142873100c1d9acd6e, type: 3}
   basicCreepHitSFX: {fileID: 8300000, guid: 67b784d0dac9f0c41b9ef632401d7856, type: 3}
+  panicButton: {fileID: 0}
+  shockEffect: {fileID: 0}
 --- !u!1 &1313844445
 GameObject:
   m_ObjectHideFlags: 0

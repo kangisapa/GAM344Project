@@ -21,4 +21,10 @@ public class CreepData : ScriptableObject
 
     [Header("Visuals")]
     public Sprite sprite;
+
+    [Header("Summoning")]
+    public bool isSummoner = false;
+    public CreepData summonCreepData;
+    public int summonCount = 1;
+    public float summonInterval = 3f;
 }

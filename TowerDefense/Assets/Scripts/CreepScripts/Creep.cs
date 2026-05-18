@@ -24,8 +24,8 @@ public class Creep : MonoBehaviour
 
     // --- Path Stats ---
     protected List<int> pathToFollow; //the overall path
-    protected int pathIndex; //index of the spline to follow
-    protected float splineCompletion; //progress 0->100% of the spline we are on
+    public int pathIndex; //index of the spline to follow
+    public float splineCompletion; //progress 0->100% of the spline we are on
     protected Coroutine rewindCoroutine;
 
     // --- Slow ---
@@ -33,7 +33,7 @@ public class Creep : MonoBehaviour
 
     // --- Runtime State ---
     protected float currentHealth;
-    protected int pathProgress;
+    public int pathProgress;
     protected bool isDead = false;
 
     // --- Animation ---
@@ -72,35 +72,31 @@ public class Creep : MonoBehaviour
 
     public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes)
     {
-        {
-            GameObject newBossObject = new GameObject(creationData.name, new System.Type[]
-            {
-            typeof(BossCreep),
-            typeof(SpriteRenderer),
-            typeof(CircleCollider2D),
-            typeof(SpriteAnimationSystem)
-            });
+        GameObject newBossObject = new GameObject(creationData.name);
+        newBossObject.AddComponent<BossCreep>();
+        newBossObject.AddComponent<SpriteRenderer>();
+        newBossObject.AddComponent<CircleCollider2D>();
+        newBossObject.AddComponent<SpriteAnimationSystem>();
 
-            newBossObject.layer = LayerMask.NameToLayer("Creeps");
+        newBossObject.layer = LayerMask.NameToLayer("Creeps");
 
-            BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
-            bossReference.SetValves(creationData, pathIndexes);
+        BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
+        bossReference.SetValves(creationData, pathIndexes);
 
-            SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
-            CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
+        SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
+        CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
 
-            bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
-            bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
+        bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
+        bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
 
-            renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
-            collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
-            collider.offset = Vector2.zero;
+        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
+        collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
+        collider.offset = Vector2.zero;
 
-            return newBossObject;
-        }
+        return newBossObject;
     }
 
-    private void CheckSlowRadius()
+    protected void CheckSlowRadius()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, slowRadius);
         List<Tower> towersInRange = new List<Tower>();
@@ -170,7 +166,7 @@ public class Creep : MonoBehaviour
         transform.position = PathController.Instance.StartPosition;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (isDead) return;
         if(rewindCoroutine == null)
@@ -183,7 +179,7 @@ public class Creep : MonoBehaviour
 
 
     // Path Following
-    private void FollowPath()
+    protected void FollowPath()
     {
         //progress along the current spline
         splineCompletion += (moveSpeed / PathController.Instance.PathLengths[pathIndex]) * Time.deltaTime;
@@ -203,7 +199,7 @@ public class Creep : MonoBehaviour
         }
     }
 
-    private void MoveCreep()
+    protected void MoveCreep()
     {
         //move our creep to the world position of the spline we are on based on its completion
         transform.position = Vector3.Lerp(transform.position, PathController.Instance.GetPosition(pathIndex, splineCompletion), Time.deltaTime * 5);
@@ -322,13 +318,63 @@ public class Creep : MonoBehaviour
         MasterController.Instance.OnCreepReachedEnd(damageToBase);
         Destroy(gameObject);
     }
+}
 
+public class BossCreep : Creep
+{
+    private CreepData summonCreepData;
+    private int summonCount = 1;
+    private float summonInterval = 3f;
+    private bool isSummoner;
+    private Vector3 lastPosition;
+    private float summonTimer = 0f;
 
-    public class BossCreep : Creep
+    public new void SetValves(CreepData creepData, List<int> pathIndexes)
     {
-        public void SetHealth(float health) { maxHealth = health; currentHealth = health; }
-        public void SetSpeed(float speed) => moveSpeed = speed;
-        public void SetCurrencyReward(int amount) => currencyOnDeath = amount;
-        public void SetDamageToBase(int damage) => damageToBase = damage;
+        base.SetValves(creepData, pathIndexes);
+        isSummoner = creepData.isSummoner;
+        summonCreepData = creepData.summonCreepData;
+        summonCount = creepData.summonCount;
+        summonInterval = creepData.summonInterval;
+    }
+
+    protected override void Update()
+    {
+        if (isDead) return;
+
+        lastPosition = transform.position;
+
+        if (rewindCoroutine == null)
+            FollowPath();
+
+        MoveCreep();
+        if (isSlow) CheckSlowRadius();
+
+        if (!isSummoner || summonCreepData == null) return;
+        summonTimer += Time.deltaTime;
+        if (summonTimer > summonInterval)
+        if (summonTimer >= summonInterval)
+        {
+            summonTimer = 0f;
+            StartCoroutine(SpawnSummons());
+        }
+    }
+
+    private IEnumerator SpawnSummons()
+    {
+        for (int i = 0; i < summonCount; i++)
+        {
+            GameObject summon = Creep.CreateNewCreep(summonCreepData, pathToFollow);
+            summon.transform.parent = MasterController.Instance.CreepParent;
+
+            Creep summonCreep = summon.GetComponent<Creep>();
+            summonCreep.splineCompletion = splineCompletion;
+            summonCreep.pathProgress = pathProgress;
+            summonCreep.pathIndex = pathIndex;
+            summon.transform.position = lastPosition;
+
+            MasterController.Instance.IncrementEnemies();
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }
