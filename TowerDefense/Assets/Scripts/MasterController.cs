@@ -13,6 +13,7 @@ public struct CreepSpawnSet
     public int numberToSpawn;
     public int pathIndex;
     public float deleyPerCreep;
+    public bool isBoss;
 }
 
 [Serializable]
@@ -251,7 +252,10 @@ public class MasterController : MonoBehaviour
                     else
                     {
                         //spawn said creep
-                        SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                        if (w.creepSpawnOrder[c].isBoss)
+                            SpawnBossCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                        else
+                            SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
                         yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
                     }
                 }
@@ -290,13 +294,11 @@ public class MasterController : MonoBehaviour
     {
         GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index], pathIndexes);
         newBoss.transform.parent = creepParent;
-
-        Creep.BossCreep bossComponent = newBoss.GetComponent<Creep.BossCreep>();
-        bossComponent.SetHealth(500f);
-        bossComponent.SetSpeed(1.5f);
-
         enemiesAlive++;
     }
+
+    public Transform CreepParent => creepParent;
+    public void IncrementEnemies() => enemiesAlive++;
 
     /// <summary>
     /// Cache all the data assets into memory for use
