@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Splines;
+using Unity.Mathematics;
 
 [RequireComponent(typeof(SplineContainer))]
 public class PathController : MonoBehaviour
@@ -13,16 +14,16 @@ public class PathController : MonoBehaviour
     private List<float> pathLengths;
 
     // ---------- Public accessors ----------
-    public SplineContainer Spline  => spline;
+    public SplineContainer Spline => spline;
     public List<float> PathLengths => pathLengths;
     /// <summary>
     /// World position at the beginning first spline
     /// </summary>
-    public Vector3 StartPosition   => GetPosition(0f); 
+    public Vector3 StartPosition => GetPosition(0f);
     /// <summary>
     /// World position at the end of the last spline
     /// </summary>
-    public Vector3 EndPosition     => GetPosition(pathLengths.Count - 1, 1f);
+    public Vector3 EndPosition => GetPosition(pathLengths.Count - 1, 1f);
 
     // ================================================================
 
@@ -37,7 +38,7 @@ public class PathController : MonoBehaviour
 
         pathLengths = new List<float>();
         //Get all the path lengths for each spline
-        for(int i = 0; i < spline.Splines.Count; i++)
+        for (int i = 0; i < spline.Splines.Count; i++)
         {
             pathLengths.Add(spline.CalculateLength(i));
         }
@@ -90,11 +91,26 @@ public class PathController : MonoBehaviour
     {
         return DistanceToT(0, distance);
     }
-    
+
     public float DistanceToT(int splineIndex, float distance)
     {
         return pathLengths[splineIndex] > 0f ? Mathf.Clamp01(distance / pathLengths[splineIndex]) : 0f;
     }
+
+    /// <summary>
+    /// Given a world position, this will find an alpha point (0-1) on the first spline on the path controller
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public float GetNearestPointToStart(Vector3 worldPosition, int splineIndex, out Vector3 startPosition)
+    {
+        Vector3 localPosition = spline.transform.InverseTransformPoint(worldPosition);
+        float3 pos;
+        SplineUtility.GetNearestPoint(spline.Splines[splineIndex], localPosition, out pos, out float t);
+        startPosition = spline.transform.TransformPoint((Vector3)pos);
+        return t;
+    }
+
 
     /// <summary>
     /// Goes through each spline in our spline container, and sets the Z positions of all the knots to 0;
