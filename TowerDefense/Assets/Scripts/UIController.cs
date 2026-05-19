@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +32,7 @@ public class UIController : MonoBehaviour
 
         panicButton.onClick.AddListener(() =>
         { audioManager.PlaySFX(audioManager.panicButton);
+          StartCoroutine(PlayTsunamiSound());
         MasterController.Instance.OnRewindInitiated?.Invoke(); 
         });
 
@@ -39,6 +42,12 @@ public class UIController : MonoBehaviour
             float playRate = playRates[i];
             playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
         }
+    }
+    private IEnumerator PlayTsunamiSound()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        audioManager.PlaySFX(audioManager.tsunamiPanicButton);
     }
 
     void OnDestroy()
