@@ -22,7 +22,7 @@ public class MenuController : MonoBehaviour
         WaitForSeconds delay = new(1.05f);
         while (true)
         {
-            GameObject newCreep = Creep.CreateNewCreep(basicCreep, new List<int>() { 0 });
+            GameObject newCreep = Creep.CreateNewCreep(basicCreep, new List<int>() { 0 }, 0);
             newCreep.transform.SetParent(creepOrganizer);
             yield return delay;
         }
