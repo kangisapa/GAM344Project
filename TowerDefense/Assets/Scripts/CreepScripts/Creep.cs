@@ -44,8 +44,14 @@ public class Creep : MonoBehaviour
 
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
 
-    // Called by MasterController.SpawnCreep(). It creates the objects needed for a creep object at runtime
-    public static GameObject CreateNewCreep(CreepData creationData, List<int> pathIndexes)
+    /// <summary>
+    ///Called by MasterController.SpawnCreep(). It creates the objects needed for a creep object at runtime
+    /// </summary>
+    /// <param name="creationData">Creep data asset used to define the creep we spawn and values</param>
+    /// <param name="pathIndexes">list of spline indexes on the path controller that define the path the crep follows</param>
+    /// <param name="startprogress">Spawns the creep  "startprogress percent (0-1) on the first spline based on where the spwan object is on the level"</param>
+    /// <returns></returns>
+    public static GameObject CreateNewCreep(CreepData creationData, List<int> pathIndexes, float startprogress)
     {
         //Create our new creep
         GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem)});
@@ -53,7 +59,7 @@ public class Creep : MonoBehaviour
 
         //Creep Setup
         Creep creepScriptReference = newCreepObject.GetComponent<Creep>();
-        creepScriptReference.SetValves(creationData, pathIndexes);
+        creepScriptReference.SetValves(creationData, pathIndexes, startprogress);
 
         SpriteRenderer renderer = newCreepObject.GetComponent<SpriteRenderer>();
         CircleCollider2D collider = newCreepObject.GetComponent<CircleCollider2D>();
@@ -69,8 +75,14 @@ public class Creep : MonoBehaviour
         return newCreepObject;
     }
 
-
-    public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes)
+    /// <summary>
+    ///Called by MasterController. It creates the objects needed for a boss creep object at runtime
+    /// </summary>
+    /// <param name="creationData">Creep data asset used to define the creep we spawn and values</param>
+    /// <param name="pathIndexes">list of spline indexes on the path controller that define the path the crep follows</param>
+    /// <param name="startprogress">Spawns the creep  "startprogress percent (0-1) on the first spline based on where the spwan object is on the level"</param>
+    /// <returns></returns>
+    public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes, float startprogress)
     {
         GameObject newBossObject = new GameObject(creationData.name);
         newBossObject.AddComponent<BossCreep>();
@@ -81,7 +93,7 @@ public class Creep : MonoBehaviour
         newBossObject.layer = LayerMask.NameToLayer("Creeps");
 
         BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
-        bossReference.SetValves(creationData, pathIndexes);
+        bossReference.SetValves(creationData, pathIndexes, startprogress);
 
         SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
         CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
@@ -144,7 +156,7 @@ public class Creep : MonoBehaviour
     }
 
     //Assigns all the values we need for the creep to fully function
-    public void SetValves(CreepData creepData, List<int> pathIndexes)
+    public virtual void SetValves(CreepData creepData, List<int> pathIndexes, float startProgress = 0)
     {
         maxHealth = creepData.maxHealth;
         currentHealth = maxHealth;
@@ -153,7 +165,7 @@ public class Creep : MonoBehaviour
         currencyOnDeath = creepData.currencyOnDeath;
         damageToBase = creepData.damageToBase;
         pathToFollow = pathIndexes;
-        splineCompletion = 0f;
+        splineCompletion = startProgress;
         pathProgress = 0;
         pathIndex = pathToFollow[pathProgress];
         isSlow = creepData.isSlow;
@@ -284,7 +296,6 @@ public class Creep : MonoBehaviour
 
         currentHealth -= amount;
         animationSystem.PlayAnimation(ANIM_DAMAGE);
-        animationSystem.PlayAnimation(ANIM_WALK);
 
         if (currentHealth <= 0f){
             Die();
@@ -329,9 +340,9 @@ public class BossCreep : Creep
     private Vector3 lastPosition;
     private float summonTimer = 0f;
 
-    public new void SetValves(CreepData creepData, List<int> pathIndexes)
+    override public void SetValves(CreepData creepData, List<int> pathIndexes, float startProgress = 0)
     {
-        base.SetValves(creepData, pathIndexes);
+        base.SetValves(creepData, pathIndexes, startProgress);
         isSummoner = creepData.isSummoner;
         summonCreepData = creepData.summonCreepData;
         summonCount = creepData.summonCount;
@@ -364,7 +375,7 @@ public class BossCreep : Creep
     {
         for (int i = 0; i < summonCount; i++)
         {
-            GameObject summon = Creep.CreateNewCreep(summonCreepData, pathToFollow);
+            GameObject summon = Creep.CreateNewCreep(summonCreepData, pathToFollow, 0);
             summon.transform.parent = MasterController.Instance.CreepParent;
 
             Creep summonCreep = summon.GetComponent<Creep>();
