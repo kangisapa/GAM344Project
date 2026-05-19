@@ -38,6 +38,8 @@ public class MasterController : MonoBehaviour
 
     public enum GameState { Start, Playing, GameOver, Victory }
 
+    private Transform pathStartLocationTransform;
+
     // ---------- Player Information ----------
     [Header("Player Information")]
     [SerializeField] private int startingCurrency = 10;
@@ -93,7 +95,8 @@ public class MasterController : MonoBehaviour
     [Header("Spawn Organizers")]
     [SerializeField] private Transform creepParent;
     [SerializeField] private Transform towerParent;
-
+    private float startingProgress;
+    private Vector3 startingWorldPosition;
 
     // ---------- Tower Data Caching ----------
     [Header("Caching Setup")]
@@ -173,9 +176,19 @@ public class MasterController : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.Instance;
-
-        UpdateUI();
-        StartGame();
+        pathStartLocationTransform = transform.Find("CreepSpawnLocationApprox");
+        pathStartLocationTransform.GetComponent<SpriteRenderer>().enabled = false;
+        if (pathStartLocationTransform != null)
+        {
+            startingProgress = PathController.Instance.GetNearestPointToStart(pathStartLocationTransform.transform.position, 0, out startingWorldPosition);
+            Debug.Log(startingProgress);
+            UpdateUI();
+            StartGame();
+        }
+        else
+        {
+            Debug.LogWarning("Unable to find object named \"CreepSpawnLocationApprox\" as a child in the master controller, this object should also have a sprite renderer. Game loop aborted");
+        }
     }
 
     private void GeneratePathLists()
@@ -244,7 +257,7 @@ public class MasterController : MonoBehaviour
                 //count up the for the number to spawn in the set of creeps to spawn
                 for (int n = 0; n < w.creepSpawnOrder[c].numberToSpawn; n++)
                 {
-                    if(pauseSpawning)
+                    if (pauseSpawning)
                     {
                         n--;
                         yield return null;
@@ -253,9 +266,9 @@ public class MasterController : MonoBehaviour
                     {
                         //spawn said creep
                         if (w.creepSpawnOrder[c].isBoss)
-                            SpawnBossCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                            SpawnBossCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex], startingProgress);
                         else
-                            SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex]);
+                            SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex], startingProgress);
                         yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
                     }
                 }
@@ -273,7 +286,7 @@ public class MasterController : MonoBehaviour
 
         if (currentState == GameState.Playing) EndGame(true);
     }
-    
+
     // ---------- Spawning ----------
 
     /// <summary>
@@ -281,19 +294,23 @@ public class MasterController : MonoBehaviour
     /// </summary>
     /// <param name="index">index from the list of available creeps</param>
     /// <param name="pathIndexes">A List of integers containing all the spline indexes we want the creep to follow in order from the spline container on the path controller</param>
-    public void SpawnCreep(int index, List<int> pathIndexes)
+    /// <param name="startprogress">Spawns the creep  "startprogress percent (0-1) on the first spline based on where the spwan object is on the level"</param>
+
+    public void SpawnCreep(int index, List<int> pathIndexes, float startprogress)
     {
         //Call Creep spawning element
-        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index], pathIndexes);
+        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index], pathIndexes, startprogress);
+        newCreep.transform.position = pathStartLocationTransform.position;
         newCreep.transform.parent = creepParent;
         //Increase enemies alives
         enemiesAlive++;
     }
 
-    public void SpawnBossCreep(int index, List<int> pathIndexes)
+    public void SpawnBossCreep(int index, List<int> pathIndexes, float startProgress)
     {
-        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index], pathIndexes);
+        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index], pathIndexes, startingProgress);
         newBoss.transform.parent = creepParent;
+        newBoss.transform.position = pathStartLocationTransform.position;
         enemiesAlive++;
     }
 
