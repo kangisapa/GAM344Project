@@ -19,6 +19,9 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] public AudioClip panicButton;
     [SerializeField] public AudioClip shockEffect;
+    [SerializeField] public AudioClip buttonPressSiren;
+    [SerializeField] public AudioClip playerDeathShatter;
+    [SerializeField] public AudioClip tsunamiPanicButton;
 
     public static AudioManager Instance { get; private set; }
 
