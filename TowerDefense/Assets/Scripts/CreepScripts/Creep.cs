@@ -331,7 +331,6 @@ public class Creep : MonoBehaviour
             
             // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
-        audioManager.PlaySFX(audioManager.basicCreepDeathSFX);
         animationSystem.PlayAnimation(ANIM_DEATH);
         animationSystem.enabled = false;
         Destroy(gameObject, 0.2f);
