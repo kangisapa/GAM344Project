@@ -69,6 +69,12 @@ public class SpriteAnimationSystem : MonoBehaviour
         }
     }
 
+    public float GetAnimationDuration(int index)
+    {
+        Animation anim = assetAnimations[index];
+        return (float)anim.animationSprites.Count / anim.framesPerSecond;
+    }
+
     private IEnumerator AnimationOneShot(int index)
     {
         Animation toPlay = assetAnimations[index];
