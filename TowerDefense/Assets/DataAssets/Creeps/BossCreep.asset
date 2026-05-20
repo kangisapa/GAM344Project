@@ -15,7 +15,7 @@ MonoBehaviour:
   animationData: {fileID: 11400000, guid: ab1f43a9f895ac2438f9442c6622af52, type: 2}
   maxHealth: 5
   moveSpeed: 0.5
-  currencyOnDeath: 10
+  currencyOnDeath: 0
   damageToBase: 5
   isSlow: 0
   slowRadius: 3
