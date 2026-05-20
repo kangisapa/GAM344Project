@@ -21,3 +21,7 @@ MonoBehaviour:
   slowRadius: 3
   slowMultiplier: 0.5
   sprite: {fileID: -1653287097, guid: 85edf037a3d70f149b152e5e80add369, type: 3}
+  isSummoner: 0
+  summonCreepData: {fileID: 0}
+  summonCount: 1
+  summonInterval: 3
