@@ -8,9 +8,19 @@ public class CurrencyGen : MonoBehaviour
 
     [Min(0)]
     [SerializeField] private int paymentAmount = 1;
-
-
     private float timer;
+
+    public float PaymentInterval
+    {
+        get => paymentInterval;
+        set => paymentInterval = Mathf.Max(0.01f, value);
+    }
+
+    public int PaymentAmount
+    {
+        get => paymentAmount;
+        set => paymentAmount = Mathf.Max(0, value);
+    }
 
     private void Start()
     {
