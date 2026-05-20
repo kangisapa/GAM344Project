@@ -14,8 +14,13 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] public AudioClip basicAttackSFX;
 
-    [SerializeField] public AudioClip basicCreepDeathSFX;
     [SerializeField] public AudioClip basicCreepHitSFX;
+    [SerializeField] public AudioClip basicCreepDeathSFX;
+    [SerializeField] public AudioClip basicCreepDeathSFX2;
+    [SerializeField] public AudioClip basicCreepDeathSFX3;
+    [SerializeField] public AudioClip basicCreepDeathSFX4;
+    [SerializeField] public AudioClip basicCreepDeathSFX5;
+    [SerializeField] public AudioClip creepMovement;
 
     [SerializeField] public AudioClip panicButton;
     [SerializeField] public AudioClip shockEffect;

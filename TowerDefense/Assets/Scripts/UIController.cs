@@ -80,6 +80,7 @@ public class UIController : MonoBehaviour
                 break;
             case MasterController.GameState.GameOver:
                 endGameText.text = "Lose";
+                audioManager.PlaySFX(audioManager.playerDeathShatter);
                 break;
             default:
                 endGameText.text = "";

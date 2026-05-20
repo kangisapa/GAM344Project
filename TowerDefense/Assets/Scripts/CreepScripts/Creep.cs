@@ -318,7 +318,17 @@ public class Creep : MonoBehaviour
             MasterController.Instance.OnCreepKilled(currencyOnDeath);
             MasterController.Instance.OnRewindInitiated -= OnPanicButtonPressed;
         }
-        audioManager.PlaySFX(audioManager.basicCreepDeathSFX); // Will need to change dynamically in the future, likely just based on index
+        AudioClip[] sounds =
+        {
+            audioManager.basicCreepDeathSFX,
+            audioManager.basicCreepDeathSFX2,
+            audioManager.basicCreepDeathSFX3,
+            audioManager.basicCreepDeathSFX4,
+            audioManager.basicCreepDeathSFX5,
+        };
+        audioManager.PlaySFX(sounds[Random.Range(0, sounds.Length)]);
+            
+            // Will need to change dynamically in the future, likely just based on index
         Destroy(gameObject);
     }
 
