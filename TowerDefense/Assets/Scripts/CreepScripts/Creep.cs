@@ -329,8 +329,6 @@ public class Creep : MonoBehaviour
         };
         audioManager.PlaySFX(sounds[Random.Range(0, sounds.Length)]);
             
-            // Will need to change dynamically in the future, likely just based on index
-        Destroy(gameObject);
         animationSystem.PlayAnimation(ANIM_DEATH);
         animationSystem.enabled = false;
         Destroy(gameObject, 0.2f);
