@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,22 +16,38 @@ public class UIController : MonoBehaviour
     private Button panicButton;
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
-
+    // ---------- Audio ----------
+    private AudioManager audioManager;
     void Start()
     {
         if (endGameText != null) endGameText.text = "";
 
         MasterController.Instance.OnGameStateChanged += HandleGameStateChanged;
 
+        audioManager = AudioManager.Instance;
+
         panicButton = panicButtonFill.GetComponent<Button>();
 
-        panicButton.onClick.AddListener(() => MasterController.Instance.OnRewindInitiated?.Invoke());
+
+
+        panicButton.onClick.AddListener(() =>
+        { audioManager.PlaySFX(audioManager.panicButton);
+          StartCoroutine(PlayTsunamiSound());
+        MasterController.Instance.OnRewindInitiated?.Invoke(); 
+        });
+
 
         for(int i = 0; i < playRateButtons.Length; i++)
         {
             float playRate = playRates[i];
             playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
         }
+    }
+    private IEnumerator PlayTsunamiSound()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        audioManager.PlaySFX(audioManager.tsunamiPanicButton);
     }
 
     void OnDestroy()
@@ -62,6 +80,7 @@ public class UIController : MonoBehaviour
                 break;
             case MasterController.GameState.GameOver:
                 endGameText.text = "Lose";
+                audioManager.PlaySFX(audioManager.playerDeathShatter);
                 break;
             default:
                 endGameText.text = "";
