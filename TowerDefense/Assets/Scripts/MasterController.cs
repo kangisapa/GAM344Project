@@ -63,10 +63,12 @@ public class MasterController : MonoBehaviour
 
     // ---------- Panic Button Information ----------
     [Header("Panic Button Basic Setup")]
-    public int maxButtonUses = 1;
+    public int maxButtonUses = 3;
     private int usesRemaining;
     public int UsesRemaining => usesRemaining;
-    public float UsesRemainingPercent => (float)usesRemaining / maxButtonUses;
+    public int MaxButtonUses => maxButtonUses;
+    public event Action<int> OnUsesRemainingChanged;
+
     [Tooltip("How many seconds of creep progress the panic button reverts"), Min(0)]
     public float rewindTime = 5;
     [Tooltip("How long the rewind will actually last (moving back \"rewindTime\" amount of progress in x seconds")]
@@ -227,6 +229,8 @@ public class MasterController : MonoBehaviour
         currentWaveIndex = 0;
         enemiesAlive = 0;
         usesRemaining = maxButtonUses;
+        buttonAvailable = usesRemaining > 0;
+        OnUsesRemainingChanged?.Invoke(usesRemaining);
         OnRewindInitiated += () => StartCoroutine(PanicButtonCooldown());
         SetGameState(GameState.Playing);
         StartCoroutine(GameLoop());
@@ -401,11 +405,19 @@ public class MasterController : MonoBehaviour
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
     }
+    public bool TryUsePanicButton()
+    {
+        if (!buttonAvailable) return false;
+        if (usesRemaining <= 0) return false;
+        OnRewindInitiated?.Invoke();
+        return true;
+    }
 
     private IEnumerator PanicButtonCooldown()
     {
         buttonAvailable = false;
         usesRemaining--;
+        OnUsesRemainingChanged?.Invoke(usesRemaining);
         pauseSpawning = true;
         yield return new WaitForSeconds(rewindTime);
         pauseSpawning = false;
