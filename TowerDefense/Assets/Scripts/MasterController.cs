@@ -20,6 +20,7 @@ public struct CreepSpawnSet
 public class Wave
 {
     [HideInInspector] public string name = "wave";
+    [InspectorName("Creep Set")]
     public List<CreepSpawnSet> creepSpawnOrder = new List<CreepSpawnSet>();
     public float delayBeforeWave;
 }
@@ -183,7 +184,6 @@ public class MasterController : MonoBehaviour
         if (pathStartLocationTransform != null)
         {
             startingProgress = PathController.Instance.GetNearestPointToStart(pathStartLocationTransform.transform.position, 0, out startingWorldPosition);
-            Debug.Log(startingProgress);
             UpdateUI();
             StartGame();
         }

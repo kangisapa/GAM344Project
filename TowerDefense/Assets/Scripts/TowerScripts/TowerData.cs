@@ -10,6 +10,9 @@ public class TowerData : ScriptableObject
 
     // ---------- Tower Settings ----------
     [Min(0)] public float targetRadius;
+    [InspectorName("Angle Set")]
+    public Vector2[] firingAngles = { new(0, 360) };
+
 
     [Min(0)] public float damagePerShot;
     [Min(0)] public float shotsPerSecond;

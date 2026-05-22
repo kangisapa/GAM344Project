@@ -15,11 +15,13 @@ MonoBehaviour:
   projectileSprite: {fileID: 21300000, guid: 6b14fa792f77fc34e9ca4feaefea88e6, type: 3}
   animationData: {fileID: 11400000, guid: b785dc0fc5b6e534e84e6436a9fbbc4b, type: 2}
   targetRadius: 3
+  firingAngles:
+  - {x: 0, y: 360}
   damagePerShot: 1
   shotsPerSecond: 1
   projectileTargetTime: 0.5
   firingDelay: 0.4
   creepsToTarget: 1
-  slowable: 1
+  slowable: 0
   cost: 30
   notes: Basic tower that does basic things - Change in future

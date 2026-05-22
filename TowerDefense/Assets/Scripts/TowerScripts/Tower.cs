@@ -40,8 +40,8 @@ public class Tower : MonoBehaviour
     #endregion
     // ---------- Tower Damaging ----------
     private CircleCollider2D rangeCollider;
+    private Vector2[] firingAngles;
     public float towerRange => rangeCollider.radius;
-    private float targetRadius;
     private float damagePerShot;
     private float shotsPerSecond;
     private float projectileTargetTime;
@@ -92,7 +92,7 @@ public class Tower : MonoBehaviour
     private void SetValues(TowerData creationData, CircleCollider2D rangeCollider)
     {
         projectileSprite = creationData.projectileSprite;
-        targetRadius = creationData.targetRadius;
+        firingAngles = creationData.firingAngles;
         damagePerShot = creationData.damagePerShot;
         shotsPerSecond = creationData.shotsPerSecond;
         projectileTargetTime = creationData.projectileTargetTime;
@@ -145,7 +145,7 @@ public class Tower : MonoBehaviour
 
             List<Creep> targetableCreeps = ValidateTargetableCreeps(overlaps);
 
-            //If nothing is actually targetable, don't ocntinue, wait a frame, then start again
+            //If nothing is actually targetable, don't continue, wait a frame, then start again
             if(targetableCreeps.Count == 0)
             {
                 yield return null;
@@ -155,7 +155,6 @@ public class Tower : MonoBehaviour
             /*
              In both instances below, we AssignDamage before we actually wait and fire so other towers know that this creep is bout to die anyways and not bother targeting and creating issues
              */
-
 
             if (targetableCreeps.Count <= creepsToTarget)
             {
@@ -216,7 +215,10 @@ public class Tower : MonoBehaviour
         {
             Creep creepComponent = creep.GetComponent<Creep>();
             float distance = Vector2.Distance(transform.position, creep.transform.position);
-            if (creepComponent != null && creepComponent.targetHealth > 0 && distance <= rangeCollider.radius)
+            if (creepComponent != null && 
+                creepComponent.targetHealth > 0 && 
+                distance <= rangeCollider.radius &&
+                CustomMathLibrary.AngleWithinRanges(firingAngles, CustomMathLibrary.AngleBetweenVector2Positions(transform.position, creep.transform.position)))
             {
                 targetable.Add(creepComponent);
             }
