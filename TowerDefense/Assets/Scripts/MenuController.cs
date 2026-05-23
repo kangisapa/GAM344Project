@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
+    public string levelOnPlay;
     [SerializeField] Transform dedicatedTowerSpot, creepOrganizer;
     [SerializeField] GameObject basicTower;
     [SerializeField] GameObject basicCreep;
@@ -31,6 +32,6 @@ public class MenuController : MonoBehaviour
 
     public void OpenFirstLevel()
     {
-        SceneManager.LoadScene(1);
+        GameManager.Instance.GoToNewScene(levelOnPlay);
     }
 }

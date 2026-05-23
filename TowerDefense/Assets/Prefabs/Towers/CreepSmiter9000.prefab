@@ -78,6 +78,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6897673745102827701}
   - component: {fileID: 6750585012600427858}
+  - component: {fileID: -4428699570563977436}
   - component: {fileID: 1305881806181255099}
   - component: {fileID: 5925120250574514985}
   - component: {fileID: 4892317833349214078}
@@ -129,6 +130,20 @@ MonoBehaviour:
   creepsToTarget: 3
   slowable: 0
   cost: 999
+--- !u!114 &-4428699570563977436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5173055451115395435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9cd797d5b16c14d81dc7355651fb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectNote
+  note: FOR THE LOVE OF GOD, DONT PUT THIS IN AN ACTUAL LEVEL. This was just used
+    to test tower targeting stuff
 --- !u!212 &1305881806181255099
 SpriteRenderer:
   m_ObjectHideFlags: 0
