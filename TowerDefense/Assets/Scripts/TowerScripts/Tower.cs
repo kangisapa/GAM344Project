@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Device;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
@@ -8,8 +9,10 @@ public class Tower : MonoBehaviour
 {
     public static LayerMask creepLayer;
 
-    // ---------- Tower Visuals ----------
-    private Sprite projectileSprite;
+    [Header("Tower Visuals")]
+    [SerializeField] private Sprite projectileSprite;
+    [SerializeField] private SpriteAnimationData animationData;
+    private SpriteRenderer spriteRenderer;
     private SpriteAnimationSystem animationSystem;
 
     // ---------- Tower Slow ----------
@@ -38,18 +41,31 @@ public class Tower : MonoBehaviour
         }
     }
     #endregion
-    // ---------- Tower Damaging ----------
-    private CircleCollider2D rangeCollider;
-    private Vector2[] firingAngles;
+    [Header("Tower Targetting")]
+    [SerializeField] private CircleCollider2D rangeCollider;
+    [SerializeField, Min(0)] private float targetRadius;
+    [SerializeField, InspectorName("Angle Set")] private Vector2[] firingAngles = { new (0, 360)};
     public float towerRange => rangeCollider.radius;
-    private float damagePerShot;
-    private float shotsPerSecond;
-    private float projectileTargetTime;
-    private float firingDelay;
-    private int creepsToTarget;
-    public bool slowable { get; private set; }
 
-    private int cost;
+    [Header("Tower Damage")]
+    [SerializeField, Min(0)]
+    private float damagePerShot;
+    [SerializeField, Min(0)]
+    private float shotsPerSecond;
+    [SerializeField, Min(0), Tooltip("How long will it take the projectile to reach the target in seconds")] 
+    private float projectileTargetTime;
+    [SerializeField, Min(0), Tooltip("just used to sync up the animation to firing")] 
+    private float firingDelay;
+    [SerializeField, Min(1), Tooltip("Put an obscenly high value if you want the tower to target everything in range")] 
+    private int creepsToTarget = 1;
+
+    [SerializeField] private bool slowable = true;
+
+    public bool Slowable => slowable;
+
+    [Header("Economy"), SerializeField] private int cost;
+    public int Cost => cost;
+
     // ---------- Tower Enabling ----------
     private bool towerEnabled = false;
 
@@ -60,55 +76,26 @@ public class Tower : MonoBehaviour
 
     // ================================================================
 
-    public static GameObject CreateNewTower(TowerData creationData)
+    private void OnValidate()
     {
-        //Create our new tower and its associated range object
-        GameObject newTowerObject = new GameObject(creationData.name, typeof(Tower), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem));
-        GameObject newTowerRangeObject = new GameObject("TowerRange",  typeof(CircleCollider2D));
-
-        SpriteRenderer renderer = newTowerObject.GetComponent<SpriteRenderer>();
-        CircleCollider2D collider = newTowerObject.GetComponent<CircleCollider2D>();
-
-        //Tower Setup (script values => tower visuals => range setup 
-        Tower towerScriptReference = newTowerObject.GetComponent<Tower>();
-        towerScriptReference.SetValues(creationData, newTowerRangeObject.GetComponent<CircleCollider2D>());
-        towerScriptReference.animationSystem = newTowerObject.GetComponent<SpriteAnimationSystem>();
-        towerScriptReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
-
-        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
-        collider.radius = renderer.bounds.extents.x / newTowerObject.transform.lossyScale.x;
-        collider.offset = Vector2.zero;
-        collider.isTrigger = true;
-
-        //Tower Range Setup
-        newTowerRangeObject.transform.parent = newTowerObject.transform;
-        newTowerRangeObject.transform.localPosition = Vector3.zero;
-        towerScriptReference.rangeCollider.radius = creationData.targetRadius;
-        towerScriptReference.rangeCollider.offset = Vector2.zero;
-
-        return newTowerObject;
+        if(rangeCollider)
+        {
+            rangeCollider.radius = targetRadius;
+        }
     }
 
-    private void SetValues(TowerData creationData, CircleCollider2D rangeCollider)
+    private void SetValues()
     {
-        projectileSprite = creationData.projectileSprite;
-        firingAngles = creationData.firingAngles;
-        damagePerShot = creationData.damagePerShot;
-        shotsPerSecond = creationData.shotsPerSecond;
-        projectileTargetTime = creationData.projectileTargetTime;
-        firingDelay = creationData.firingDelay;
-        creepsToTarget = creationData.creepsToTarget;
-        slowable = creationData.slowable;
-        cost = creationData.cost;
-        this.rangeCollider = rangeCollider;
+        animationSystem = GetComponent<SpriteAnimationSystem>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animationSystem.InitializeAnimationSystem(animationData, spriteRenderer);
         baseShotsPerSecond = shotsPerSecond;
-
         audioManager = AudioManager.Instance;
-
     }
 
     public void PlaceTower(Vector3 position)
     {
+        SetValues();
         gameObject.transform.position = position;
         towerEnabled = true;
         StartCoroutine(UpdateLoop());
@@ -261,4 +248,20 @@ public class Tower : MonoBehaviour
         }
     }
 
+    public Sprite GetThumbnailSprite()
+    {
+        return animationData.animations[animationData.idleAnimation].animationSprites[0];
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if(rangeCollider)
+        {
+            Handles.color = Color.red;
+            Vector3 center = rangeCollider.transform.TransformPoint(rangeCollider.offset);
+            Handles.DrawWireDisc(center, rangeCollider.transform.forward, rangeCollider.radius * Mathf.Max(rangeCollider.transform.lossyScale.x, rangeCollider.transform.lossyScale.y));
+        }
+    }
+#endif
 }

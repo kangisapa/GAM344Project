@@ -248,7 +248,6 @@ MonoBehaviour:
       numberToSpawn: 15
       pathIndex: 0
       deleyPerCreep: 2
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
@@ -256,7 +255,6 @@ MonoBehaviour:
       numberToSpawn: 15
       pathIndex: 0
       deleyPerCreep: 1
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 3
     creepSpawnOrder:
@@ -264,7 +262,6 @@ MonoBehaviour:
       numberToSpawn: 25
       pathIndex: 0
       deleyPerCreep: 0.75
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 4
     creepSpawnOrder:
@@ -272,7 +269,6 @@ MonoBehaviour:
       numberToSpawn: 35
       pathIndex: 0
       deleyPerCreep: 0.33
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 5
     creepSpawnOrder:
@@ -280,7 +276,6 @@ MonoBehaviour:
       numberToSpawn: 75
       pathIndex: 0
       deleyPerCreep: 0.29
-      isBoss: 0
     delayBeforeWave: 5
   paths:
   - 0
@@ -292,10 +287,10 @@ MonoBehaviour:
   damageDealt: 1
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
-  towerKeys:
-  - Pill_Fish
-  creepKeys:
-  - BasicCreep
+  towerPrefabs:
+  - {fileID: 5173055451115395435, guid: 967edb82452f45a43a01cab3ecaf3363, type: 3}
+  creepPrefabs:
+  - {fileID: 4254352662458461751, guid: 19940bf6e829f9b47a942d6a914fe82e, type: 3}
   pauseSpawning: 0
 --- !u!4 &37661630
 Transform:

@@ -22,7 +22,7 @@ public static class CustomMathLibrary
     /// </summary>
     /// <param name="Range"></param>
     /// <param name="angle"></param>
-    /// <returns></returns>
+    /// <returns>within range</returns>
     public static bool AngleInRange(Vector2 Range, float angle)
     {
         if(Range.x < Range.y)
@@ -34,11 +34,22 @@ public static class CustomMathLibrary
             return angle >= Range.x || angle <= Range.y;
         }
     }
-
+    /// <summary>
+    /// Check if the specified angle is within a set of ranges
+    /// </summary>
+    /// <param name="ranges">ranges to check agains</param>
+    /// <param name="angle">angle in degrees</param>
+    /// <returns>angle within one of the ranges</returns>
     public static bool AngleWithinRanges(Vector2[] ranges, float angle)
     {
         return AngleWithinRanges(ranges.ToList(), angle);
     }
+    /// <summary>
+    /// Check if the specified angle is within a set of ranges
+    /// </summary>
+    /// <param name="ranges">ranges to check agains</param>
+    /// <param name="angle">angle in degrees</param>
+    /// <returns>angle within one of the ranges</returns>
     public static bool AngleWithinRanges(List<Vector2> ranges, float angle)
     {
         foreach(Vector2 range in ranges)

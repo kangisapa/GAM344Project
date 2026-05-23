@@ -4399,6 +4399,7 @@ Transform:
   - {fileID: 733118140}
   - {fileID: 1572586410}
   - {fileID: 1112204337}
+  - {fileID: 1836976128}
   m_Father: {fileID: 1100499708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739531409
@@ -4707,12 +4708,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1836976126}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -5.5091367, y: -1.8327804, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1715172467}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &1840025865
 GameObject:
@@ -5606,8 +5607,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuController
   dedicatedTowerSpot: {fileID: 8841404152954107813}
   creepOrganizer: {fileID: 1313844446}
-  basicTower: {fileID: 11400000, guid: c1b5cfa6004f9ff49a9edfa2b82e20a8, type: 2}
-  basicCreep: {fileID: 11400000, guid: 39ce106295c99f445b6a48a065ae65d7, type: 2}
+  basicTower: {fileID: 5173055451115395435, guid: 967edb82452f45a43a01cab3ecaf3363, type: 3}
+  basicCreep: {fileID: 4254352662458461751, guid: 19940bf6e829f9b47a942d6a914fe82e, type: 3}
 --- !u!1 &2089828032
 GameObject:
   m_ObjectHideFlags: 0
@@ -5889,4 +5890,3 @@ SceneRoots:
   - {fileID: 1637384902}
   - {fileID: 405766477}
   - {fileID: 1433495424}
-  - {fileID: 1836976128}

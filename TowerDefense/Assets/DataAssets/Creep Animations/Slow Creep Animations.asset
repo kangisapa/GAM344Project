@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1daed8d762ad34384136f7c181992d, type: 3}
+  m_Name: Slow Creep Animations
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimationData
+  idleAnimation: 0
+  animations:
+  - animationSprites:
+    - {fileID: -8583864990351566523, guid: f02d53014d41a504c895613dda8484cc, type: 3}
+    - {fileID: -1751341830, guid: f02d53014d41a504c895613dda8484cc, type: 3}
+    framesPerSecond: 4
+    looping: 1
+  - animationSprites:
+    - {fileID: -1751341830, guid: f02d53014d41a504c895613dda8484cc, type: 3}
+    framesPerSecond: 2
+    looping: 0
+  - animationSprites:
+    - {fileID: -1751341830, guid: f02d53014d41a504c895613dda8484cc, type: 3}
+    framesPerSecond: 4
+    looping: 0

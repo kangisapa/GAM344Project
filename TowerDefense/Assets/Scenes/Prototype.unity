@@ -158,7 +158,6 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 3
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 2
     creepSpawnOrder:
@@ -166,17 +165,14 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 0.75
-      isBoss: 0
     - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 0.75
-      isBoss: 0
     - creepIndexToSpawn: 0
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 3
     creepSpawnOrder:
@@ -184,7 +180,6 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 4
     creepSpawnOrder:
@@ -192,7 +187,6 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
-      isBoss: 0
     delayBeforeWave: 5
   - name: Wave 5
     creepSpawnOrder:
@@ -200,7 +194,6 @@ MonoBehaviour:
       numberToSpawn: 5
       pathIndex: 0
       deleyPerCreep: 1
-      isBoss: 0
     delayBeforeWave: 5
   paths:
   - 0
@@ -212,13 +205,12 @@ MonoBehaviour:
   damageDealt: 1
   creepParent: {fileID: 1313844446}
   towerParent: {fileID: 778779257}
-  towerKeys:
-  - Pill_Fish
-  - IV_Stingray
-  - CreepSmiter9000
-  creepKeys:
-  - BasicCreep
-  - BossCreep
+  towerPrefabs:
+  - {fileID: 5173055451115395435, guid: 967edb82452f45a43a01cab3ecaf3363, type: 3}
+  - {fileID: 5173055451115395435, guid: 0f3d5c3ae1020ef439f82578d2126aa2, type: 3}
+  - {fileID: 5173055451115395435, guid: fb04dd6d424932d468636906177d0c8e, type: 3}
+  creepPrefabs:
+  - {fileID: 4254352662458461751, guid: 19940bf6e829f9b47a942d6a914fe82e, type: 3}
   pauseSpawning: 0
 --- !u!4 &37661630
 Transform:
@@ -1404,6 +1396,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4890892786232612566, guid: 3a31c5cc75400f144a247a1943a56a6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7439182386256120068, guid: 3a31c5cc75400f144a247a1943a56a6c, type: 3}
+      propertyPath: m_MaskInteraction
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7939737608435725536, guid: 3a31c5cc75400f144a247a1943a56a6c, type: 3}
