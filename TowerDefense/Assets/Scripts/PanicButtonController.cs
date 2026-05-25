@@ -11,14 +11,13 @@ public class PanicButtonController : MonoBehaviour
     private AudioManager audioManager;
  
     private void OnEnable()
+{
+    if (MasterController.Instance != null)
     {
-        if (MasterController.Instance != null)
-        {
-            MasterController.Instance.OnUsesRemainingChanged += HandleUsesChanged;
-
-            HandleUsesChanged(MasterController.Instance.UsesRemaining);
-        }
+        MasterController.Instance.OnUsesRemainingChanged += HandleUsesChanged;
+        HandleUsesChanged(MasterController.Instance.UsesRemaining);
     }
+}
  
     private void OnDisable()
     {
@@ -27,9 +26,17 @@ public class PanicButtonController : MonoBehaviour
     }
  
     private void Start()
+{
+    audioManager = AudioManager.Instance;
+
+    if (MasterController.Instance != null)
     {
-        audioManager = AudioManager.Instance;
+        MasterController.Instance.OnUsesRemainingChanged -= HandleUsesChanged;
+        MasterController.Instance.OnUsesRemainingChanged += HandleUsesChanged;
+        HandleUsesChanged(MasterController.Instance.UsesRemaining);
     }
+}
+
  
 
     private void OnMouseDown()
