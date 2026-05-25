@@ -373,7 +373,19 @@ public class MasterController : MonoBehaviour
     {
         playerHealth = Mathf.Max(0, playerHealth - damage);
         OnHealthChanged?.Invoke(playerHealth);
-        audioManager.PlaySFX(audioManager.playerDamgeSFX);
+      
+        AudioClip[] sounds = //replaced original with array for sophistication
+       {
+            audioManager.playerDamageSFX,
+            audioManager.playerDamageSFX2,
+            audioManager.playerDamageSFX3,
+
+        };
+        if (playerHealth > 0)
+        {
+            audioManager.PlaySFX(sounds[UnityEngine.Random.Range(0, sounds.Length)]);
+        }
+
         if (playerHealth == 0) EndGame(false);
     }
 

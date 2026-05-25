@@ -10,8 +10,9 @@ public class AudioManager : MonoBehaviour
     [Header("SFX Library")]
     [SerializeField] public AudioClip startWaveSFX;
     [SerializeField] public AudioClip endWaveSFX;
-    [SerializeField] public AudioClip playerDamgeSFX;
-
+    [SerializeField] public AudioClip playerDamageSFX;
+    [SerializeField] public AudioClip playerDamageSFX2;
+    [SerializeField] public AudioClip playerDamageSFX3;
     [SerializeField] public AudioClip basicAttackSFX;
 
     [SerializeField] public AudioClip basicCreepHitSFX;

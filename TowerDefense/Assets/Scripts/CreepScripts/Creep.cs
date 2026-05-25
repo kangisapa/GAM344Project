@@ -19,7 +19,6 @@ public class Creep : MonoBehaviour
     public float slowRadius = 3f;
     [Range(0f, 1f)] public float slowMultiplier = 0.5f;
 
-    private AudioManager audioManager;
 
 
     // --- Path Stats ---
@@ -42,6 +41,9 @@ public class Creep : MonoBehaviour
     private const int ANIM_WALK = 0;
     private const int ANIM_DAMAGE = 1;
     private const int ANIM_DEATH = 2;
+
+    // ---------- Audio ----------
+    private AudioManager audioManager;
 
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
 
@@ -217,6 +219,7 @@ public class Creep : MonoBehaviour
         //move our creep to the world position of the spline we are on based on its completion
         transform.position = Vector3.Lerp(transform.position, PathController.Instance.GetPosition(pathIndex, splineCompletion), Time.deltaTime * 5);
         transform.right = Vector3.Lerp(transform.right, PathController.Instance.GetTangent(pathIndex, splineCompletion), Time.deltaTime * 5);
+     
     }
 
     // Panic Button behavior

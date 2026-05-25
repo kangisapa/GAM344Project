@@ -3463,7 +3463,9 @@ MonoBehaviour:
   sfxSource: {fileID: 845238132}
   startWaveSFX: {fileID: 8300000, guid: 5aa47b92b776ae746ba9a1f03333b3fa, type: 3}
   endWaveSFX: {fileID: 8300000, guid: 6b39b2a2d92c0d34eb768d994b52b00e, type: 3}
-  playerDamgeSFX: {fileID: 8300000, guid: aba4d21e68e36934289a87c92c2468f6, type: 3}
+  playerDamageSFX: {fileID: 8300000, guid: aba4d21e68e36934289a87c92c2468f6, type: 3}
+  playerDamageSFX2: {fileID: 8300000, guid: c24a9fc93e781734197cef90688863cc, type: 3}
+  playerDamageSFX3: {fileID: 8300000, guid: b0a211e487859cd42843c777cea4924d, type: 3}
   basicAttackSFX: {fileID: 8300000, guid: 5ee2fcbf9b2a35f46b6a8af8ffcfc34e, type: 3}
   basicCreepHitSFX: {fileID: 0}
   basicCreepDeathSFX: {fileID: 8300000, guid: 5097307ab4d0ebe409bc1d2555166c89, type: 3}
