@@ -8,27 +8,42 @@ public class InspectorNameDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // 1. Grab the attribute data (the "Path" you typed in your list)
         InspectorNameAttribute nameAttr = (InspectorNameAttribute)attribute;
-        string prefix = nameAttr.displayedName;
 
-        // 2. Get the current index from the property path (e.g., "paths.Array.data[0]")
-        int index = System.Convert.ToInt32(property.propertyPath.Substring(property.propertyPath.IndexOf("[")).Replace("[", "").Replace("]", ""));
+        // 1. SAFE INDEX EXTRACTION: Grab the very last bracket pair for the current nested level
+        int index = 0;
+        string path = property.propertyPath;
 
-        // 3. Create the final label string (e.g., "Path 0: MyValue")
-        string finalLabel = $"{prefix} {index}";
+        int lastOpenBracket = path.LastIndexOf('[');
+        int lastCloseBracket = path.LastIndexOf(']');
 
-        // 4. Draw it
+        if (lastOpenBracket >= 0 && lastCloseBracket > lastOpenBracket)
+        {
+            string indexString = path.Substring(lastOpenBracket + 1, lastCloseBracket - lastOpenBracket - 1);
+            int.TryParse(indexString, out index);
+        }
+
+        // 2. Build the foldout label safely
+        string finalLabel = $"{nameAttr.displayedName} {index}";
+
+        // 3. Draw it exactly like before
         EditorGUI.BeginProperty(position, label, property);
-
         EditorGUI.BeginChangeCheck();
-        property.stringValue = EditorGUI.TextField(position, finalLabel, property.stringValue);
+
+        Rect adjustedPosition = new Rect(position.x, position.y + 1, position.width, position.height - 1);
+        EditorGUI.PropertyField(adjustedPosition, property, new GUIContent(finalLabel), true);
 
         if (EditorGUI.EndChangeCheck())
         {
             property.serializedObject.ApplyModifiedProperties();
         }
-
         EditorGUI.EndProperty();
     }
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        // This calculates the exact height Unity needs to draw the struct 
+        // and all of its internal fields, including spacing.
+        return EditorGUI.GetPropertyHeight(property, label, true);
+    }
 }
+

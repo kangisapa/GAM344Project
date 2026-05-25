@@ -1,31 +1,118 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     #region Singleton Setup
     public static GameManager Instance;
 
+    #region Loading
+    [Header("Loading Screen Settings")]
+    public bool skipLoading;
+    public Image fadeImage;
+    public float speed = 1;
+    private enum FadeState {idle, fadingIn, fadingOut}
+    private FadeState fadeState = FadeState.fadingOut;
+    private float fadeAlpha = 1;
+    int nextSceneIndex;
+    #endregion
+
     private void Awake()
     {
         if(Instance == null)
         {
             Instance = this;
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else if(Instance != this)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
     }
     #endregion
 
-    #region Panic Button Behaviour
+    [Header("Panic Button Behaviour")]
     public PanicButtonBehavior panicButtonType = PanicButtonBehavior.Standard;
-    #endregion
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //ensures this sticks between levels
         DontDestroyOnLoad(gameObject);
+        if(skipLoading)
+        {
+            fadeAlpha = 0;
+            fadeState = FadeState.idle;
+        }
+    }
+
+    private void Update()
+    {
+        if (fadeImage == null) return;
+
+        switch(fadeState)
+        {
+            case FadeState.idle:
+                fadeImage.color = new(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, 0);
+                break;
+            case FadeState.fadingIn:
+                if (fadeAlpha > 1)
+                {
+                    SceneManager.LoadScene(nextSceneIndex);
+                }
+                fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, Mathf.Min(1, fadeAlpha));
+                fadeAlpha += speed * Time.deltaTime;
+                break;
+            case FadeState.fadingOut:
+                if (fadeAlpha < 0)
+                {
+                    fadeState = FadeState.idle;
+                }
+                fadeImage.color = new Color(fadeImage.color.r, fadeImage.color.g, fadeImage.color.b, Mathf.Max(0, fadeAlpha));
+                fadeAlpha -= speed * Time.deltaTime;
+                break;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        fadeState = FadeState.fadingOut;
+        RefreshManagerWorldReferences();
+        //any other functions we might have to do would go here
+    }
+
+    public IEnumerator GoToNewSceneAfterDelay(int delay, int sceneIndex)
+    {
+        yield return new WaitForSeconds(delay);
+        GoToNewScene(sceneIndex);
+    }
+
+    public void GoToNewScene(string sceneName)
+    {
+        for(int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            string name = System.IO.Path.GetFileNameWithoutExtension(path);
+            if(name.Equals(sceneName))
+            {
+                GoToNewScene(i);
+                return;
+            }
+        }
+        Debug.LogWarning($"Scene '{sceneName}' not found in Build Settings!");
+    }
+
+    public void GoToNewScene(int sceneIndex)
+    {
+        fadeState = FadeState.fadingIn;
+        nextSceneIndex = sceneIndex;
+    }
+
+    private void RefreshManagerWorldReferences()
+    {
+        //If the manager would need to reference things in the level, that refreshing of variable references would happen here
     }
 
 }

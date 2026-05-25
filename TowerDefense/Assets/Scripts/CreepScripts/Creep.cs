@@ -7,24 +7,24 @@ public class Creep : MonoBehaviour
 {
     // --- Configuration ---
     [Header("Stats")]
-    protected float maxHealth = 100f;
-    protected float moveSpeed = 3f;
+    [SerializeField] protected float maxHealth = 1;
+    [SerializeField] protected float moveSpeed = 1;
 
     [Header("Rewards")]
-    protected int currencyOnDeath = 10;
-    protected int damageToBase = 1;
+    [SerializeField] protected int currencyOnDeath = 0;
+    [SerializeField] protected int damageToBase = 1;
 
     [Header("Slow")]
-    public bool isSlow = false;
-    public float slowRadius = 3f;
-    [Range(0f, 1f)] public float slowMultiplier = 0.5f;
+    [SerializeField] protected bool isSlow = false;
+    [SerializeField] protected float slowRadius = 3f;
+    [SerializeField, Range(0f, 1f)] protected float slowMultiplier = 0.5f;
 
 
 
     // --- Path Stats ---
     protected List<int> pathToFollow; //the overall path
-    public int pathIndex; //index of the spline to follow
-    public float splineCompletion; //progress 0->100% of the spline we are on
+    [HideInInspector] public int pathIndex; //index of the spline to follow
+    protected float splineCompletion; //progress 0->100% of the spline we are on
     protected Coroutine rewindCoroutine;
 
     // --- Slow ---
@@ -32,10 +32,11 @@ public class Creep : MonoBehaviour
 
     // --- Runtime State ---
     protected float currentHealth;
-    public int pathProgress;
+    [HideInInspector] public int pathProgress;
     protected bool isDead = false;
 
-    // --- Animation ---
+    [Header("Animation")]
+    [SerializeField] private SpriteAnimationData animationData;
     protected SpriteAnimationSystem animationSystem;
 
     private const int ANIM_WALK = 0;
@@ -47,136 +48,31 @@ public class Creep : MonoBehaviour
 
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
 
-    /// <summary>
-    ///Called by MasterController.SpawnCreep(). It creates the objects needed for a creep object at runtime
-    /// </summary>
-    /// <param name="creationData">Creep data asset used to define the creep we spawn and values</param>
-    /// <param name="pathIndexes">list of spline indexes on the path controller that define the path the crep follows</param>
-    /// <param name="startprogress">Spawns the creep  "startprogress percent (0-1) on the first spline based on where the spwan object is on the level"</param>
-    /// <returns></returns>
-    public static GameObject CreateNewCreep(CreepData creationData, List<int> pathIndexes, float startprogress)
+    private void OnValidate()
     {
-        //Create our new creep
-        GameObject newCreepObject = new GameObject(creationData.name, new System.Type[] { typeof(Creep), typeof(SpriteRenderer), typeof(CircleCollider2D), typeof(SpriteAnimationSystem)});
-        newCreepObject.layer = LayerMask.NameToLayer("Creeps");
-
-        //Creep Setup
-        Creep creepScriptReference = newCreepObject.GetComponent<Creep>();
-        creepScriptReference.SetValves(creationData, pathIndexes, startprogress);
-
-        SpriteRenderer renderer = newCreepObject.GetComponent<SpriteRenderer>();
-        CircleCollider2D collider = newCreepObject.GetComponent<CircleCollider2D>();
-
-        // Initialize animation system exactly like Tower does
-        creepScriptReference.animationSystem = newCreepObject.GetComponent<SpriteAnimationSystem>();
-        creepScriptReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
-
-        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
-        collider.radius = renderer.bounds.extents.x / newCreepObject.transform.lossyScale.x;
-        collider.offset = Vector2.zero;
-
-        return newCreepObject;
-    }
-
-    /// <summary>
-    ///Called by MasterController. It creates the objects needed for a boss creep object at runtime
-    /// </summary>
-    /// <param name="creationData">Creep data asset used to define the creep we spawn and values</param>
-    /// <param name="pathIndexes">list of spline indexes on the path controller that define the path the crep follows</param>
-    /// <param name="startprogress">Spawns the creep  "startprogress percent (0-1) on the first spline based on where the spwan object is on the level"</param>
-    /// <returns></returns>
-    public static GameObject CreateNewBossCreep(CreepData creationData, List<int> pathIndexes, float startprogress)
-    {
-        GameObject newBossObject = new GameObject(creationData.name);
-        newBossObject.AddComponent<BossCreep>();
-        newBossObject.AddComponent<SpriteRenderer>();
-        newBossObject.AddComponent<CircleCollider2D>();
-        newBossObject.AddComponent<SpriteAnimationSystem>();
-
-        newBossObject.layer = LayerMask.NameToLayer("Creeps");
-
-        BossCreep bossReference = newBossObject.GetComponent<BossCreep>();
-        bossReference.SetValves(creationData, pathIndexes, startprogress);
-
-        SpriteRenderer renderer = newBossObject.GetComponent<SpriteRenderer>();
-        CircleCollider2D collider = newBossObject.GetComponent<CircleCollider2D>();
-
-        bossReference.animationSystem = newBossObject.GetComponent<SpriteAnimationSystem>();
-        bossReference.animationSystem.InitializeAnimationSystem(creationData.animationData, renderer);
-
-        renderer.sprite = creationData.animationData.animations[creationData.animationData.idleAnimation].animationSprites[0];
-        collider.radius = renderer.bounds.extents.x / newBossObject.transform.lossyScale.x;
-        collider.offset = Vector2.zero;
-
-        return newBossObject;
-    }
-
-    protected void CheckSlowRadius()
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, slowRadius);
-        List<Tower> towersInRange = new List<Tower>();
-
-        foreach (Collider2D hit in hits)
+        if(animationData != null)
         {
-            Tower tower = hit.GetComponent<Tower>();
-            if (tower != null && tower.slowable)
-            {
-                float distance = Vector2.Distance(tower.transform.position, transform.position);
-                if (distance <= tower.towerRange)
-                {
-                    towersInRange.Add(tower);
-                }
-            }
+            GetComponent<SpriteRenderer>().sprite = animationData.animations[animationData.idleAnimation].animationSprites[0];
         }
-
-        foreach (Tower tower in towersInRange)
-        {
-            if (!slowedTowers.Contains(tower))
-            {
-                tower.ApplySlow(slowMultiplier);
-                slowedTowers.Add(tower);
-            }
-        }
-
-        for (int i = slowedTowers.Count - 1; i >= 0; i--)
-        {
-            if (!towersInRange.Contains(slowedTowers[i]))
-            {
-                slowedTowers[i].RemoveSlow(slowMultiplier);
-                slowedTowers.RemoveAt(i);
-            }
-        }
-    }
-
-    private void UnslowAll()
-    {
-        foreach (Tower tower in slowedTowers)
-        {
-            if (tower != null)
-                tower.RemoveSlow(slowMultiplier);
-        }
-        slowedTowers.Clear();
     }
 
     //Assigns all the values we need for the creep to fully function
-    public virtual void SetValves(CreepData creepData, List<int> pathIndexes, float startProgress = 0)
+    public virtual void SetValves(List<int> pathIndexes, float startProgress = 0)
     {
-        maxHealth = creepData.maxHealth;
+        gameObject.layer = LayerMask.NameToLayer("Creeps");
+
+        animationSystem = GetComponent<SpriteAnimationSystem>();
+        animationSystem.InitializeAnimationSystem(animationData, GetComponent<SpriteRenderer>());
+
         currentHealth = maxHealth;
         targetHealth = maxHealth;
-        moveSpeed = creepData.moveSpeed;
-        currencyOnDeath = creepData.currencyOnDeath;
-        damageToBase = creepData.damageToBase;
         pathToFollow = pathIndexes;
         splineCompletion = startProgress;
         pathProgress = 0;
         pathIndex = pathToFollow[pathProgress];
-        isSlow = creepData.isSlow;
-        slowRadius = creepData.slowRadius;
-        slowMultiplier = creepData.slowMultiplier;
         audioManager = AudioManager.Instance;
-        if(MasterController.Instance)
-        MasterController.Instance.OnRewindInitiated += OnPanicButtonPressed;
+        if (MasterController.Instance)
+            MasterController.Instance.OnRewindInitiated += OnPanicButtonPressed;
 
         transform.position = PathController.Instance.StartPosition;
     }
@@ -184,7 +80,7 @@ public class Creep : MonoBehaviour
     protected virtual void Update()
     {
         if (isDead) return;
-        if(rewindCoroutine == null)
+        if (rewindCoroutine == null)
         {
             FollowPath();
         }
@@ -225,8 +121,8 @@ public class Creep : MonoBehaviour
     // Panic Button behavior
     private void OnPanicButtonPressed()
     {
-        if(this)
-        rewindCoroutine = StartCoroutine(PanicButtonActions(MasterController.Instance.rewindTime));
+        if (this)
+            rewindCoroutine = StartCoroutine(PanicButtonActions(MasterController.Instance.rewindTime));
     }
 
     private IEnumerator PanicButtonActions(float rewindTime)
@@ -238,10 +134,10 @@ public class Creep : MonoBehaviour
         {
             unitsToRewind -= rewindSpeed * Time.deltaTime;
             splineCompletion -= rewindSpeed / PathController.Instance.PathLengths[pathIndex] * Time.deltaTime;
-            if(splineCompletion <= 0)
+            if (splineCompletion <= 0)
             {
                 float overshootDistanceOnNextSpline = Mathf.Abs(splineCompletion) * PathController.Instance.PathLengths[pathIndex];
-                if(pathProgress - 1 >= 0)
+                if (pathProgress - 1 >= 0)
                 {
                     pathProgress = Mathf.Max(0, pathProgress - 1);
                     pathIndex = pathToFollow[pathProgress];
@@ -285,7 +181,7 @@ public class Creep : MonoBehaviour
 
     // Called by Towers 
     //Check how far along the creep is, the pathprogress is added so creeps further along are targeted first
-    public float GetProgress() => ((pathProgress/ pathToFollow.Count - 1) + splineCompletion);
+    public float GetProgress() => ((pathProgress / pathToFollow.Count - 1) + splineCompletion);
 
     //Decrease the target health value the towers use to know if the creep should be dead or not
     public void DecreaseTargetHealth(float amount)
@@ -301,7 +197,8 @@ public class Creep : MonoBehaviour
         currentHealth -= amount;
         animationSystem.PlayAnimation(ANIM_DAMAGE);
 
-        if (currentHealth <= 0f){
+        if (currentHealth <= 0f)
+        {
             Die();
         }
         else
@@ -331,7 +228,7 @@ public class Creep : MonoBehaviour
             audioManager.basicCreepDeathSFX5,
         };
         audioManager.PlaySFX(sounds[Random.Range(0, sounds.Length)]);
-            
+
         animationSystem.PlayAnimation(ANIM_DEATH);
         animationSystem.enabled = false;
         Destroy(gameObject, 0.2f);
@@ -341,66 +238,56 @@ public class Creep : MonoBehaviour
     {
         isDead = true;
         if (isSlow) UnslowAll();
+        if(MasterController.Instance)
         MasterController.Instance.OnCreepReachedEnd(damageToBase);
         Destroy(gameObject);
     }
-}
 
-public class BossCreep : Creep
-{
-    private CreepData summonCreepData;
-    private int summonCount = 1;
-    private float summonInterval = 3f;
-    private bool isSummoner;
-    private Vector3 lastPosition;
-    private float summonTimer = 0f;
-
-    override public void SetValves(CreepData creepData, List<int> pathIndexes, float startProgress = 0)
+    //Slow 
+    protected void CheckSlowRadius()
     {
-        base.SetValves(creepData, pathIndexes, startProgress);
-        isSummoner = creepData.isSummoner;
-        summonCreepData = creepData.summonCreepData;
-        summonCount = creepData.summonCount;
-        summonInterval = creepData.summonInterval;
-    }
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, slowRadius);
+        List<Tower> towersInRange = new List<Tower>();
 
-    protected override void Update()
-    {
-        if (isDead) return;
-
-        lastPosition = transform.position;
-
-        if (rewindCoroutine == null)
-            FollowPath();
-
-        MoveCreep();
-        if (isSlow) CheckSlowRadius();
-
-        if (!isSummoner || summonCreepData == null) return;
-        summonTimer += Time.deltaTime;
-        if (summonTimer > summonInterval)
-        if (summonTimer >= summonInterval)
+        foreach (Collider2D hit in hits)
         {
-            summonTimer = 0f;
-            StartCoroutine(SpawnSummons());
+            Tower tower = hit.GetComponent<Tower>();
+            if (tower != null && tower.Slowable)
+            {
+                float distance = Vector2.Distance(tower.transform.position, transform.position);
+                if (distance <= tower.towerRange)
+                {
+                    towersInRange.Add(tower);
+                }
+            }
+        }
+
+        foreach (Tower tower in towersInRange)
+        {
+            if (!slowedTowers.Contains(tower))
+            {
+                tower.ApplySlow(slowMultiplier);
+                slowedTowers.Add(tower);
+            }
+        }
+
+        for (int i = slowedTowers.Count - 1; i >= 0; i--)
+        {
+            if (!towersInRange.Contains(slowedTowers[i]))
+            {
+                slowedTowers[i].RemoveSlow(slowMultiplier);
+                slowedTowers.RemoveAt(i);
+            }
         }
     }
 
-    private IEnumerator SpawnSummons()
+    private void UnslowAll()
     {
-        for (int i = 0; i < summonCount; i++)
+        foreach (Tower tower in slowedTowers)
         {
-            GameObject summon = Creep.CreateNewCreep(summonCreepData, pathToFollow, 0);
-            summon.transform.parent = MasterController.Instance.CreepParent;
-
-            Creep summonCreep = summon.GetComponent<Creep>();
-            summonCreep.splineCompletion = splineCompletion;
-            summonCreep.pathProgress = pathProgress;
-            summonCreep.pathIndex = pathIndex;
-            summon.transform.position = lastPosition;
-
-            MasterController.Instance.IncrementEnemies();
-            yield return new WaitForSeconds(0.2f);
+            if (tower != null)
+                tower.RemoveSlow(slowMultiplier);
         }
+        slowedTowers.Clear();
     }
 }

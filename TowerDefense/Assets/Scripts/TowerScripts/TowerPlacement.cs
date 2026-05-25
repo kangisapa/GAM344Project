@@ -29,8 +29,6 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OpenMenu()
     {
-        if (!MasterController.Instance.AllTowersCached()) return;
-
         menuOpen = true;
         menuObject = new GameObject("Menu");
         menuObject.transform.SetParent(transform, worldPositionStays: false);
