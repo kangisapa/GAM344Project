@@ -12,8 +12,7 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI currentWave;
     public int[] playRates = { 1, 4, 6 };
     [SerializeField] private Button[] playRateButtons;
-    [SerializeField] private Image panicButtonFill;
-    private Button panicButton;
+
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
     // ---------- Audio ----------
@@ -26,29 +25,14 @@ public class UIController : MonoBehaviour
 
         audioManager = AudioManager.Instance;
 
-        panicButton = panicButtonFill.GetComponent<Button>();
-
-
-
-        panicButton.onClick.AddListener(() =>
-        { audioManager.PlaySFX(audioManager.panicButton);
-          StartCoroutine(PlayTsunamiSound());
-        MasterController.Instance.OnRewindInitiated?.Invoke(); 
-        });
-
-
+       
         for(int i = 0; i < playRateButtons.Length; i++)
         {
             float playRate = playRates[i];
             playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
         }
     }
-    private IEnumerator PlayTsunamiSound()
-    {
-        yield return new WaitForSeconds(.5f);
 
-        audioManager.PlaySFX(audioManager.tsunamiPanicButton);
-    }
 
     void OnDestroy()
     {
@@ -65,8 +49,6 @@ public class UIController : MonoBehaviour
         {
             playRateButtons[i].interactable = !Mathf.Approximately(playRates[i], Time.timeScale);
         }
-        panicButtonFill.fillAmount = Mathf.Lerp(panicButtonFill.fillAmount, MasterController.Instance.UsesRemainingPercent, Time.deltaTime * 5);
-        panicButton.interactable = MasterController.Instance.buttonAvailable;
     }
 
     private void HandleGameStateChanged(MasterController.GameState newState)

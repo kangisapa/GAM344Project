@@ -41,6 +41,7 @@ public class Creep : MonoBehaviour
 
     private const int ANIM_WALK = 0;
     private const int ANIM_DAMAGE = 1;
+    private const int ANIM_DEATH = 2;
 
     public float targetHealth { get; private set; } //Seperate health stat used by the towers to know if this creep will die or not
 
@@ -306,9 +307,9 @@ public class Creep : MonoBehaviour
         }
     }
 
-    
+
     // Outcome handlers — report directly to MasterController
-    
+
     private void Die()
     {
         isDead = true;
@@ -328,8 +329,9 @@ public class Creep : MonoBehaviour
         };
         audioManager.PlaySFX(sounds[Random.Range(0, sounds.Length)]);
             
-            // Will need to change dynamically in the future, likely just based on index
-        Destroy(gameObject);
+        animationSystem.PlayAnimation(ANIM_DEATH);
+        animationSystem.enabled = false;
+        Destroy(gameObject, 0.2f);
     }
 
     private void ReachedEnd()
