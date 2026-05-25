@@ -13,13 +13,13 @@ public struct CreepSpawnSet
     public int numberToSpawn;
     public int pathIndex;
     public float deleyPerCreep;
-    public bool isBoss;
 }
 
 [Serializable]
 public class Wave
 {
     [HideInInspector] public string name = "wave";
+    [InspectorName("Creep Set")]
     public List<CreepSpawnSet> creepSpawnOrder = new List<CreepSpawnSet>();
     public float delayBeforeWave;
 }
@@ -100,25 +100,16 @@ public class MasterController : MonoBehaviour
     private float startingProgress;
     private Vector3 startingWorldPosition;
 
-    // ---------- Tower Data Caching ----------
-    [Header("Caching Setup")]
+    // ---------- Prefabs ----------
+    [Header("Prefab Setup")]
 
-    [SerializeField] private List<string> towerKeys = new List<string> { "BasicTower" };
-    private List<TowerData> _towerCache = new List<TowerData>();
-    public float NumberOfAvailableTowers => _towerCache.Count;
+    [SerializeField] private List<GameObject> towerPrefabs = new();
+    public float NumberOfAvailableTowers => towerPrefabs.Count;
 
-    public string GetTowerName(int index) => towerKeys[index];
-    public Sprite GetTowerSprite(int index) => _towerCache[index].animationData.animations[_towerCache[index].animationData.idleAnimation].animationSprites[0];
+    public string GetTowerName(int index) => towerPrefabs[index].name;
+    public Sprite GetTowerSprite(int index) => towerPrefabs[index].GetComponent<Tower>().GetThumbnailSprite();
 
-    public bool AllTowersCached()
-    {
-        return _towerCache.Count == towerKeys.Count;
-    }
-
-    // ---------- Creep Data Caching ----------
-
-    [SerializeField] private List<string> creepKeys = new List<string> { "BasicCreep" };
-    private List<CreepData> _creepCache = new List<CreepData>();
+    [SerializeField] private List<GameObject> creepPrefabs = new();
 
     // ---------- UI Events ----------
     public event Action<int> OnCurrencyChanged;
@@ -147,7 +138,6 @@ public class MasterController : MonoBehaviour
         playerCurrency = startingCurrency;
         playerHealth   = startingHealth;
         GeneratePathLists();
-        CacheInformation();
     }
 
     private void OnValidate()
@@ -183,7 +173,6 @@ public class MasterController : MonoBehaviour
         if (pathStartLocationTransform != null)
         {
             startingProgress = PathController.Instance.GetNearestPointToStart(pathStartLocationTransform.transform.position, 0, out startingWorldPosition);
-            Debug.Log(startingProgress);
             UpdateUI();
             StartGame();
         }
@@ -269,10 +258,7 @@ public class MasterController : MonoBehaviour
                     else
                     {
                         //spawn said creep
-                        if (w.creepSpawnOrder[c].isBoss)
-                            SpawnBossCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex], startingProgress);
-                        else
-                            SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex], startingProgress);
+                        SpawnCreep(w.creepSpawnOrder[c].creepIndexToSpawn, wavePaths[w.creepSpawnOrder[c].pathIndex], startingProgress);
                         yield return new WaitForSeconds(w.creepSpawnOrder[c].deleyPerCreep);
                     }
                 }
@@ -303,42 +289,16 @@ public class MasterController : MonoBehaviour
     public void SpawnCreep(int index, List<int> pathIndexes, float startprogress)
     {
         //Call Creep spawning element
-        GameObject newCreep = Creep.CreateNewCreep(_creepCache[index], pathIndexes, startprogress);
+        GameObject newCreep = Instantiate(creepPrefabs[index]);
         newCreep.transform.position = pathStartLocationTransform.position;
+        newCreep.GetComponent<Creep>().SetValves(pathIndexes, startprogress);
         newCreep.transform.parent = creepParent;
         //Increase enemies alives
         enemiesAlive++;
     }
 
-    public void SpawnBossCreep(int index, List<int> pathIndexes, float startProgress)
-    {
-        GameObject newBoss = Creep.CreateNewBossCreep(_creepCache[index], pathIndexes, startingProgress);
-        newBoss.transform.parent = creepParent;
-        newBoss.transform.position = pathStartLocationTransform.position;
-        enemiesAlive++;
-    }
-
     public Transform CreepParent => creepParent;
     public void IncrementEnemies() => enemiesAlive++;
-
-    /// <summary>
-    /// Cache all the data assets into memory for use
-    /// </summary>
-    async void CacheInformation()
-    {
-        foreach(string key in towerKeys)
-        {
-            TowerData data = await Addressables.LoadAssetAsync<TowerData>(key).Task;
-            _towerCache.Add(data);
-        }
-
-        foreach(string key in creepKeys)
-        {
-            CreepData data = await Addressables.LoadAssetAsync<CreepData>(key).Task;
-            _creepCache.Add(data);
-        }
-
-    }
 
     /// <summary>
     /// Spawn a tower
@@ -348,17 +308,17 @@ public class MasterController : MonoBehaviour
     public void SpawnTower(int index, Vector3 position)
     {
         // Call Tower Spawning Element
-        GameObject newTower = Tower.CreateNewTower(_towerCache[index]);
+        GameObject newTower = Instantiate(towerPrefabs[index]);
         newTower.transform.parent = towerParent;
         newTower.GetComponent<Tower>().PlaceTower(position);
 
         // Decrease Money
-        playerCurrency -= _towerCache[index].cost;
+        playerCurrency -= newTower.GetComponent<Tower>().Cost;
     }
 
     public bool CheckCurrency(int index)
     {
-        return (playerCurrency - _towerCache[index].cost >= 0); 
+        return (playerCurrency - towerPrefabs[index].GetComponent<Tower>().Cost >= 0); 
     }
 
     // ---------- Currency / damage hooks ----------
@@ -435,14 +395,6 @@ public class MasterController : MonoBehaviour
         timeScale = Mathf.Max(timeScale, 0);
         Time.timeScale = timeScale;
         audioManager.SetAudioSourcePitches(timeScale);
-    }
-
-    private void OnDestroy()
-    {
-        foreach(TowerData data in _towerCache)
-        {
-            Addressables.Release(data);
-        }
     }
 }
 

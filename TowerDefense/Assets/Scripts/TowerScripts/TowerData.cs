@@ -4,25 +4,25 @@ using UnityEngine;
 public class TowerData : ScriptableObject
 {
     // ---------- Tower Visuals ----------
-    public Sprite projectileSprite;
+    public Sprite projectileSprite; //done
 
-    public SpriteAnimationData animationData;
+    public SpriteAnimationData animationData; //done
 
     // ---------- Tower Settings ----------
-    [Min(0)] public float targetRadius;
+    [Min(0)] public float targetRadius;//done
+    [InspectorName("Angle Set")]
+    public Vector2[] firingAngles = { new(0, 360) }; //done
 
-    [Min(0)] public float damagePerShot;
-    [Min(0)] public float shotsPerSecond;
+
+    [Min(0)] public float damagePerShot; //done
+    [Min(0)] public float shotsPerSecond; //done
     [Tooltip("How long will it take the projectile to reach the target in seconds"), Min(0)] 
-    public float projectileTargetTime;
+    public float projectileTargetTime; //done
     [Tooltip("just used to sync up the animation to firing"), Min(0)]
-    public float firingDelay;
+    public float firingDelay; //done
     [Min(1), Tooltip("Put an obscenly high value if you want the tower to target everything in range")]
-    public int creepsToTarget = 1;
+    public int creepsToTarget = 1; //done
     public bool slowable = true;
 
     public int cost;
-
-    [Tooltip("Not referenced anywhere in code atm, just use to make not or other things")]
-    public string notes;
 }
