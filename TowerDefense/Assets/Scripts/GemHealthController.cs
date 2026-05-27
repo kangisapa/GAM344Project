@@ -10,10 +10,7 @@ public class GemHealthController : MonoBehaviour
     [SerializeField] private Sprite crackedSprite;
     [SerializeField] private Sprite badlyCrackedSprite;
     [SerializeField] private Sprite shatteredSprite;
-
-    [Header("Shatter Particles")]
-    [SerializeField] private ParticleSystem shatterParticles;
-
+ 
     [Header("Flash Settings")]
     [SerializeField] private Sprite whiteSprite;
     [Min(1)]
@@ -85,10 +82,7 @@ public class GemHealthController : MonoBehaviour
  
         currentTier = newTier;
         if (target != null) spriteRenderer.sprite = target;
-
-        if (newTier == HealthTier.Shattered && shatterParticles != null)
-            shatterParticles.Play();
-
+ 
         if (flashRoutine != null)
         {
             StopCoroutine(flashRoutine);
