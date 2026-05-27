@@ -83,7 +83,23 @@ public class GameManager : MonoBehaviour
         //any other functions we might have to do would go here
     }
 
-    public IEnumerator GoToNewSceneAfterDelay(int delay, int sceneIndex)
+    public void GoToNewSceneAfterDelay(int delay, string sceneName)
+    {
+        StartCoroutine(DelayBeforeScene(delay, sceneName));
+    }
+
+    public void GoToNewSceneAfterDelay(int delay, int sceneIndex)
+    {
+        StartCoroutine(DelayBeforeScene(delay, sceneIndex));
+    }
+
+    private IEnumerator DelayBeforeScene(int delay, string sceneName)
+    {
+        yield return new WaitForSeconds(delay);
+        GoToNewScene(sceneName);
+    }
+
+    private IEnumerator DelayBeforeScene(int delay, int sceneIndex)
     {
         yield return new WaitForSeconds(delay);
         GoToNewScene(sceneIndex);

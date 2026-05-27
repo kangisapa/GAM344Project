@@ -15,6 +15,7 @@ public class Cutscene
     public Sprite p2;
     public float dialogueSpeed;
     public bool isChoice;
+
     public enum whosTalking
     {
         personA,

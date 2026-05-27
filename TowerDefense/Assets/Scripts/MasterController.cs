@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 
 [Serializable]
@@ -36,6 +37,7 @@ public class MasterController : MonoBehaviour
     // ---------- Singleton ----------
     public static MasterController Instance { get; private set; }
 
+    public string levelOnWin;
     public enum GameState { Start, Playing, GameOver, Victory }
 
     private Transform pathStartLocationTransform;
@@ -376,6 +378,14 @@ public class MasterController : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
+        if(newState == GameState.Victory)
+        {
+            GameManager.Instance.GoToNewSceneAfterDelay(10, levelOnWin);
+        }
+        else if(newState == GameState.GameOver)
+        {
+            GameManager.Instance.GoToNewSceneAfterDelay(5, SceneManager.GetActiveScene().buildIndex);
+        }
     }
     public bool TryUsePanicButton()
     {
