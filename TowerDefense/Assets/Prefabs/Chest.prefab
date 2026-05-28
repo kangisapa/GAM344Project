@@ -103,5 +103,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff96c33d0b1c1f4e9ee87bb87e38ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrencyGen
-  paymentInterval: 2
+  paymentInterval: 5
   paymentAmount: 1
