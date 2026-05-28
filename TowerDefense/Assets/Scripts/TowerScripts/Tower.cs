@@ -10,10 +10,10 @@ public class Tower : MonoBehaviour
     public static LayerMask creepLayer;
 
     [Header("Tower Visuals")]
-    [SerializeField, Tooltip("If the projectile sprite is not assigned, we assume meele")] private Sprite projectileSprite;
+    [SerializeField] private Sprite projectileSprite;
     [SerializeField] private SpriteAnimationData animationData;
-    protected SpriteRenderer spriteRenderer;
-    protected SpriteAnimationSystem animationSystem;
+    private SpriteRenderer spriteRenderer;
+    private SpriteAnimationSystem animationSystem;
 
     // ---------- Tower Slow ----------
 
@@ -49,15 +49,15 @@ public class Tower : MonoBehaviour
 
     [Header("Tower Damage")]
     [SerializeField, Min(0)]
-    protected float damagePerShot;
+    private float damagePerShot;
     [SerializeField, Min(0)]
-    protected float shotsPerSecond;
+    private float shotsPerSecond;
     [SerializeField, Min(0), Tooltip("How long will it take the projectile to reach the target in seconds")] 
     private float projectileTargetTime;
     [SerializeField, Min(0), Tooltip("just used to sync up the animation to firing")] 
-    protected float firingDelay;
+    private float firingDelay;
     [SerializeField, Min(1), Tooltip("Put an obscenly high value if you want the tower to target everything in range")] 
-    protected int creepsToTarget = 1;
+    private int creepsToTarget = 1;
 
     [SerializeField] private bool slowable = true;
 
@@ -72,7 +72,7 @@ public class Tower : MonoBehaviour
     public void SetTowerEnabled(bool enabled) => towerEnabled = enabled;
 
     // Audio
-    protected AudioManager audioManager;
+    private AudioManager audioManager;
 
     // ================================================================
 
@@ -91,10 +91,6 @@ public class Tower : MonoBehaviour
         animationSystem.InitializeAnimationSystem(animationData, spriteRenderer);
         baseShotsPerSecond = shotsPerSecond;
         audioManager = AudioManager.Instance;
-        if(projectileSprite == null)
-        {
-            projectileTargetTime = 0;
-        }
     }
 
     public void PlaceTower(Vector3 position)
@@ -116,8 +112,8 @@ public class Tower : MonoBehaviour
     {
         //update is (delay between shots - firing delay) since the 2 add up so if we want 1/second and we delay firing by 0.4 seconds
         //added together we would get a 1.4 second delay instead of 1, so this gives us 1 - 0.4 so it would be the 0.4 for animation + 0.6 between shots adding up to 1
+        WaitForSeconds shotTargetDelay = new WaitForSeconds(projectileTargetTime);
         WaitForSeconds firingDelayWait = new WaitForSeconds(firingDelay);
-        WaitForSeconds postFiringDelayWait = new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.layerMask = LayerMask.GetMask("Creeps");
         List<Collider2D> overlaps = new();
@@ -150,7 +146,12 @@ public class Tower : MonoBehaviour
             if (targetableCreeps.Count <= creepsToTarget)
             {
                 //If the number of creeps we can target is <= to the max the tower can target, don't bother checking the furthest along and just smite them all
-                yield return AttackCreepsInRange(targetableCreeps, firingDelayWait, postFiringDelayWait);
+                animationSystem.PlayAnimation(1);
+                AssignDamage(targetableCreeps);
+                yield return firingDelayWait;
+                DealDamage(targetableCreeps);
+                audioManager.PlaySFX(audioManager.basicAttackSFX);
+                yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
             }
             else
             {
@@ -179,7 +180,12 @@ public class Tower : MonoBehaviour
                 }
                 if(furthestCreeps.Count > 0)
                 {
-                    yield return AttackCreepsInRange(furthestCreeps, firingDelayWait, postFiringDelayWait);
+                    animationSystem.PlayAnimation(1);
+                    AssignDamage(furthestCreeps);
+                    yield return firingDelayWait;
+                    DealDamage(furthestCreeps);
+                    audioManager.PlaySFX(audioManager.basicAttackSFX);
+                    yield return new WaitForSeconds((1 / shotsPerSecond) - firingDelay);
                 }
                 else
                 {
@@ -187,16 +193,6 @@ public class Tower : MonoBehaviour
                 }
             }
         }
-    }
-
-    protected virtual IEnumerator AttackCreepsInRange(List<Creep> targetableCreeps, WaitForSeconds firingDelayWait ,WaitForSeconds postFiringDelayWait)
-    {
-        animationSystem.PlayAnimation(1);
-        AssignDamage(targetableCreeps);
-        yield return firingDelayWait;
-        DealDamage(targetableCreeps);
-        audioManager.PlaySFX(audioManager.basicAttackSFX);
-        yield return postFiringDelayWait;
     }
 
     private List<Creep> ValidateTargetableCreeps(List<Collider2D> overlaps)
@@ -222,7 +218,7 @@ public class Tower : MonoBehaviour
     /// after the shot so other towers know whether its worht to fire or not
     /// </summary>
     /// <param name="toDamage">target creeps list</param>
-    protected void AssignDamage(List<Creep> toDamage)
+    private void AssignDamage(List<Creep> toDamage)
     {
         foreach (Creep creep in toDamage)
         {
@@ -235,19 +231,12 @@ public class Tower : MonoBehaviour
     /// once they reach the target
     /// </summary>
     /// <param name="toDamage">target creeps list</param>
-    protected void DealDamage(List<Creep> toDamage)
+    private void DealDamage(List<Creep> toDamage)
     {
         foreach(Creep creep in toDamage)
         {
             Creep c = creep;
-            if(projectileSprite)
-            {
-                ProjectileManager.Instance.FireProjectile(transform.position, c.transform, projectileTargetTime, projectileSprite, () => DamageCreep(c));
-            }
-            else
-            {
-                DamageCreep(c);
-            }
+            ProjectileManager.Instance.FireProjectile(transform.position, c.transform, projectileTargetTime, projectileSprite, () => DamageCreep(c));
         }
     }
 

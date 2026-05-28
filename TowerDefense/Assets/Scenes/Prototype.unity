@@ -149,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  levelOnWin: Prototype
   startingCurrency: 50
   startingHealth: 5
   waves:
