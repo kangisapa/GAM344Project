@@ -42,6 +42,7 @@ public class CutsceneController : MonoBehaviour
 
     internal int currentLine;
     
+    
 
     [SerializeField]
     private TextMeshProUGUI textBox;
@@ -49,6 +50,8 @@ public class CutsceneController : MonoBehaviour
     private Image personA;
     [SerializeField] 
     private Image personB;
+    [SerializeField]
+    private string nextScene;
 
     private bool isTyping;
     private Color qColor;
@@ -75,14 +78,13 @@ public class CutsceneController : MonoBehaviour
 
         personA.GetComponent<Image>().color = qColor;
         personB.GetComponent<Image>().color = qColor;
-        Debug.Log(aTalking(cutsceneLine[1].whostalking));
         
     }
 
     //used to continue the conversation
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isTyping && cutsceneLine != null && currentLine < cutsceneLine.Count)
+        if (Input.GetKeyDown(KeyCode.Space) && !isTyping && cutsceneLine != null)
         {
 
             StartCoroutine(typeText(currentLine));
@@ -90,12 +92,19 @@ public class CutsceneController : MonoBehaviour
             checkWhosTalking(currentLine);
             currentLine++;
         }
-        Debug.Log(currentLine);
+       // Debug.Log(currentLine);
+       // Debug.Log(cutsceneComplete());
+        if (Input.anyKey && cutsceneComplete())
+        {
+            GameManager.Instance.GoToNewSceneAfterDelay(5,nextScene);
+            Debug.Log("hello");
+        }
     }
     public IEnumerator typeText(int lineIndex)
     {
+        
         if (lineIndex < 0 || lineIndex >= cutsceneLine.Count) yield break;
-        Cutscene line = cutsceneLine[lineIndex];
+            Cutscene line = cutsceneLine[lineIndex];
         if (line == null || line.dialogue == null) yield break;
 
 
@@ -171,6 +180,14 @@ public class CutsceneController : MonoBehaviour
     private bool bTalking(Cutscene.whosTalking current)
     {
         if (current is Cutscene.whosTalking.personB) { return true; }
+        else { return false; }
+    }
+
+    private bool cutsceneComplete()
+    {
+        
+        if (currentLine >= cutsceneLine.Count && !isTyping) { return true; }
+
         else { return false; }
     }
 }
