@@ -55,7 +55,6 @@ public class CutsceneController : MonoBehaviour
 
     private bool isTyping;
     private Color qColor;
-    public GameManager gameManager;
 
 
 
@@ -79,7 +78,6 @@ public class CutsceneController : MonoBehaviour
 
         personA.GetComponent<Image>().color = qColor;
         personB.GetComponent<Image>().color = qColor;
-        gameManager = FindFirstObjectByType<GameManager>();
         
     }
 
@@ -98,7 +96,7 @@ public class CutsceneController : MonoBehaviour
        // Debug.Log(cutsceneComplete());
         if (Input.anyKey && cutsceneComplete())
         {
-            gameManager.GoToNewSceneAfterDelay(5,nextScene);
+            GameManager.Instance.GoToNewSceneAfterDelay(5,nextScene);
             Debug.Log("hello");
         }
     }
