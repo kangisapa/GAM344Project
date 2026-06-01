@@ -34,4 +34,9 @@ public class MenuController : MonoBehaviour
     {
         GameManager.Instance.GoToNewScene(levelOnPlay);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

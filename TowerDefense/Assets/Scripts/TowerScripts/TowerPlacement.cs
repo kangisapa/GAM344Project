@@ -29,6 +29,15 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OpenMenu()
     {
+        foreach(Object obj in FindObjectsByType(typeof(TowerPlacementSpot), FindObjectsSortMode.None))
+        {
+            TowerPlacementSpot spot = obj as TowerPlacementSpot;
+            if(spot && spot.menuOpen)
+            {
+                spot.CloseMenu();
+            }
+        }
+
         menuOpen = true;
         menuObject = new GameObject("Menu");
         menuObject.transform.SetParent(transform, worldPositionStays: false);
