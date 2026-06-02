@@ -63,6 +63,7 @@ public class TowerPlacementSpot : MonoBehaviour
             sr.color = Color.clear;
             sr.sortingOrder = 100;
             towerButton.GetComponent<BoxCollider2D>().size = Vector2.one;
+            towerButton.GetComponent<BoxCollider2D>().layerOverridePriority = 10;
 
             //Setup click handler
             IndexSquare iSqr = towerButton.GetComponent<IndexSquare>();

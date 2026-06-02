@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI currentWave;
     public int[] playRates = { 1, 4, 6 };
     [SerializeField] private Button[] playRateButtons;
+    [SerializeField] private Button mainMenuButton, continueButton;
 
     // ---------- End Game Message ----------
     [SerializeField] private TextMeshProUGUI endGameText;
@@ -24,9 +25,22 @@ public class UIController : MonoBehaviour
         MasterController.Instance.OnGameStateChanged += HandleGameStateChanged;
 
         audioManager = AudioManager.Instance;
+        continueButton.gameObject.SetActive(false);
+        mainMenuButton.gameObject.SetActive(false);
+        continueButton.onClick.AddListener(() =>
+        {
+            MasterController.Instance.GoToSceneFromUI();
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+        });
+        mainMenuButton.onClick.AddListener(() => 
+        {
+            GameManager.Instance.ReturnToMainMenu();
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+        });
 
-       
-        for(int i = 0; i < playRateButtons.Length; i++)
+        for (int i = 0; i < playRateButtons.Length; i++)
         {
             float playRate = playRates[i];
             playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
@@ -59,9 +73,14 @@ public class UIController : MonoBehaviour
         {
             case MasterController.GameState.Victory:
                 endGameText.text = "Win";
+                continueButton.gameObject.SetActive(true);
+                mainMenuButton.gameObject.SetActive(true);
                 break;
             case MasterController.GameState.GameOver:
                 endGameText.text = "Lose";
+                continueButton.gameObject.SetActive(true);
+                continueButton.GetComponentInChildren<TMP_Text>().text = "Retry?";
+                mainMenuButton.gameObject.SetActive(true);
                 audioManager.PlaySFX(audioManager.playerDeathShatter);
                 break;
             default:

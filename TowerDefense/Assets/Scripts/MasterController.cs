@@ -377,17 +377,27 @@ public class MasterController : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
-        if(newState == GameState.Victory)
+
+    }
+
+    bool lockout = false;
+
+    public void GoToSceneFromUI()
+    {
+        if (lockout) return;
+        lockout = true;
+        if (currentState == GameState.Victory)
         {
             SetTimeScale(1);
-            GameManager.Instance.GoToNewSceneAfterDelay(10, levelOnWin);
+            GameManager.Instance.GoToNewSceneAfterDelay(1, levelOnWin);
         }
-        else if(newState == GameState.GameOver)
+        else if (currentState == GameState.GameOver)
         {
             SetTimeScale(1);
-            GameManager.Instance.GoToNewSceneAfterDelay(5, SceneManager.GetActiveScene().buildIndex);
+            GameManager.Instance.GoToNewSceneAfterDelay(1, SceneManager.GetActiveScene().buildIndex);
         }
     }
+
     public bool TryUsePanicButton()
     {
         if (!buttonAvailable) return false;
