@@ -71,7 +71,7 @@ public class GemHealthController : MonoBehaviour
  
         float percent = Mathf.Clamp01((float)health / Mathf.Max(1, maxHealth));
         HealthTier newTier = TierFor(percent, health);
-        
+
         Sprite target = SpriteFor(newTier);
         if (!flash)
         {
@@ -95,10 +95,10 @@ public class GemHealthController : MonoBehaviour
  
     private HealthTier TierFor(float percent, int rawHealth)
     {
-        if (rawHealth <= 0) return HealthTier.Shattered;
-        if (percent >= 0.66f) return HealthTier.Full;
-        if (percent >= 0.33f) return HealthTier.Cracked;
-        return HealthTier.BadlyCracked;
+        if (percent >= 0.999f) return HealthTier.Full;
+        if (percent >= 0.800) return HealthTier.Cracked;
+        if (percent >= 0.501f) return HealthTier.BadlyCracked;
+        return HealthTier.Shattered;
     }
  
     private Sprite SpriteFor(HealthTier tier)
