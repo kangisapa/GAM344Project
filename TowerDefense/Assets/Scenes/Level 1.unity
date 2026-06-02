@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
   levelOnWin: Level 2
   startingCurrency: 30
-  startingHealth: 5
+  startingHealth: 10
   waves:
   - name: Wave 1
     creepSpawnOrder:

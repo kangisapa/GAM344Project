@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 497173812402040883}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.51539, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -8.874, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 200
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae756583fe7d13f42a7c6fc146dc4a8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 929801657191799897}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.7653904, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -7.84039, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -169,7 +169,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 200
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae756583fe7d13f42a7c6fc146dc4a8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 4158779683883768641}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.14539, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -8.353999, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -259,7 +259,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 200
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae756583fe7d13f42a7c6fc146dc4a8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -379,7 +379,6 @@ MonoBehaviour:
   crackedSprite: {fileID: 21300000, guid: 15564aa4345d5b34a8013b2c1dae1a7a, type: 3}
   badlyCrackedSprite: {fileID: 21300000, guid: 89fac17efd757134d9cdc005f5226507, type: 3}
   shatteredSprite: {fileID: 21300000, guid: ac787a4d54629ff489e3bdd3c9f96807, type: 3}
-  shatterParticles: {fileID: 2635005665698697238}
   whiteSprite: {fileID: 21300000, guid: a51ffefb47738d84ebc5d76d1e6d3489, type: 3}
   flashCount: 3
   flashDuration: 0.35
@@ -399,6 +398,10 @@ MonoBehaviour:
   - {fileID: 497173812402040883}
   - {fileID: 4158779683883768641}
   - {fileID: 929801657191799897}
+  waveAmplitude: 0.05
+  slowWaveSpeed: 1.5
+  fastWaveSpeed: 6
+  wavePhaseOffset: 0.6
 --- !u!60 &7197184045534694090
 PolygonCollider2D:
   m_ObjectHideFlags: 0
