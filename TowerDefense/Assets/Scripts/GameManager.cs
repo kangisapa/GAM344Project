@@ -65,7 +65,19 @@ public class GameManager : MonoBehaviour
         menuArea.SetActive(false);
         continueButton.onClick.AddListener(() =>
         {
-            MasterController.Instance.GoToSceneFromUI();
+            if(MasterController.Instance)
+            {
+                MasterController.Instance.GoToSceneFromUI();
+            }
+            else if(FindFirstObjectByType(typeof(CutsceneController)) is CutsceneController cController)
+            {
+                cController.ContinueToNextScene();
+            }
+            else
+            {
+                Debug.LogWarning("Couldnt Find a Master Controller or Cutscene Controller");
+                return;
+            }
             continueButton.interactable = false;
             mainMenuButton.interactable = false;
             menuArea.SetActive(false);
@@ -160,9 +172,9 @@ public class GameManager : MonoBehaviour
     public void ShowContinueMenu(string continueButtonText = "Continue >")
     {
         menuArea.SetActive(true);
-        continueButton.gameObject.SetActive(true);
         continueButton.GetComponentInChildren<TMP_Text>().text = continueButtonText;
-        mainMenuButton.gameObject.SetActive(true);
+        continueButton.interactable = true;
+        mainMenuButton.interactable = true;
     }
 
 
