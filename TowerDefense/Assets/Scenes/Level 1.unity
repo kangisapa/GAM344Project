@@ -2152,6 +2152,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 80766596416470080, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7529412
+      objectReference: {fileID: 0}
     - target: {fileID: 1709237552494901034, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.16686
@@ -2192,9 +2196,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5729696428227739555, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
-      propertyPath: fadeImage
-      value: 
+    - target: {fileID: 7276980812467892210, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7276980812467892210, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7301871985032130511, guid: 3df73fa250e7c4d4d9086ee86f8b684c, type: 3}
       propertyPath: m_Name

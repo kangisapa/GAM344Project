@@ -21,7 +21,7 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (hasTower || closing) return;          // Already occupied — ignore clicks
+        if (hasTower || closing || GameManager.Instance.PauseActive) return;          // Already occupied — ignore clicks
 
         if (menuOpen) CloseMenu();
         else OpenMenu();
@@ -89,7 +89,7 @@ public class TowerPlacementSpot : MonoBehaviour
         {
             menuObjects[i].Setup(i, Vector3.zero, false);
         }
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSecondsRealtime(.1f);
 
         menuOpen = false;
         if (menuObject != null) Destroy(menuObject);
