@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 497173812402040883}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.51539, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -8.874, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -116,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 929801657191799897}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.7653904, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -7.84039, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 4158779683883768641}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.14539, y: -4.9872403, z: 0}
+  m_LocalPosition: {x: -8.353999, y: -4.916, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -398,6 +398,10 @@ MonoBehaviour:
   - {fileID: 497173812402040883}
   - {fileID: 4158779683883768641}
   - {fileID: 929801657191799897}
+  waveAmplitude: 0.05
+  slowWaveSpeed: 1.5
+  fastWaveSpeed: 6
+  wavePhaseOffset: 0.6
 --- !u!60 &7197184045534694090
 PolygonCollider2D:
   m_ObjectHideFlags: 0
