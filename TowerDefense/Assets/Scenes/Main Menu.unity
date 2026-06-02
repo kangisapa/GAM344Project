@@ -5619,7 +5619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c5e85493856fd498655df51e7b9aa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuController
-  levelOnPlay: Level 1
+  levelOnPlay: Cutscene 1
   dedicatedTowerSpot: {fileID: 8841404152954107813}
   creepOrganizer: {fileID: 1313844446}
   basicTower: {fileID: 5173055451115395435, guid: 967edb82452f45a43a01cab3ecaf3363, type: 3}

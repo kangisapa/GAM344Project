@@ -25,8 +25,8 @@ public class UIController : MonoBehaviour
 
         audioManager = AudioManager.Instance;
 
-       
-        for(int i = 0; i < playRateButtons.Length; i++)
+
+        for (int i = 0; i < playRateButtons.Length; i++)
         {
             float playRate = playRates[i];
             playRateButtons[i].onClick.AddListener(() => MasterController.Instance.SetTimeScale(playRate));
@@ -59,9 +59,11 @@ public class UIController : MonoBehaviour
         {
             case MasterController.GameState.Victory:
                 endGameText.text = "Win";
+                GameManager.Instance.ShowContinueMenu();
                 break;
             case MasterController.GameState.GameOver:
                 endGameText.text = "Lose";
+                GameManager.Instance.ShowContinueMenu("Retry?");
                 audioManager.PlaySFX(audioManager.playerDeathShatter);
                 break;
             default:

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,6 +18,19 @@ public class GameManager : MonoBehaviour
     private FadeState fadeState = FadeState.fadingOut;
     private float fadeAlpha = 1;
     int nextSceneIndex;
+    #endregion
+
+    #region Pause Menu
+    [Header("Pause Menu References")]
+    [SerializeField] private CanvasGroup pauseMenu;
+
+    #endregion
+
+    #region Continue Menu
+    [Header("Continue Menu Options")]
+    [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button continueButton;
+    private GameObject menuArea;
     #endregion
 
     private void Awake()
@@ -46,11 +60,46 @@ public class GameManager : MonoBehaviour
             fadeAlpha = 0;
             fadeState = FadeState.idle;
         }
+
+        menuArea = continueButton.transform.parent.gameObject;
+        menuArea.SetActive(false);
+        continueButton.onClick.AddListener(() =>
+        {
+            if(MasterController.Instance)
+            {
+                MasterController.Instance.GoToSceneFromUI();
+            }
+            else if(FindFirstObjectByType(typeof(CutsceneController)) is CutsceneController cController)
+            {
+                cController.ContinueToNextScene();
+            }
+            else
+            {
+                Debug.LogWarning("Couldnt Find a Master Controller or Cutscene Controller");
+                return;
+            }
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+            menuArea.SetActive(false);
+        });
+        mainMenuButton.onClick.AddListener(() =>
+        {
+            ReturnToMainMenu();
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+            menuArea.SetActive(false);
+        });
+
     }
 
     private void Update()
     {
         if (fadeImage == null) return;
+
+        if(Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            TogglePauseMenu();
+        }
 
         switch(fadeState)
         {
@@ -118,6 +167,85 @@ public class GameManager : MonoBehaviour
             }
         }
         Debug.LogWarning($"Scene '{sceneName}' not found in Build Settings!");
+    }
+
+    public void ShowContinueMenu(string continueButtonText = "Continue >")
+    {
+        menuArea.SetActive(true);
+        continueButton.GetComponentInChildren<TMP_Text>().text = continueButtonText;
+        continueButton.interactable = true;
+        mainMenuButton.interactable = true;
+    }
+
+
+
+    bool menuAnimating = false;
+    public bool PauseActive { get; private set; } = false;
+    float timeScaleBeforePause;
+
+    public void ReturnToMainMenu()
+    {
+        if(PauseActive)
+        {
+            StartCoroutine(ReturnToMainMenuCoroutine());
+        }
+        else
+        {
+            GoToNewScene("Main Menu");
+        }
+    }
+
+    IEnumerator ReturnToMainMenuCoroutine()
+    {
+        yield return StartCoroutine(PauseMenuAnimationCoroutine(false));
+        PauseActive = false;
+        GoToNewScene("Main Menu");
+    }
+
+    public void TogglePauseMenu()
+    {
+        if(!menuAnimating && SceneManager.GetActiveScene().buildIndex > 0 && fadeState == FadeState.idle)
+        {
+            PauseActive = !PauseActive;
+            TogglePauseMenu(PauseActive);
+        }
+    }
+
+    public void TogglePauseMenu(bool enabled)
+    {
+        PauseActive = enabled;
+        if (PauseActive)
+        {
+            timeScaleBeforePause = Time.timeScale;
+        }
+        StartCoroutine(PauseMenuAnimationCoroutine(PauseActive));
+
+    }
+
+    private IEnumerator PauseMenuAnimationCoroutine(bool enabled)
+    {
+        Debug.Log(enabled);
+        menuAnimating = true;
+        pauseMenu.interactable = false;
+        pauseMenu.blocksRaycasts = false;
+        pauseMenu.alpha = enabled ? 0 : 1;
+        RectTransform pauseMenuTransform = pauseMenu.transform as RectTransform;
+        float alpha = 0;
+        Vector3 target = new (enabled ? 0 : 1920, 0, 0);
+        while(alpha < 1)
+        {
+            pauseMenuTransform.anchoredPosition = Vector3.Slerp(pauseMenuTransform.anchoredPosition, target, alpha);
+            alpha += 0.01666666666666666666666666666667f * 5;
+            alpha = Mathf.Clamp01(alpha);
+            pauseMenu.alpha = enabled ? alpha : (1 - alpha);
+            Time.timeScale = enabled ? (timeScaleBeforePause * (1 - alpha)) : timeScaleBeforePause * alpha;
+            yield return new WaitForSecondsRealtime(0.01666666666666666666666666666667f);
+        }
+        pauseMenu.interactable = enabled;
+        pauseMenu.blocksRaycasts = enabled;
+        pauseMenu.alpha = enabled ? 1 : 0;
+        pauseMenuTransform.anchoredPosition = target;
+        menuAnimating = false;
     }
 
     public void GoToNewScene(int sceneIndex)

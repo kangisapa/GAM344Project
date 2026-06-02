@@ -81,6 +81,8 @@ public class CutsceneController : MonoBehaviour
         
     }
 
+    bool lockout = false;
+
     //used to continue the conversation
     private void Update()
     {
@@ -92,14 +94,23 @@ public class CutsceneController : MonoBehaviour
             checkWhosTalking(currentLine);
             currentLine++;
         }
-       // Debug.Log(currentLine);
-       // Debug.Log(cutsceneComplete());
-        if (Input.anyKey && cutsceneComplete())
+        // Debug.Log(currentLine);
+        // Debug.Log(cutsceneComplete());
+        if (!lockout && Input.anyKey && cutsceneComplete())
         {
-            GameManager.Instance.GoToNewSceneAfterDelay(5,nextScene);
-            Debug.Log("hello");
+            lockout = true;
+            GameManager.Instance.ShowContinueMenu();
         }
     }
+
+    public void ContinueToNextScene()
+    {
+        if (cutsceneComplete())
+        {
+            GameManager.Instance.GoToNewSceneAfterDelay(1, nextScene);
+        }
+    }
+
     public IEnumerator typeText(int lineIndex)
     {
         
