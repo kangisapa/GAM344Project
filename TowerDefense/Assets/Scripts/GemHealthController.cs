@@ -26,6 +26,7 @@ public class GemHealthController : MonoBehaviour
     private enum HealthTier { Full, Cracked, BadlyCracked, Shattered }
     private HealthTier currentTier;
     private int maxHealth;
+     private int currentHealth;
  
     private Coroutine flashRoutine;
  
@@ -39,6 +40,7 @@ public class GemHealthController : MonoBehaviour
         if (MasterController.Instance != null)
         {
             maxHealth = MasterController.Instance.PlayerHealth;
+            currentHealth = MasterController.Instance.PlayerHealth;
             SetSpriteForHealth(MasterController.Instance.PlayerHealth, flash: false);
             MasterController.Instance.OnHealthChanged += HandleHealthChanged;
         }
@@ -58,7 +60,9 @@ public class GemHealthController : MonoBehaviour
  
     private void HandleHealthChanged(int newHealth)
     {
-        SetSpriteForHealth(newHealth, flash: true);
+        bool tookDamage = newHealth < currentHealth;
+        currentHealth = newHealth;
+        SetSpriteForHealth(newHealth, flash: tookDamage);
     }
  
  
@@ -67,8 +71,7 @@ public class GemHealthController : MonoBehaviour
  
         float percent = Mathf.Clamp01((float)health / Mathf.Max(1, maxHealth));
         HealthTier newTier = TierFor(percent, health);
- 
-        // First-time setup: just apply the sprite, no flash.
+        
         Sprite target = SpriteFor(newTier);
         if (!flash)
         {
@@ -76,9 +79,6 @@ public class GemHealthController : MonoBehaviour
             if (target != null) spriteRenderer.sprite = target;
             return;
         }
- 
-        // No tier change, no flash.
-        if (newTier == currentTier) return;
  
         currentTier = newTier;
         if (target != null) spriteRenderer.sprite = target;
