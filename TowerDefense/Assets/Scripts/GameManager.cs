@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -23,6 +24,13 @@ public class GameManager : MonoBehaviour
     [Header("Pause Menu References")]
     [SerializeField] private CanvasGroup pauseMenu;
 
+    #endregion
+
+    #region Continue Menu
+    [Header("Continue Menu Options")]
+    [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button continueButton;
+    private GameObject menuArea;
     #endregion
 
     private void Awake()
@@ -52,6 +60,24 @@ public class GameManager : MonoBehaviour
             fadeAlpha = 0;
             fadeState = FadeState.idle;
         }
+
+        menuArea = continueButton.transform.parent.gameObject;
+        menuArea.SetActive(false);
+        continueButton.onClick.AddListener(() =>
+        {
+            MasterController.Instance.GoToSceneFromUI();
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+            menuArea.SetActive(false);
+        });
+        mainMenuButton.onClick.AddListener(() =>
+        {
+            ReturnToMainMenu();
+            continueButton.interactable = false;
+            mainMenuButton.interactable = false;
+            menuArea.SetActive(false);
+        });
+
     }
 
     private void Update()
@@ -130,6 +156,16 @@ public class GameManager : MonoBehaviour
         }
         Debug.LogWarning($"Scene '{sceneName}' not found in Build Settings!");
     }
+
+    public void ShowContinueMenu(string continueButtonText = "Continue >")
+    {
+        menuArea.SetActive(true);
+        continueButton.gameObject.SetActive(true);
+        continueButton.GetComponentInChildren<TMP_Text>().text = continueButtonText;
+        mainMenuButton.gameObject.SetActive(true);
+    }
+
+
 
     bool menuAnimating = false;
     public bool PauseActive { get; private set; } = false;
