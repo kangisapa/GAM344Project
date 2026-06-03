@@ -648,36 +648,42 @@ MonoBehaviour:
     dialogueSpeed: 0
     isChoice: 0
     whostalking: 0
+    fontstyle: 7
   - dialogue: this is a test to see if everything works
     p1: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     p2: {fileID: 2312015535092298188, guid: ca178eb570a5b404f9052bd8ccdb2fbf, type: 3}
     dialogueSpeed: 0
     isChoice: 0
     whostalking: 1
+    fontstyle: 0
   - dialogue: if you are seeing this line everything works
     p1: {fileID: 6557085382521157200, guid: 800284a95994c4f4498335f20ea3a399, type: 3}
     p2: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     dialogueSpeed: 0
     isChoice: 0
     whostalking: 0
+    fontstyle: 1
   - dialogue: this is a choice example
     p1: {fileID: 6557085382521157200, guid: 800284a95994c4f4498335f20ea3a399, type: 3}
     p2: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     dialogueSpeed: 0
     isChoice: 1
     whostalking: 2
+    fontstyle: 3
   - dialogue: aaaa
     p1: {fileID: 6557085382521157200, guid: 800284a95994c4f4498335f20ea3a399, type: 3}
     p2: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     dialogueSpeed: 0
     isChoice: 0
     whostalking: 0
+    fontstyle: 7
   - dialogue: more testing
     p1: {fileID: 6557085382521157200, guid: 800284a95994c4f4498335f20ea3a399, type: 3}
     p2: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     dialogueSpeed: 0
     isChoice: 0
     whostalking: 1
+    fontstyle: 7
   baseTalkSpeed: 0.01
   choiceUI: {fileID: 1349329476}
   textBox: {fileID: 1402569987}
