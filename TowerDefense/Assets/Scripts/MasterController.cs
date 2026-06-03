@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -216,7 +215,7 @@ public class MasterController : MonoBehaviour
     public void StartGame()
     {
         if (currentState == GameState.Playing) return;
-
+        SetTimeScale(1);
         currentWaveIndex = 0;
         enemiesAlive = 0;
         usesRemaining = maxButtonUses;
@@ -378,15 +377,27 @@ public class MasterController : MonoBehaviour
         if (currentState == newState) return;
         currentState = newState;
         OnGameStateChanged?.Invoke(newState);
-        if(newState == GameState.Victory)
+
+    }
+
+    bool lockout = false;
+
+    public void GoToSceneFromUI()
+    {
+        if (lockout) return;
+        lockout = true;
+        if (currentState == GameState.Victory)
         {
-            GameManager.Instance.GoToNewSceneAfterDelay(10, levelOnWin);
+            SetTimeScale(1);
+            GameManager.Instance.GoToNewSceneAfterDelay(1, levelOnWin);
         }
-        else if(newState == GameState.GameOver)
+        else if (currentState == GameState.GameOver)
         {
-            GameManager.Instance.GoToNewSceneAfterDelay(5, SceneManager.GetActiveScene().buildIndex);
+            SetTimeScale(1);
+            GameManager.Instance.GoToNewSceneAfterDelay(1, SceneManager.GetActiveScene().buildIndex);
         }
     }
+
     public bool TryUsePanicButton()
     {
         if (!buttonAvailable) return false;

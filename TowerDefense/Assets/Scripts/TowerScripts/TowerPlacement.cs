@@ -21,7 +21,7 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (hasTower || closing) return;          // Already occupied — ignore clicks
+        if (hasTower || closing || GameManager.Instance.PauseActive) return;          // Already occupied — ignore clicks
 
         if (menuOpen) CloseMenu();
         else OpenMenu();
@@ -29,6 +29,15 @@ public class TowerPlacementSpot : MonoBehaviour
 
     private void OpenMenu()
     {
+        foreach(Object obj in FindObjectsByType(typeof(TowerPlacementSpot), FindObjectsSortMode.None))
+        {
+            TowerPlacementSpot spot = obj as TowerPlacementSpot;
+            if(spot && spot.menuOpen)
+            {
+                spot.CloseMenu();
+            }
+        }
+
         menuOpen = true;
         menuObject = new GameObject("Menu");
         menuObject.transform.SetParent(transform, worldPositionStays: false);
@@ -54,6 +63,7 @@ public class TowerPlacementSpot : MonoBehaviour
             sr.color = Color.clear;
             sr.sortingOrder = 100;
             towerButton.GetComponent<BoxCollider2D>().size = Vector2.one;
+            towerButton.GetComponent<BoxCollider2D>().layerOverridePriority = 10;
 
             //Setup click handler
             IndexSquare iSqr = towerButton.GetComponent<IndexSquare>();
@@ -80,7 +90,7 @@ public class TowerPlacementSpot : MonoBehaviour
         {
             menuObjects[i].Setup(i, Vector3.zero, false);
         }
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSecondsRealtime(.1f);
 
         menuOpen = false;
         if (menuObject != null) Destroy(menuObject);
