@@ -76,6 +76,7 @@ public class DialogueChoice : MonoBehaviour
         currentChoice = Choice; 
         StartCoroutine(controller.typeText(controller.currentLine));
         controller.swapSprites(controller.currentLine);
+        controller.ChangeFont(controller.cutsceneLine[controller.currentLine].fontstyle);
         controller.checkWhosTalking(controller.currentLine);
         controller.currentLine++;
 

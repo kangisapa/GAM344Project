@@ -24,6 +24,19 @@ public class Cutscene
     }  
     public whosTalking whostalking;
 
+    public enum fontStyle
+    {
+        Bold,
+        Italic,
+        Underline,
+        Strikethrough,
+        Lowercase,
+        Uppercase,
+        Smallcaps,
+        None,
+    }
+    public fontStyle fontstyle = fontStyle.None;
+
     internal enum panicChoices
     {
         Headache = 0,
@@ -89,6 +102,7 @@ public class CutsceneController : MonoBehaviour
 
             StartCoroutine(typeText(currentLine));
             swapSprites(currentLine);
+            ChangeFont(cutsceneLine[currentLine].fontstyle);
             checkWhosTalking(currentLine);
             currentLine++;
         }
@@ -169,6 +183,34 @@ public class CutsceneController : MonoBehaviour
 
         if(bTalking(line.whostalking)) { personB.color = Color.white; }
         else { personB.color = qColor; }
+    }
+
+    public void ChangeFont(Cutscene.fontStyle font)
+    {
+        switch (font)
+        {
+            case Cutscene.fontStyle.Bold:
+                textBox.fontStyle = FontStyles.Bold; 
+                break;
+            case Cutscene.fontStyle.Italic:
+                textBox.fontStyle = FontStyles.Italic;
+                break;
+            case Cutscene.fontStyle.Strikethrough:
+                textBox.fontStyle = FontStyles.Strikethrough;
+                break;
+            case Cutscene.fontStyle.Lowercase:
+                textBox.fontStyle = FontStyles.LowerCase;
+                break;
+            case Cutscene.fontStyle.Uppercase:
+                textBox.fontStyle = FontStyles.UpperCase;
+                break;
+            case Cutscene.fontStyle.Smallcaps:
+                textBox.fontStyle = FontStyles.SmallCaps;
+                break;
+            case Cutscene.fontStyle.None:
+                textBox.fontStyle = FontStyles.Normal;
+                break;
+        }
     }
 
     private bool aTalking(Cutscene.whosTalking current)
