@@ -133,11 +133,12 @@ public class CutsceneController : MonoBehaviour
         if (line == null || line.dialogue == null) yield break;
 
 
-        textBox.text = string.Empty;
+        textBox.maxVisibleCharacters = 0;
+        textBox.text = line.dialogue;
         isTyping = true;
-        foreach (char c in line.dialogue)
+        for(int i = 0; i <= textBox.textInfo.characterCount; i++)
         {
-            textBox.text += c;
+            textBox.maxVisibleCharacters = i;
             yield return new WaitForSeconds(line.dialogueSpeed);
         }
 

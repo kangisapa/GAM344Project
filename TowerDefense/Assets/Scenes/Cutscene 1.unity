@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneController
   cutsceneLine:
-  - dialogue: hello
+  - dialogue: Im saying <i>hello</i>
     p1: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     p2: {fileID: 7807635310722817902, guid: c6e5bc23bb8cdfe4a8f6721efad08b93, type: 3}
     dialogueSpeed: 0

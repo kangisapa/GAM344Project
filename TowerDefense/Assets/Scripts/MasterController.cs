@@ -400,7 +400,7 @@ public class MasterController : MonoBehaviour
 
     public bool TryUsePanicButton()
     {
-        if (!buttonAvailable) return false;
+        if (!buttonAvailable || MasterController.Instance.currentState != GameState.Playing) return false;
         if (usesRemaining <= 0) return false;
         OnRewindInitiated?.Invoke();
         return true;

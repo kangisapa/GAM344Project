@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  levelOnWin: Cutscene 2
+  levelOnWin: Level 2
   startingCurrency: 30
   startingHealth: 10
   waves:
@@ -2729,6 +2729,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -88.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 52.2
+      objectReference: {fileID: 0}
     - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2840,6 +2852,10 @@ PrefabInstance:
     - target: {fileID: 1205211209080751598, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007221742010143091, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 5933443808525773394, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
