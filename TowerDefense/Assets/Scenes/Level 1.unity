@@ -6105,6 +6105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GemContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 7213213144692691477, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.77
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
