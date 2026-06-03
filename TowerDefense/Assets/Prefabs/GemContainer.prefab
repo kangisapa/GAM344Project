@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 3769773199903742060}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.3191404, y: -4.49974, z: 0}
+  m_LocalPosition: {x: 3.79, y: 1.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -260,8 +260,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0, y: 0}
-      - {x: 0, y: 1}
-      - {x: 1, y: 1}
+      - {x: 0, y: 4}
+      - {x: 1, y: 4}
       - {x: 1, y: 0}
   m_UseDelaunayMesh: 0
 --- !u!114 &8048254162788719626
@@ -479,6 +479,7 @@ MonoBehaviour:
   crackedSprite: {fileID: 21300000, guid: 15564aa4345d5b34a8013b2c1dae1a7a, type: 3}
   badlyCrackedSprite: {fileID: 21300000, guid: 89fac17efd757134d9cdc005f5226507, type: 3}
   shatteredSprite: {fileID: 21300000, guid: ac787a4d54629ff489e3bdd3c9f96807, type: 3}
+  shatterParticles: {fileID: 2635005665698697238}
   whiteSprite: {fileID: 21300000, guid: a51ffefb47738d84ebc5d76d1e6d3489, type: 3}
   flashCount: 3
   flashDuration: 0.35
@@ -573,7 +574,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7186227801029103369}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.71539, y: 0.22724, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

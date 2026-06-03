@@ -6069,37 +6069,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4083938478019958544, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7186227801029103369, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
       propertyPath: m_Name
       value: GemContainer
-      objectReference: {fileID: 0}
-    - target: {fileID: 7213213144692691477, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.7746096
-      objectReference: {fileID: 0}
-    - target: {fileID: 7213213144692691477, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2502599
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
