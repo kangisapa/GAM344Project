@@ -10,7 +10,11 @@ public class GemHealthController : MonoBehaviour
     [SerializeField] private Sprite crackedSprite;
     [SerializeField] private Sprite badlyCrackedSprite;
     [SerializeField] private Sprite shatteredSprite;
- 
+    [SerializeField] private Sprite emptySprite;
+
+    [Header("Shatter Particles")]
+    [SerializeField] private ParticleSystem shatterParticles;
+
     [Header("Flash Settings")]
     [SerializeField] private Sprite whiteSprite;
     [Min(1)]
@@ -23,7 +27,7 @@ public class GemHealthController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
  
     // Tier tracking
-    private enum HealthTier { Full, Cracked, BadlyCracked, Shattered }
+    private enum HealthTier { Full, Cracked, BadlyCracked, Shattered, Empty}
     private HealthTier currentTier;
     private int maxHealth;
      private int currentHealth;
@@ -82,7 +86,10 @@ public class GemHealthController : MonoBehaviour
  
         currentTier = newTier;
         if (target != null) spriteRenderer.sprite = target;
- 
+
+        if (health == 0 && shatterParticles != null)
+            shatterParticles.Play();
+
         if (flashRoutine != null)
         {
             StopCoroutine(flashRoutine);
@@ -95,6 +102,7 @@ public class GemHealthController : MonoBehaviour
  
     private HealthTier TierFor(float percent, int rawHealth)
     {
+        if (rawHealth <= 0) return HealthTier.Empty;
         if (percent >= 0.999f) return HealthTier.Full;
         if (percent >= 0.800) return HealthTier.Cracked;
         if (percent >= 0.501f) return HealthTier.BadlyCracked;
@@ -109,6 +117,8 @@ public class GemHealthController : MonoBehaviour
             case HealthTier.Cracked:      return crackedSprite;
             case HealthTier.BadlyCracked: return badlyCrackedSprite;
             case HealthTier.Shattered:    return shatteredSprite;
+            case HealthTier.Empty:         return emptySprite;
+
             default:                      return fullSprite;
         }
     }

@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     // ---------- Player/Round Information ----------
-    public TextMeshProUGUI currentHealth;
     public TextMeshProUGUI currentCurrency;
     public TextMeshProUGUI currentWave;
     public int[] playRates = { 1, 4, 6 };
@@ -41,8 +40,7 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        currentHealth.text = $"Health: {MasterController.Instance.PlayerHealth}";
-        currentCurrency.text = $"Currency: {MasterController.Instance.PlayerCurrency}";
+        currentCurrency.text = $"{MasterController.Instance.PlayerCurrency}";
         currentWave.text = $"Waves Completed: {MasterController.Instance.CurrentWave}/{MasterController.Instance.TotalWaves}";
         //make buttons look pretty and mimicks a selected button if that option is "selected"
         for(int i = 0;  i < playRateButtons.Length; i++)

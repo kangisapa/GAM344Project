@@ -13,6 +13,7 @@ public class Cutscene
     public string dialogue;
     public Sprite p1;
     public Sprite p2;
+    public Sprite boxImage;
     public float dialogueSpeed;
     public bool isChoice;
 
@@ -23,6 +24,19 @@ public class Cutscene
         none,
     }  
     public whosTalking whostalking;
+
+    public enum fontStyle
+    {
+        Bold,
+        Italic,
+        Underline,
+        Strikethrough,
+        Lowercase,
+        Uppercase,
+        Smallcaps,
+        None,
+    }
+    public fontStyle fontstyle = fontStyle.None;
 
     internal enum panicChoices
     {
@@ -51,10 +65,13 @@ public class CutsceneController : MonoBehaviour
     [SerializeField] 
     private Image personB;
     [SerializeField]
+    private Sprite baseBoxImage;
+    [SerializeField]
     private string nextScene;
 
     private bool isTyping;
     private Color qColor;
+    
 
 
 
@@ -73,11 +90,17 @@ public class CutsceneController : MonoBehaviour
             {
                 cutsceneLine[i].dialogueSpeed = baseTalkSpeed;
             }
+
+            if (cutsceneLine[i].boxImage == null)
+            {
+                cutsceneLine[i].boxImage = baseBoxImage;
+            }
         }
         qColor = new Color(1f, 1f, 1f, 0.5f);
 
         personA.GetComponent<Image>().color = qColor;
         personB.GetComponent<Image>().color = qColor;
+
         
     }
 
@@ -86,11 +109,12 @@ public class CutsceneController : MonoBehaviour
     //used to continue the conversation
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isTyping && cutsceneLine != null)
+        if (Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.Mouse0) && !isTyping && cutsceneLine != null && currentLine < cutsceneLine.Count)
         {
 
             StartCoroutine(typeText(currentLine));
             swapSprites(currentLine);
+            ChangeFont(cutsceneLine[currentLine].fontstyle);
             checkWhosTalking(currentLine);
             currentLine++;
         }
@@ -119,11 +143,12 @@ public class CutsceneController : MonoBehaviour
         if (line == null || line.dialogue == null) yield break;
 
 
-        textBox.text = string.Empty;
+        textBox.maxVisibleCharacters = 0;
+        textBox.text = line.dialogue;
         isTyping = true;
-        foreach (char c in line.dialogue)
+        for(int i = 0; i <= textBox.textInfo.characterCount; i++)
         {
-            textBox.text += c;
+            textBox.maxVisibleCharacters = i;
             yield return new WaitForSeconds(line.dialogueSpeed);
         }
 
@@ -167,6 +192,7 @@ public class CutsceneController : MonoBehaviour
         {
             //personB.enabled = false;
         }
+
     }
     public void checkWhosTalking(int personIndex)
     {
@@ -180,6 +206,34 @@ public class CutsceneController : MonoBehaviour
 
         if(bTalking(line.whostalking)) { personB.color = Color.white; }
         else { personB.color = qColor; }
+    }
+
+    public void ChangeFont(Cutscene.fontStyle font)
+    {
+        switch (font)
+        {
+            case Cutscene.fontStyle.Bold:
+                textBox.fontStyle = FontStyles.Bold; 
+                break;
+            case Cutscene.fontStyle.Italic:
+                textBox.fontStyle = FontStyles.Italic;
+                break;
+            case Cutscene.fontStyle.Strikethrough:
+                textBox.fontStyle = FontStyles.Strikethrough;
+                break;
+            case Cutscene.fontStyle.Lowercase:
+                textBox.fontStyle = FontStyles.LowerCase;
+                break;
+            case Cutscene.fontStyle.Uppercase:
+                textBox.fontStyle = FontStyles.UpperCase;
+                break;
+            case Cutscene.fontStyle.Smallcaps:
+                textBox.fontStyle = FontStyles.SmallCaps;
+                break;
+            case Cutscene.fontStyle.None:
+                textBox.fontStyle = FontStyles.Normal;
+                break;
+        }
     }
 
     private bool aTalking(Cutscene.whosTalking current)

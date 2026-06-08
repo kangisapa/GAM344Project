@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9efb4a3ee84c1bd4c85f31d758697dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MasterController
-  levelOnWin: Cutscene 2
+  levelOnWin: Level 2
   startingCurrency: 30
   startingHealth: 10
   waves:
@@ -2729,6 +2729,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -88.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 279597687704462980, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 52.2
+      objectReference: {fileID: 0}
     - target: {fileID: 388735597552235667, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2840,6 +2852,10 @@ PrefabInstance:
     - target: {fileID: 1205211209080751598, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007221742010143091, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
       objectReference: {fileID: 0}
     - target: {fileID: 5933443808525773394, guid: 17bf8386fd0dd1841946348467bf6aed, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -6101,37 +6117,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4083938478019958544, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4242240129790328061, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7186227801029103369, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
       propertyPath: m_Name
       value: GemContainer
       objectReference: {fileID: 0}
     - target: {fileID: 7213213144692691477, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.7746096
-      objectReference: {fileID: 0}
-    - target: {fileID: 7213213144692691477, guid: 546ae597958a35a4286f8eff840e0058, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.2502599
+      value: 5.77
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
