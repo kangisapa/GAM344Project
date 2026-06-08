@@ -13,6 +13,7 @@ public class Cutscene
     public string dialogue;
     public Sprite p1;
     public Sprite p2;
+    public Sprite boxImage;
     public float dialogueSpeed;
     public bool isChoice;
 
@@ -64,10 +65,13 @@ public class CutsceneController : MonoBehaviour
     [SerializeField] 
     private Image personB;
     [SerializeField]
+    private Sprite baseBoxImage;
+    [SerializeField]
     private string nextScene;
 
     private bool isTyping;
     private Color qColor;
+    
 
 
 
@@ -86,11 +90,17 @@ public class CutsceneController : MonoBehaviour
             {
                 cutsceneLine[i].dialogueSpeed = baseTalkSpeed;
             }
+
+            if (cutsceneLine[i].boxImage == null)
+            {
+                cutsceneLine[i].boxImage = baseBoxImage;
+            }
         }
         qColor = new Color(1f, 1f, 1f, 0.5f);
 
         personA.GetComponent<Image>().color = qColor;
         personB.GetComponent<Image>().color = qColor;
+
         
     }
 
@@ -99,7 +109,7 @@ public class CutsceneController : MonoBehaviour
     //used to continue the conversation
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isTyping && cutsceneLine != null)
+        if (Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.Mouse0) && !isTyping && cutsceneLine != null && currentLine < cutsceneLine.Count)
         {
 
             StartCoroutine(typeText(currentLine));
@@ -182,6 +192,7 @@ public class CutsceneController : MonoBehaviour
         {
             //personB.enabled = false;
         }
+
     }
     public void checkWhosTalking(int personIndex)
     {
