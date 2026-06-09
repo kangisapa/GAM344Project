@@ -1002,6 +1002,7 @@ GameObject:
   - component: {fileID: 3583165952660342720}
   - component: {fileID: 6821449607464550530}
   - component: {fileID: 4346955347247155862}
+  - component: {fileID: 1935440552345233773}
   - component: {fileID: 7225383127061665974}
   m_Layer: 5
   m_Name: CutsceneUI
@@ -1097,6 +1098,103 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!82 &1935440552345233773
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4405275209526174944}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &7225383127061665974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,13 +1256,15 @@ MonoBehaviour:
     isChoice: 0
     whostalking: 1
     fontstyle: 7
-  baseTalkSpeed: 0.01
+  baseTalkSpeed: 0.05
   choiceUI: {fileID: 2319723609331614597}
   textBox: {fileID: 8066511916553563222}
   personA: {fileID: 6831454922513644193}
   personB: {fileID: 2304893326313461749}
   baseBoxImage: {fileID: 21300000, guid: f0a46e9e7aaab374290afb299157868e, type: 3}
   nextScene: Level 1
+  talkSoundA: {fileID: 8300000, guid: 9221365ebd1576f4088673eb549d57e8, type: 3}
+  talkSoundB: {fileID: 8300000, guid: a99a2efe0d0e4be48ac17d1d045335bf, type: 3}
 --- !u!1 &4504005982052264269
 GameObject:
   m_ObjectHideFlags: 0
