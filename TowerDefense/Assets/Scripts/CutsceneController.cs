@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
  
  
 [Serializable]
@@ -68,11 +69,14 @@ public class CutsceneController : MonoBehaviour
     private Sprite baseBoxImage;
     [SerializeField]
     private string nextScene;
+    [SerializeField]
+    private AudioClip talkSoundA;
+    [SerializeField]
+    private AudioClip talkSoundB;
 
     private bool isTyping;
     private Color qColor;
-    
-
+    private AudioSource source;
 
 
 
@@ -100,6 +104,7 @@ public class CutsceneController : MonoBehaviour
 
         personA.GetComponent<Image>().color = qColor;
         personB.GetComponent<Image>().color = qColor;
+        source = GetComponent<AudioSource>();
 
         
     }
@@ -149,8 +154,11 @@ public class CutsceneController : MonoBehaviour
         for(int i = 0; i <= textBox.textInfo.characterCount; i++)
         {
             textBox.maxVisibleCharacters = i;
+            playSpeech(lineIndex, 0.5f, 1.5f);
             yield return new WaitForSeconds(line.dialogueSpeed);
+            
         }
+
 
         if (line.isChoice)
         {
@@ -235,6 +243,24 @@ public class CutsceneController : MonoBehaviour
                 break;
         }
     }
+    private void playSpeech(int index, float min, float max)
+    {
+        Cutscene line = cutsceneLine[index];
+        if (min < 0.5f) { min = 0.5f; }
+        if (max > 1.5f) { max = 1.5f; }
+        source.pitch = Random.Range(min, max);
+
+        if (aTalking(line.whostalking))
+        {
+            source.PlayOneShot(talkSoundA);
+        }
+        else if (bTalking(line.whostalking))
+        {
+            source.PlayOneShot(talkSoundB);
+        }
+
+
+    }
 
     private bool aTalking(Cutscene.whosTalking current)
     {
@@ -255,4 +281,5 @@ public class CutsceneController : MonoBehaviour
 
         else { return false; }
     }
+
 }
